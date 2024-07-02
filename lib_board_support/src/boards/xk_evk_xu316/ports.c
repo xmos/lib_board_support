@@ -12,8 +12,10 @@ port_t p_evk_scl = XS1_PORT_1N;
 port_t p_evk_i2c_sda = XS1_PORT_1O;
 port_t p_evk_codec_reset =  XS1_PORT_4A;
 
-void xk_evk_xu316_init_ports() {
-    ENABLE_LOCAL_PORT(0, p_evk_scl);
-    ENABLE_LOCAL_PORT(0, p_evk_i2c_sda);
-    ENABLE_LOCAL_PORT(1, p_evk_codec_reset);
+void xk_evk_xu316_init_ports_0() {
+    port_enable(p_evk_scl);
+    port_enable(p_evk_i2c_sda);
+}
+void xk_evk_xu316_init_ports_1() {
+    port_enable(p_evk_codec_reset);
 }

@@ -52,7 +52,7 @@ extern in port p_xk_audio_316_margin;  /* CORE_POWER_MARGIN:   Driven 0:   0.925
 
 void xk_audio_316_mc_ab_board_setup(const xk_audio_316_mc_ab_config_t &config)
 {
-    xk_audio_316_mc_ab_init_ports();
+    xk_audio_316_mc_ab_init_ports_0();
 
     /* "Drive high mode" - drive high for 1, non-driving for 0 */
     set_port_drive_high(p_xk_audio_316_ctrl);

@@ -72,7 +72,7 @@ void AudioHwRemote2(chanend c, client interface i2c_master_if i2c)
 void xk_evk_xu316_AudioHwRemote(chanend c)
 {
 
-    xk_evk_xu316_init_ports();
+    xk_evk_xu316_init_ports_0();
     i2c_master_if i2c[1];
     par
     {
@@ -107,7 +107,7 @@ static inline void CODEC_REGREAD(unsigned reg, unsigned &val)
  * use a channel to communicate CODEC reg read/writes to a remote core */
 void xk_evk_xu316_AudioHwInit(const xk_evk_xu316_config_t &config)
 {
-    xk_evk_xu316_init_ports();
+    xk_evk_xu316_init_ports_1();
     unsigned regVal = 0;
 
     /* Take CODEC out of reset */
