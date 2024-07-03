@@ -11,7 +11,7 @@ Usage
 *****
 
 This repo supports XCommon CMake. Simply add "lib_board_support" to an applications "APP_DEPENDENT_MODULES". The application
-must provide the xn file. The in the application use the APIs from the header files for the board that is used. This library
+must provide the xn file. The application must use the APIs for the specific board that it is using. This library
 is structured so that all boards get compiled and linked, this means that no further configuration is required to specify
 the board that will be used.
 
