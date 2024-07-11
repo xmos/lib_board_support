@@ -10,3 +10,15 @@
 #define BOARDS_PORT(TILE, PORT) XS1_PORT_ ## PORT
 #endif
 
+#define XK_AUDIO_216_MC_AB 0
+#define XK_AUDIO_316_MC_AB 1
+#define XK_EVK_XU316 2
+#define BOARD_SUPPORT_N_BOARDS 3  // max board + 1
+
+#ifndef BOARD_SUPPORT_BOARD
+#error BOARD_SUPPORT_BOARD must be defined and set to one of the supported boards
+#endif
+
+#if BOARD_SUPPORT_BOARD >= BOARD_SUPPORT_N_BOARDS
+#error Invalid board selected
+#endif

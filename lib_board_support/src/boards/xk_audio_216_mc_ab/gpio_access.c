@@ -1,5 +1,11 @@
 // Copyright 2024 XMOS LIMITED.
 // This Software is subject to the terms of the XMOS Public Licence: Version 1.
+
+
+#include <boards_utils.h>
+
+#if BOARD_SUPPORT_BOARD == XK_AUDIO_216_MC_AB
+
 #include "xk_audio_216_mc_ab/gpio_access.h"
 #include <xs1.h>
 #include <xcore/port.h>
@@ -52,3 +58,4 @@ void aud_216_set_gpio(unsigned bit, unsigned value)
 }
 
 
+#endif

@@ -3,27 +3,27 @@
 #include <xs1.h>
 
 
-// Only include the definitions in this file if on xs3a,
-// lib_sw_pll does not compile for other targets
-#if defined(__XS3A__)
+#include <boards_utils.h>
+
+#if BOARD_SUPPORT_BOARD == XK_EVK_XU316
 
 
 #include "xassert.h"
 #include "i2c.h"
 #include "tlv320aic3204.h"
 #include <xk_evk_xu316/board.h>
-#include <xk_evk_xu316/ports.h>
+#include <platform.h>
 extern "C" {
     #include "sw_pll.h"
 }
 
 
 // CODEC I2C lines
-extern port p_evk_scl;
-extern port p_evk_i2c_sda;
+on tile[0]: port p_i2c_scl = XS1_PORT_1N;
+on tile[0]: port p_i2c_sda = XS1_PORT_1O;
 
 // CODEC reset line
-extern port p_evk_codec_reset ;
+on tile[1]: out port p_codec_reset  = PORT_CODEC_RST_N;
 
 // CODEC Reset
 #define CODEC_RELEASE_RESET      (0x8) // Release codec from
@@ -72,11 +72,10 @@ void AudioHwRemote2(chanend c, client interface i2c_master_if i2c)
 void xk_evk_xu316_AudioHwRemote(chanend c)
 {
 
-    xk_evk_xu316_init_ports_0();
     i2c_master_if i2c[1];
     par
     {
-        i2c_master(i2c, 1, p_evk_scl, p_evk_i2c_sda, 10);
+        i2c_master(i2c, 1, p_i2c_scl, p_i2c_sda, 10);
         AudioHwRemote2(c, i2c[0]);
     }
 }
@@ -107,11 +106,10 @@ static inline void CODEC_REGREAD(unsigned reg, unsigned &val)
  * use a channel to communicate CODEC reg read/writes to a remote core */
 void xk_evk_xu316_AudioHwInit(const xk_evk_xu316_config_t &config)
 {
-    xk_evk_xu316_init_ports_1();
     unsigned regVal = 0;
 
     /* Take CODEC out of reset */
-    p_evk_codec_reset <: CODEC_RELEASE_RESET;
+    p_codec_reset <: CODEC_RELEASE_RESET;
 
     delay_milliseconds(100);
 

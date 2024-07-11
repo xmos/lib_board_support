@@ -2,15 +2,12 @@
 // This Software is subject to the terms of the XMOS Public Licence: Version 1.
 #include <xs1.h>
 
+#include <boards_utils.h>
 
-
-// Only include the definitions in this file for xs3a as 
-// lib_sw_pll doesn't compile otherwise
-#if defined(__XS3A__)
-
+#if BOARD_SUPPORT_BOARD == XK_AUDIO_316_MC_AB
 
 #include <xk_audio_316_mc_ab/board.h>
-#include <xk_audio_316_mc_ab/ports.h>
+#include <platform.h>
 #include "xassert.h"
 #include "i2c.h"
 
@@ -27,9 +24,9 @@ extern "C" {
 // reduce verbosity
 typedef client interface i2c_master_if i2c_cli;
 
-extern port p_xk_audio_316_scl;
-extern port p_xk_audio_316_sda;
-extern out port p_xk_audio_316_ctrl;                /* p_xk_audio_316_ctrl:
+port p_scl = PORT_I2C_SCL;
+port p_sda = PORT_I2C_SDA;
+out port p_ctrl = PORT_CTRL;                /* p_ctrl:
                                              * [0:3] - Unused
                                              * [4]   - EN_3v3_N    (1v0 hardware only)
                                              * [5]   - EN_3v3A
@@ -37,33 +34,25 @@ extern out port p_xk_audio_316_ctrl;                /* p_xk_audio_316_ctrl:
                                              * [7]   - MCLK_DIR    (Out:0, In: 1)
                                              */
 
-extern in port p_xk_audio_316_margin;  /* CORE_POWER_MARGIN:   Driven 0:   0.925v
+on tile[0]: in port p_margin = XS1_PORT_1G;  /* CORE_POWER_MARGIN:   Driven 0:   0.925v
                                               *                      Pull down:  0.922v
                                               *                      High-z:     0.9v
                                               *                      Pull-up:    0.854v
                                               *                      Driven 1:   0.85v
                                               */
-
-
-
-
-
-
-
 void xk_audio_316_mc_ab_board_setup(const xk_audio_316_mc_ab_config_t &config)
 {
-    xk_audio_316_mc_ab_init_ports_0();
 
     /* "Drive high mode" - drive high for 1, non-driving for 0 */
-    set_port_drive_high(p_xk_audio_316_ctrl);
+    set_port_drive_high(p_ctrl);
 
     /* Ensure high-z for 0.9v */
-    p_xk_audio_316_margin :> void;
+    p_margin :> void;
 
     /* Drive control port to turn on 3V3 and mclk direction appropriately.
      * Bits set to low will be high-z, pulled down */
     const unsigned pll_sel_mclk_dir = (CLK_CS2100 == config.clk_mode) ? 0x00 : 0x80;
-    p_xk_audio_316_ctrl <: pll_sel_mclk_dir | 0x20;
+    p_ctrl <: pll_sel_mclk_dir | 0x20;
 
     /* Wait for power supplies to be up and stable */
     delay_milliseconds(10);
@@ -570,3 +559,4 @@ void xk_audio_316_mc_ab_AudioHwConfig(i2c_cli i2c, const xk_audio_316_mc_ab_conf
 }
 
 #endif
+

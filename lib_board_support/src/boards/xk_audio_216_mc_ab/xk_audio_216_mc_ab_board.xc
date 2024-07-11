@@ -5,10 +5,12 @@
 
 
 
-#if defined(__XS2A__)
+#include <boards_utils.h>
+
+#if BOARD_SUPPORT_BOARD == XK_AUDIO_216_MC_AB
 
 #include <xk_audio_216_mc_ab/board.h>
-#include <xk_audio_216_mc_ab/ports.h>
+#include <platform.h>
 
 #include "xk_audio_216_mc_ab/gpio_access.h"
 #include "i2c.h"

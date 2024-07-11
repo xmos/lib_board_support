@@ -8,11 +8,11 @@
 #include <i2c.h>
 
 /* I2C interface ports */
-extern port p_xk_audio_316_scl;
-extern port p_xk_audio_316_sda;
+extern port p_scl;
+extern port p_sda;
 
 /// Start an i2s master thread which uses the DAC pins
-#define xk_audio_316_mc_ab_i2c_master(i2c) i2c_master((i2c), 1, p_xk_audio_316_scl, p_xk_audio_316_sda, 100)
+#define xk_audio_316_mc_ab_i2c_master(i2c) i2c_master((i2c), 1, p_scl, p_sda, 100)
 
 
 typedef enum {
