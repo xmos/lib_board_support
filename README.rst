@@ -11,9 +11,11 @@ Usage
 *****
 
 This repo supports XCommon CMake. Simply add "lib_board_support" to an applications "APP_DEPENDENT_MODULES". The application
-must provide the xn file. The application must use the APIs for the specific board that it is using. This library
-is structured so that all boards get compiled and linked, this means that no further configuration is required to specify
-the board that will be used.
+must provide the xn file. The application must use the APIs for the specific board that it is using. To ensure that only the correct sources for the board in use get compiled in, it is necessary to set the preprocessor value `BOARD_SUPPORT_BOARD` to one of the available boards. This can be done in the app with the following snippet of cmake::
+
+    set(APP_COMPILER_FLAGS 
+	    -DBOARD_SUPPORT_BOARD=XK_AUDIO_316_MC_AB  # Change value to select board, see table below for available boards
+	)
 
 Boards
 ******
