@@ -243,4 +243,4 @@ void xk_evk_xu316_AudioHwConfig(unsigned samFreq, unsigned mClk, unsigned dsdMod
     sw_pll_fixed_clock(mClk);
 }
 
-#endif // required ports available
+#endif
