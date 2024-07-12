@@ -4,12 +4,6 @@
 
 #include <xs1.h>
 
-#if defined(__XC__)
-#define BOARDS_PORT(TILE, PORT) on tile[TILE]: XS1_PORT_ ## PORT
-#else
-#define BOARDS_PORT(TILE, PORT) XS1_PORT_ ## PORT
-#endif
-
 #define XK_AUDIO_216_MC_AB 0
 #define XK_AUDIO_316_MC_AB 1
 #define XK_EVK_XU316 2
