@@ -1,6 +1,6 @@
 VERSION = 0.1.0
 
-DEPENDENT_MODULES = lib_i2c
+DEPENDENT_MODULES = lib_i2c(>=6.2.0)
 
 MODULE_XCC_FLAGS = $(XCC_FLAGS) \
                    -O3 -g
