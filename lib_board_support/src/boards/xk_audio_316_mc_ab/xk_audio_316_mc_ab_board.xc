@@ -281,7 +281,7 @@ void xk_audio_316_mc_ab_AudioHwInit(i2c_cli i2c, const xk_audio_316_mc_ab_config
 
     if (config.pcm_format == AUD_316_PCM_FORMAT_I2S)
     {
-        /* Convert XUA_I2S_N_BITS to ADC FMT bits */
+        /* Convert i2s_n_bits to ADC FMT bits */
         int tx_wlen = 0;
         switch(config.i2s_n_bits)
         {
@@ -302,7 +302,7 @@ void xk_audio_316_mc_ab_AudioHwInit(i2c_cli i2c, const xk_audio_316_mc_ab_config
 
         /* RX_WLEN:        24-bit (default)
          * TDM_LRCLK_MODE: 0 (default)
-         * TX_WLEN:        XUA_I2S_N_BITS
+         * TX_WLEN:        i2s_n_bits
          * FMT:            I2S
          */
         WriteAllAdcRegs(i2c, PCM1865_FMT, 0b01000000 | (tx_wlen << 2));
