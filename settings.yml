@@ -1,0 +1,21 @@
+---
+lib_name: lib_board_support
+project: '{{lib_name}}'
+title: '{{lib_name}}: XMOS board support'
+version: 0.1.1
+
+documentation:
+  exclude_patterns_path: doc/exclude_patterns.inc
+  root_doc: doc/rst/lib_board_support.rst
+  linkcheck_ignore_regex: ['.*an02003.*']
+  cognidox_part_number: XM-
+  pdfs:
+    doc/rst/lib_board_support.rst:
+      pdf_title: '{{title}}'
+      pdf_filename: '{{lib_name}}_v{{version}}'
+    README.rst:
+      pdf_title: '{{title}} (README)'
+      pdf_filename: '{{lib_name}}_v{{version}}_readme'
+      pdf_short: yes
+software:
+  cognidox_part_number: XM-
