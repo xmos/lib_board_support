@@ -38,30 +38,30 @@ pipeline {
             stages{
                 stage('Checkout and lib checks'){
                     steps {
-                        sh 'mkdir ${REPO}'
-                        // source checks require the directory
-                        // name to be the same as the repo name
-                        dir("${REPO}") {
-                            // checkout repo
-                            checkout scm
-                            installPipfile(false)
-                            withVenv {
-                                withTools(params.TOOLS_VERSION) {
-                                    sh "git clone -b v1.2.1 git@github.com:xmos/infr_scripts_py"
-                                    sh "git clone -b v1.6.0 git@github.com:xmos/infr_apps"
-                                    sh "pip install -e infr_scripts_py"
-                                    sh "pip install -e infr_apps"
+                        withVenv {
+                            sh "git clone -b v1.2.1 git@github.com:xmos/infr_scripts_py"
+                            sh "git clone -b v1.6.0 git@github.com:xmos/infr_apps"
+                            sh "pip install -e infr_scripts_py"
+                            sh "pip install -e infr_apps"
 
-                                    sh "tree"
-                                    
+                            sh "tree"
+
+                            sh 'mkdir ${REPO}'
+                            // source checks require the directory
+                            // name to be the same as the repo name
+                            dir("${REPO}") {
+                                // checkout repo
+                                checkout scm
+                                // installPipfile(false)
+                                withTools(params.TOOLS_VERSION) {                            
                                     withEnv(["REPO=${REPO}", "XMOS_ROOT=.."]) {
                                         xcoreLibraryChecks("${REPO}", false)
                                         junit "junit_lib.xml"
                                     } // withEnv
-                                }
-                            }
-                        }
-                    }
+                                } // withTools
+                            } // dir
+                        } // Venv
+                    } // steps
                 }
                 stage('Docs') {
                     environment { XMOSDOC_VERSION = "v4.0" }
