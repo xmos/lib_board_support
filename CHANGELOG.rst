@@ -1,6 +1,13 @@
 Board Support Library Changelog
 ===============================
 
+1.0.0
+-----
+
+  * ADDED: Board documentation
+  * ADDED: Example simple app showing use of library
+  * FIXED: Missing lib_sw_pll dependency
+
 0.1.1
 -----
 
