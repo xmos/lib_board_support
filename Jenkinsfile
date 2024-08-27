@@ -48,10 +48,14 @@ pipeline {
                             withVenv {
                                 withTools(params.TOOLS_VERSION) {
                                     sh "git clone -b v1.2.1 git@github.com:xmos/infr_scripts_py"
-                                    sh "git clone -b v1.5.0 git@github.com:xmos/infr_apps"
-                                    sh "pip install -e ${WORKSPACE}/infr_scripts_py"
-                                    sh "pip install -e ${WORKSPACE}/infr_apps"
-                                    // lib checks                                    
+                                    sh "git clone -b v1.6.0 git@github.com:xmos/infr_apps"
+                                    sh "pip install -e infr_scripts_py"
+                                    sh "pip install -e infr_apps"
+                                    
+                                    withEnv(["REPO=${REPO}", "XMOS_ROOT=.."]) {
+                                        xcoreLibraryChecks("${REPO}", false)
+                                        junit "junit_lib.xml"
+                                    } // withEnv
                                 }
                             }
                         }
