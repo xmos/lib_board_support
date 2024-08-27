@@ -36,7 +36,7 @@ pipeline {
                 label 'linux&&64'
             }
             stages{
-                stage('Checkout'){
+                stage('Checkout and lib checks'){
                     steps {
                         sh 'mkdir ${REPO}'
                         // source checks require the directory
@@ -51,6 +51,8 @@ pipeline {
                                     sh "git clone -b v1.6.0 git@github.com:xmos/infr_apps"
                                     sh "pip install -e infr_scripts_py"
                                     sh "pip install -e infr_apps"
+
+                                    sh "tree"
                                     
                                     withEnv(["REPO=${REPO}", "XMOS_ROOT=.."]) {
                                         xcoreLibraryChecks("${REPO}", false)
