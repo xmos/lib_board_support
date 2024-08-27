@@ -38,27 +38,29 @@ pipeline {
             stages{
                 stage('Checkout and lib checks'){
                     steps {
-                        withVenv {
-                            sh "git clone -b v1.2.1 git@github.com:xmos/infr_scripts_py"
-                            sh "git clone -b v1.6.0 git@github.com:xmos/infr_apps"
-                            sh "pip install -e infr_scripts_py"
-                            sh "pip install -e infr_apps"
-
-                            sh "tree"
-
-                            sh 'mkdir ${REPO}'
-                            // source checks require the directory
-                            // name to be the same as the repo name
+                        sh 'mkdir ${REPO}'
                             dir("${REPO}") {
-                                // checkout repo
-                                checkout scm
-                                // installPipfile(false)
-                                withTools(params.TOOLS_VERSION) {                            
-                                    withEnv(["REPO=${REPO}", "XMOS_ROOT=.."]) {
-                                        xcoreLibraryChecks("${REPO}", false)
-                                        junit "junit_lib.xml"
-                                    } // withEnv
-                                } // withTools
+                                withVenv {
+                                    sh "git clone -b v1.2.1 git@github.com:xmos/infr_scripts_py"
+                                    sh "git clone -b v1.6.0 git@github.com:xmos/infr_apps"
+                                    sh "pip install -e infr_scripts_py"
+                                    sh "pip install -e infr_apps"
+
+                                    sh "tree"
+
+                                    sh 'mkdir ${REPO}'
+                                    dir("${REPO}") {                            
+                                        // checkout repo
+                                        checkout scm
+                                        // installPipfile(false)
+                                        withTools(params.TOOLS_VERSION) {                            
+                                            withEnv(["REPO=${REPO}", "XMOS_ROOT=.."]) {
+                                                xcoreLibraryChecks("${REPO}", false)
+                                                junit "junit_lib.xml"
+                                            } // withEnv
+                                        } // withTools
+                                    } // dir
+                                } // Venv
                             } // dir
                         } // Venv
                     } // steps
@@ -66,7 +68,7 @@ pipeline {
                 stage('Docs') {
                     environment { XMOSDOC_VERSION = "v4.0" }
                     steps {
-                        dir("${REPO}") {
+                        dir("${REPO}/${REPO}") {
                             sh "docker pull ghcr.io/xmos/xmosdoc:$XMOSDOC_VERSION"
                             sh """docker run -u "\$(id -u):\$(id -g)" \
                                 --rm \
@@ -82,7 +84,7 @@ pipeline {
                 }
                 stage('Build'){
                     steps {
-                        dir("${REPO}") {
+                        dir("${REPO}/${REPO}") {
                             withVenv {
                                 withTools(params.TOOLS_VERSION) {
                                     sh "cmake  -G \"Unix Makefiles\" -B build"
@@ -97,7 +99,7 @@ pipeline {
                 }
                 stage('Test'){
                     steps {
-                        dir("${REPO}") {
+                        dir("${REPO}/${REPO}") {
                             withVenv {
                                 withTools(params.TOOLS_VERSION) {
                                     // junit 'tests/results.xml'
