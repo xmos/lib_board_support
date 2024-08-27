@@ -1,35 +1,57 @@
+:orphan:
+
+#################
 lib_board_support
-=================
+#################
 
-This repo contains board specific hardware configuration code for various XMOS evaluation kits. The
-API is broken down into 2 sections:
+:vendor: XMOS
+:version: 0.1.1
+:scope: General Use
+:description: Support library for XMOS development kits
+:category: General Purpose
+:keywords: I2C
+:devices: xcore.ai, xcore-200
 
-1. Boards: This includes subdirectories for each supported board
-2. Drivers: This includes sources for configuring peripheral devices which may be on 1 or more of the supported boards.
+Summary
+*******
 
-Usage
-*****
+``lib_board_support`` contains board specific hardware configuration code for various XMOS
+evaluation and development kits.
 
-This repo supports XCommon CMake. Simply add "lib_board_support" to an applications "APP_DEPENDENT_MODULES". The application
-must provide the xn file. The application must use the APIs for the specific board that it is using. To ensure that only the correct sources for the board in use get compiled in, it is necessary to set the preprocessor value `BOARD_SUPPORT_BOARD` to one of the available boards. This can be done in the app with the following snippet of cmake::
+Features
+********
 
-    set(APP_COMPILER_FLAGS 
-	    -DBOARD_SUPPORT_BOARD=XK_AUDIO_316_MC_AB  # Change value to select board, see table below for available boards
-	)
+  * Support for the following boards
+     * ``XK_EVK_XU316``
+     * ``XK_AUDIO_316_MC``
+     * ``XK_AUDIO_216_MC``
 
-Boards
-******
+Known Issues
+************
 
-The following boards are supported in this repo with interfaces provided in the languages shown in the table.
+  * None
 
-+--------------------+---------------------+
-| Board              | Supported Languages |
-+====================+=====================+
-|XK_EVK_XU316        | XC                  |
-+--------------------+---------------------+
-|XK_AUDIO_316_MC_AB  | XC                  |
-+--------------------+---------------------+
-|XK_AUDIO_216_MC_AB  | XC                  |
-+--------------------+---------------------+
+Required Tools
+**************
+
+  * XMOS XTC Tools: 15.3.0
+
+Required Libraries (dependencies)
+*********************************
+
+  * lib_i2c (www.github.com/xmos/lib_i2c)
+
+Related Application Notes
+*************************
+
+The following application notes use this library:
+
+  * `AN02016: Integrating Audio Weaver (AWE) Core into USB Audio <https://www.xmos.com/file/an02016>`_
+  * `AN02003: SPDIF/ADAT/I2S Receive to I2S Slave Bridge with ASRC <https://www.xmos.com/file/an02003>`_
+
+Support
+*******
+
+This package is supported by XMOS Ltd. Issues can be raised against the software at: http://www.xmos.com/support
 
 
