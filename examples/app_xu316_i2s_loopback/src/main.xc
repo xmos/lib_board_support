@@ -68,7 +68,7 @@ void i2s_loopback(server i2s_frame_callback_if i_i2s, client i2c_master_if i_i2c
 
 int main()
 {
-    interface i2c_master_if i_i2c[1];
+    interface i2c_master_if i_i2c[1]; // Cross tile interface
         
     par {
         on tile[0]: {

@@ -64,8 +64,10 @@ pipeline {
                                 ghcr.io/xmos/xmosdoc:$XMOSDOC_VERSION -v html latex"""
 
                             // Zip and archive doc files
-                            // zip dir: "doc/_build/", zipFile: "sw_pll_docs.zip"
-                            // archiveArtifacts artifacts: "sw_pll_docs.zip"
+                            sh "tree" // Debug
+                            zip dir: "doc/_build/html", zipFile: "${REPO}_docs_html.zip"
+                            archiveArtifacts artifacts: "${REPO}_docs_docs_html.zip"
+                            archiveArtifacts artifacts: "doc/_build/latex/${REPO}_docs_docs_html.zip"
                         }
                     }
                 }
