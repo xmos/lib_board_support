@@ -94,6 +94,11 @@ pipeline {
                     }
                 }
             }
+            post {
+                cleanup {
+                    xcoreCleanSandbox()
+                }
+            }
         }
     }
 }
