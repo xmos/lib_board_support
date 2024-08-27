@@ -47,6 +47,10 @@ pipeline {
                             installPipfile(false)
                             withVenv {
                                 withTools(params.TOOLS_VERSION) {
+                                    sh "git clone -b v1.2.1 git@github.com:xmos/infr_scripts_py"
+                                    sh "git clone -b v1.5.0 git@github.com:xmos/infr_apps"
+                                    sh "pip install -e ${WORKSPACE}/infr_scripts_py"
+                                    sh "pip install -e ${WORKSPACE}/infr_apps"
                                     // lib checks                                    
                                 }
                             }
@@ -64,7 +68,6 @@ pipeline {
                                 ghcr.io/xmos/xmosdoc:$XMOSDOC_VERSION -v html latex"""
 
                             // Zip and archive doc files
-                            sh "tree" // Debug
                             zip dir: "doc/_build/html", zipFile: "${REPO}_docs_html.zip"
                             archiveArtifacts artifacts: "${REPO}_docs_html.zip"
                             archiveArtifacts artifacts: "doc/_build/latex/${REPO}_*.pdf"
