@@ -44,6 +44,7 @@ void i2s_loopback(server i2s_frame_callback_if i_i2s, client i2c_master_if i_i2c
         case i_i2s.init(i2s_config_t &?i2s_config, tdm_config_t &?tdm_config):
             i2s_config.mode = I2S_MODE_I2S;
             i2s_config.mclk_bclk_ratio = (MASTER_CLOCK_FREQUENCY / (SAMPLE_FREQUENCY * CHANS_PER_FRAME * DATA_BITS));
+            xk_audio_316_mc_ab_AudioHwConfig(i_i2c, hw_config, SAMPLE_FREQUENCY, MASTER_CLOCK_FREQUENCY, 0, DATA_BITS, DATA_BITS);
             break;
 
         case i_i2s.receive(size_t n_chans, int32_t in_samps[n_chans]):
