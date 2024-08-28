@@ -64,7 +64,7 @@ pipeline {
                 stage('Docs') {
                     environment { XMOSDOC_VERSION = "v4.0" }
                     steps {
-                        dir("${REPO}/${REPO}") {
+                        dir("${REPO}") {
                             sh "docker pull ghcr.io/xmos/xmosdoc:$XMOSDOC_VERSION"
                             sh """docker run -u "\$(id -u):\$(id -g)" \
                                 --rm \
@@ -80,7 +80,7 @@ pipeline {
                 }
                 stage('Build'){
                     steps {
-                        dir("${REPO}/${REPO}") {
+                        dir("${REPO}") {
                             withVenv {
                                 withTools(params.TOOLS_VERSION) {
                                     sh "cmake  -G \"Unix Makefiles\" -B build"
@@ -95,9 +95,10 @@ pipeline {
                 }
                 stage('Test'){
                     steps {
-                        dir("${REPO}/${REPO}") {
+                        dir("${REPO}") {
                             withVenv {
                                 withTools(params.TOOLS_VERSION) {
+                                    // Stage currently empty as no specific tests yet
                                     // junit 'tests/results.xml'
                                 }
                             }
