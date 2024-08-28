@@ -26,7 +26,7 @@ pipeline {
     }
     environment {
         REPO = 'lib_board_support'
-        PYTHON_VERSION = "3.10.5"
+        PYTHON_VERSION = "3.7"
         VENV_DIRNAME = ".venv"
     }
 
@@ -38,28 +38,25 @@ pipeline {
             stages{
                 stage('Checkout and lib checks'){
                     steps {
-                        sh 'mkdir ${REPO}'
+                        println "Stage running on: ${env.NODE_NAME}"
+                        sh "git clone -b v1.2.1 git@github.com:xmos/infr_scripts_py"
+                        sh "git clone -b v1.6.0 git@github.com:xmos/infr_apps"
+
                         dir("${REPO}") {
+                            checkout scm
+                            createVenv()
                             withVenv {
-                                sh "git clone -b v1.2.1 git@github.com:xmos/infr_scripts_py"
-                                sh "git clone -b v1.6.0 git@github.com:xmos/infr_apps"
-                                sh "pip install -e infr_scripts_py"
-                                sh "pip install -e infr_apps"
+                                sh "pip install -e ../infr_scripts_py"
+                                sh "pip install -e ../infr_apps"
+                                sh "tree"                       
 
-                                sh "tree"
-
-                                sh 'mkdir ${REPO}'
-                                dir("${REPO}") {                            
-                                    // checkout repo
-                                    checkout scm
-                                    // installPipfile(false)
-                                    withTools(params.TOOLS_VERSION) {                            
-                                        withEnv(["REPO=${REPO}", "XMOS_ROOT=.."]) {
-                                            xcoreLibraryChecks("${REPO}", false)
-                                            junit "junit_lib.xml"
-                                        } // withEnv
-                                    } // withTools
-                                } // dir
+                                // installPipfile(false)
+                                withTools(params.TOOLS_VERSION) {                            
+                                    withEnv(["REPO=${REPO}", "XMOS_ROOT=.."]) {
+                                        xcoreLibraryChecks("${REPO}", false)
+                                        junit "junit_lib.xml"
+                                    } // withEnv
+                                } // withTools
                             } // Venv
                         } // dir
                     } // steps
