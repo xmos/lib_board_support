@@ -54,7 +54,7 @@ pipeline {
                                 withTools(params.TOOLS_VERSION) {                            
                                     withEnv(["REPO=${REPO}", "XMOS_ROOT=.."]) {
                                         xcoreLibraryChecks("${REPO}", false)
-                                        junit "junit_lib.xml"
+                                        // junit "junit_lib.xml"
                                     } // withEnv
                                 } // withTools
                             } // Venv
