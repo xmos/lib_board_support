@@ -74,14 +74,14 @@ int main()
     par {
         on tile[0]: {
             xk_audio_316_mc_ab_board_setup(hw_config); // Setup must be done on tile[0]
-            xk_audio_316_mc_ab_i2c_master(i_i2c);
+            xk_audio_316_mc_ab_i2c_master(i_i2c);      // Run I2C master server task to allow control from tile[1]
         }
 
         on tile[1]: {
             interface i2s_frame_callback_if i_i2s;
 
             par {
-                /* The application - loopback the I2S samples - note this is inlined so does not take a thread*/
+                // The application - loopback the I2S samples - note this is inlined so does not take a thread
                 [[distribute]] i2s_loopback(i_i2s, i_i2c[0]);
                 i2s_frame_master(i_i2s, p_dac, NUM_I2S_LINES, p_adc, NUM_I2S_LINES, DATA_BITS, p_bclk, p_lrclk, p_mclk, bclk);
             }
