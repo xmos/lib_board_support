@@ -26,7 +26,7 @@ pipeline {
     }
     environment {
         REPO = 'lib_board_support'
-        PYTHON_VERSION = "3.7"
+        PYTHON_VERSION = "3.10"
         VENV_DIRNAME = ".venv"
     }
 
