@@ -3,6 +3,13 @@
 /// Hardware setup APIs for the xk_audio_216_mc_ab
 #pragma once
 
+/**
+ * \addtogroup xk_audio_216_mc_ab xk_audio_216_mc_ab
+ *
+ * The common defines for using lib_board_support.
+ * @{
+ */
+
 typedef enum {
     /// Fixed mclk
     AUD_216_CLK_FIXED,
@@ -46,3 +53,5 @@ void xk_audio_216_mc_ab_AudioHwConfig(const xk_audio_216_mc_ab_config_t & config
                                       unsigned dsdMode,
                                       unsigned sampRes_DAC,
                                       unsigned sampRes_ADC);
+
+/**@}*/ // END: addtogroup xk_audio_216_mc_ab

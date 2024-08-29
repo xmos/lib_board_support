@@ -7,6 +7,14 @@
 
 #include <xccompat.h>
 
+/**
+ * \addtogroup xk_evk_xu316 xk_evk_xu316
+ *
+ * The common defines for using lib_board_support.
+ * @{
+ */
+
+
 typedef struct {
 
     /// initial mclk config used in AudioHwInit.
@@ -20,5 +28,7 @@ void xk_evk_xu316_AudioHwRemote(chanend c);
 void xk_evk_xu316_AudioHwInit(const xk_evk_xu316_config_t& config);
 void xk_evk_xu316_AudioHwConfig(unsigned samFreq, unsigned mClk, unsigned dsdMode,
     unsigned sampRes_DAC, unsigned sampRes_ADC);
+
+/**@}*/ // END: addtogroup xk_evk_xu316
 
 #endif // __XK_EVK_XU316_BOARD_H__

@@ -3,6 +3,13 @@
 /// Hardware setup APIs for the xk_audio_316_mc_ab
 #pragma once
 
+/**
+ * \addtogroup xk_audio_316_mc_ab xk_audio_316_mc_ab
+ *
+ * The common defines for using lib_board_support.
+ * @{
+ */
+
 #if __XC__
 
 #include "i2c.h"
@@ -11,12 +18,6 @@
 extern port p_scl;
 extern port p_sda;
 
-/**
- * \addtogroup xk_audio_316_mc_ab xk_audio_316_mc_ab
- *
- * The common defines for using lib_board_support.
- * @{
- */
 
 /// Start an i2s master thread which uses the DAC pins
 #define xk_audio_316_mc_ab_i2c_master(i2c) i2c_master((i2c), 1, p_scl, p_sda, 100)
@@ -56,7 +57,7 @@ void xk_audio_316_mc_ab_AudioHwInit(client interface i2c_master_if i2c, const xk
 
 void xk_audio_316_mc_ab_AudioHwConfig(client interface i2c_master_if i2c, const xk_audio_316_mc_ab_config_t& config, unsigned samFreq, unsigned mClk, unsigned dsdMode, unsigned sampRes_DAC, unsigned sampRes_ADC);
 
+#endif
+
 /**@}*/ // END: addtogroup xk_audio_316_mc_ab
 
-
-#endif

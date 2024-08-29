@@ -10,8 +10,8 @@ documentation:
   linkcheck_ignore_regex: ['.*an02003.*']
   cognidox_part_number: XM-
   doxygen_projects:
-  lib_board_support:
-    doxyfile_path: doc/Doxyfile.inc
+    lib_board_support:
+      doxyfile_path: doc/Doxyfile.inc
   pdfs:
     doc/rst/lib_board_support.rst:
       pdf_title: '{{title}}'
