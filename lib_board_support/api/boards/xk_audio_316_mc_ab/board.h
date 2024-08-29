@@ -4,13 +4,18 @@
 #pragma once
 
 #if __XC__
+#define BS_PORT port
+#else
+#include <xcore/port.h>
+#define BS_PORT port_t
+#endif
 
 #include <xccompat.h>
 #include "i2c.h"
 
 /* I2C interface ports */
-extern port p_scl;
-extern port p_sda;
+extern BS_PORT p_scl;
+extern BS_PORT p_sda;
 
 /// Start an i2s master thread which uses the DAC pins
 #define xk_audio_316_mc_ab_i2c_master(i2c) i2c_master((i2c), 1, p_scl, p_sda, 100)
@@ -49,5 +54,3 @@ void xk_audio_316_mc_ab_AudioHwInit(CLIENT_INTERFACE(i2c_master_if, i2c), const 
 
 
 void xk_audio_316_mc_ab_AudioHwConfig(CLIENT_INTERFACE(i2c_master_if, i2c), const REFERENCE_PARAM(xk_audio_316_mc_ab_config_t, config), unsigned samFreq, unsigned mClk, unsigned dsdMode, unsigned sampRes_DAC, unsigned sampRes_ADC);
-
-#endif
