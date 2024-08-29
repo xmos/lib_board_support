@@ -89,7 +89,7 @@ int main(void)
             interface i2s_frame_callback_if i_i2s;
 
             par {
-                // The application - loopback the I2S samples - note this is inlined so does not take a thread
+                // The application - loopback the I2S samples - note callbacks are inlined so does not take a thread
                 [[distribute]] i2s_loopback(i_i2s, i_i2c[0]);
 #if XMOS_I2S_MASTER
                 i2s_frame_master(i_i2s, p_dac, NUM_I2S_LINES, p_adc, NUM_I2S_LINES, DATA_BITS, p_bclk, p_lrclk, p_mclk, bclk);

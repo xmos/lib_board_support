@@ -26,7 +26,7 @@ All required dependencies will be downloaded by the build system if not already 
 
 The application binaries can be built using ``xmake``::
 
-    xmake -j -C build
+    xmake -C build
 
 To run the application use the following command::
 
@@ -45,7 +45,6 @@ Required tools and libraries
   * lib_i2c (www.github.com/xmos/lib_i2c)
   * lib_i2s (www.github.com/xmos/lib_i2s)
   * lib_sw_pll (www.github.com/xmos/lib_sw_pll)
-  * lib_logging (www.github.com/xmos/lib_logging)
   * lib_xassert (www.github.com/xmos/lib_xassert)
 
 
