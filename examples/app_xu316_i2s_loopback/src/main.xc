@@ -6,16 +6,24 @@
 #include "i2s.h"
 #include "xk_audio_316_mc_ab/board.h"
 
-#define SAMPLE_FREQUENCY        (48000)
-#define MASTER_CLOCK_FREQUENCY  (24576000)
-#define DATA_BITS               (32)
-#define CHANS_PER_FRAME         (2)
-#define NUM_I2S_LINES           (4)
+#ifndef XMOS_I2S_MASTER
+#define XMOS_I2S_MASTER         1
+#endif
+#define SAMPLE_FREQUENCY        48000
+#define MASTER_CLOCK_FREQUENCY  24576000
+#define DATA_BITS               32
+#define CHANS_PER_FRAME         2
+#define NUM_I2S_LINES           4
 
 // I2S resources
 on tile[1]: in port p_mclk =                                PORT_MCLK_IN;
+#if XMOS_I2S_MASTER
 on tile[1]: buffered out port:32 p_lrclk =                  PORT_I2S_LRCLK;
 on tile[1]: out port p_bclk =                               PORT_I2S_BCLK;
+#else
+on tile[1]: buffered in port:32 p_lrclk =                   PORT_I2S_LRCLK;
+on tile[1]: in port p_bclk =                                PORT_I2S_BCLK;
+#endif
 on tile[1]: buffered out port:32 p_dac[NUM_I2S_LINES] =     {PORT_I2S_DAC0, PORT_I2S_DAC1, PORT_I2S_DAC2, PORT_I2S_DAC3};
 on tile[1]: buffered in port:32 p_adc[NUM_I2S_LINES] =      {PORT_I2S_ADC0 ,PORT_I2S_ADC1, PORT_I2S_ADC2, PORT_I2S_ADC3};
 on tile[1]: clock bclk =                                    XS1_CLKBLK_1;
@@ -23,10 +31,10 @@ on tile[1]: clock bclk =                                    XS1_CLKBLK_1;
 
 // Board configuration from lib_board_support
 static const xk_audio_316_mc_ab_config_t hw_config = {
-        CLK_FIXED,          // clk_mode. Drive a fixed MCLK output
-        0,                  // dac_is_clk slave
+        CLK_FIXED,              // clk_mode. Drive a fixed MCLK output
+        !XMOS_I2S_MASTER,       // 1 = dac_is_clock_master
         MASTER_CLOCK_FREQUENCY,
-        0,                  // pll_sync_freq (unused when driving fixed clock)
+        0,                      // pll_sync_freq (unused when driving fixed clock)
         AUD_316_PCM_FORMAT_I2S,
         DATA_BITS,
         CHANS_PER_FRAME
@@ -67,7 +75,7 @@ void i2s_loopback(server i2s_frame_callback_if i_i2s, client i2c_master_if i_i2c
 }
 
 
-int main()
+int main(void)
 {
     interface i2c_master_if i_i2c[1]; // Cross tile interface
         
@@ -83,7 +91,11 @@ int main()
             par {
                 // The application - loopback the I2S samples - note this is inlined so does not take a thread
                 [[distribute]] i2s_loopback(i_i2s, i_i2c[0]);
+#if XMOS_I2S_MASTER
                 i2s_frame_master(i_i2s, p_dac, NUM_I2S_LINES, p_adc, NUM_I2S_LINES, DATA_BITS, p_bclk, p_lrclk, p_mclk, bclk);
+#else
+                i2s_frame_slave(i_i2s, p_dac, NUM_I2S_LINES, p_adc, NUM_I2S_LINES, DATA_BITS, p_bclk, p_lrclk, bclk);
+#endif
             }
         }
     }
