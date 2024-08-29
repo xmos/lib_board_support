@@ -21,7 +21,7 @@ Required tools and libraries
 Required hardware
 .................
 
-The hardware targeted is the `XK-AUDIO-XU316-MC board <https://www.xmos.com/download/xcore.ai-explorer-board-v2.0-hardware-manual(5).pdf>`_.
+The hardware targeted is the `XCORE-AI-EXPLORER board v2 <https://www.xmos.com/download/xcore.ai-explorer-board-v2.0-hardware-manual(5).pdf>`_.
 
 Prerequisites
 ..............
