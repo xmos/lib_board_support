@@ -2,13 +2,16 @@
 lib_name: lib_board_support
 project: '{{lib_name}}'
 title: '{{lib_name}}: XMOS board support'
-version: 0.1.1
+version: 1.0.0
 
 documentation:
   exclude_patterns_path: doc/exclude_patterns.inc
   root_doc: doc/rst/lib_board_support.rst
   linkcheck_ignore_regex: ['.*an02003.*']
   cognidox_part_number: XM-
+  doxygen_projects:
+  lib_board_support:
+    doxyfile_path: doc/Doxyfile.inc
   pdfs:
     doc/rst/lib_board_support.rst:
       pdf_title: '{{title}}'
