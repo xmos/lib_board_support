@@ -17,7 +17,7 @@ typedef struct {
 //// XUA hw setup convenience APIs
 
 void xk_evk_xu316_AudioHwRemote(chanend c);
-void xk_evk_xu316_AudioHwInit(const xk_evk_xu316_config_t& config);
+void xk_evk_xu316_AudioHwInit(const REFERENCE_PARAM(xk_evk_xu316_config_t, config));
 void xk_evk_xu316_AudioHwConfig(unsigned samFreq, unsigned mClk, unsigned dsdMode,
     unsigned sampRes_DAC, unsigned sampRes_ADC);
 

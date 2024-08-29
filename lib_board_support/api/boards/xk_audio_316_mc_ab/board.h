@@ -5,7 +5,8 @@
 
 #if __XC__
 
-#include <i2c.h>
+#include <xccompat.h>
+#include "i2c.h"
 
 /* I2C interface ports */
 extern port p_scl;
@@ -42,11 +43,11 @@ typedef struct {
     unsigned i2s_chans_per_frame;
 } xk_audio_316_mc_ab_config_t;
 
-void xk_audio_316_mc_ab_board_setup(const xk_audio_316_mc_ab_config_t &config);
+void xk_audio_316_mc_ab_board_setup(const REFERENCE_PARAM(xk_audio_316_mc_ab_config_t, config));
 
-void xk_audio_316_mc_ab_AudioHwInit(client interface i2c_master_if i2c, const xk_audio_316_mc_ab_config_t& config);
+void xk_audio_316_mc_ab_AudioHwInit(CLIENT_INTERFACE(i2c_master_if, i2c), const REFERENCE_PARAM(xk_audio_316_mc_ab_config_t, config));
 
 
-void xk_audio_316_mc_ab_AudioHwConfig(client interface i2c_master_if i2c, const xk_audio_316_mc_ab_config_t& config, unsigned samFreq, unsigned mClk, unsigned dsdMode, unsigned sampRes_DAC, unsigned sampRes_ADC);
+void xk_audio_316_mc_ab_AudioHwConfig(CLIENT_INTERFACE(i2c_master_if, i2c), const REFERENCE_PARAM(xk_audio_316_mc_ab_config_t, config), unsigned samFreq, unsigned mClk, unsigned dsdMode, unsigned sampRes_DAC, unsigned sampRes_ADC);
 
 #endif
