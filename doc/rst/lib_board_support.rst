@@ -44,7 +44,7 @@ The following boards are supported in this repo with interfaces provided in the 
 +====================+=====================+
 |XK_EVK_XU316        | XC / C              |
 +--------------------+---------------------+
-|XK_AUDIO_316_MC_AB  | XC                  |
+|XK_AUDIO_316_MC_AB  | XC / C              |
 +--------------------+---------------------+
 |XK_AUDIO_216_MC_AB  | XC / C              |
 +--------------------+---------------------+
