@@ -14,7 +14,7 @@ static const xk_evk_xu316_config_t hw_config = {
 
 void tile_0_main(chanend_t c){
     printf("Hello from tile[0]\n");
-    xk_evk_xu316_AudioHwRemote(c);
+    xk_evk_xu316_AudioHwRemote(c); // Startup remote I2C master server task
     printf("Bye from tile[0]\n");
 }
 

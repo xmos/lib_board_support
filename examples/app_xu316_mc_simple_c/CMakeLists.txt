@@ -13,6 +13,6 @@ set(APP_COMPILER_FLAGS              -Os
 
 
 
-set(XMOS_SANDBOX_DIR            ${CMAKE_CURRENT_LIST_DIR}/../../..)
+set(XMOS_SANDBOX_DIR                ${CMAKE_CURRENT_LIST_DIR}/../../..)
 
 XMOS_REGISTER_APP()
