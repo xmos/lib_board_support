@@ -74,7 +74,7 @@ pipeline {
                             // Zip and archive doc files
                             zip dir: "doc/_build/html", zipFile: "${REPO}_docs_html.zip"
                             archiveArtifacts artifacts: "${REPO}_docs_html.zip"
-                            archiveArtifacts artifacts: "doc/_build/latex/${REPO}_*.pdf"
+                            archiveArtifacts artifacts: "doc/_build/pdf/${REPO}_*.pdf"
                         }
                     }
                 }
