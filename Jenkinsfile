@@ -62,7 +62,7 @@ pipeline {
                     } // steps
                 }
                 stage('Docs') {
-                    environment { XMOSDOC_VERSION = "v4.0" }
+                    environment { XMOSDOC_VERSION = "v5.0" }
                     steps {
                         dir("${REPO}") {
                             sh "docker pull ghcr.io/xmos/xmosdoc:$XMOSDOC_VERSION"
@@ -74,7 +74,7 @@ pipeline {
                             // Zip and archive doc files
                             zip dir: "doc/_build/html", zipFile: "${REPO}_docs_html.zip"
                             archiveArtifacts artifacts: "${REPO}_docs_html.zip"
-                            archiveArtifacts artifacts: "doc/_build/latex/${REPO}_*.pdf"
+                            archiveArtifacts artifacts: "doc/_build/pdf/${REPO}_*.pdf"
                         }
                     }
                 }
@@ -99,7 +99,6 @@ pipeline {
                             withVenv {
                                 withTools(params.TOOLS_VERSION) {
                                     // Stage currently empty as no specific tests yet
-                                    // junit 'tests/results.xml'
                                 }
                             }
                         }
@@ -107,6 +106,11 @@ pipeline {
                 }
             }
             post {
+                always{
+                    dir("${REPO}/tests") {
+                        // junit 'results.xml'
+                    }
+                }
                 cleanup {
                     xcoreCleanSandbox()
                 }

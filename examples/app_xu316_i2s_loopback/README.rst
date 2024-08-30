@@ -9,13 +9,13 @@ Overview
 
 This example contains a simple application and demonstrates how to use this library to abstract away the board hardware setup code.
 
-The application supports a simple I2S digital loopback which plays the samples received on all 8 ADC channels back out on the 8 DAC channels.
-All of the I2S configuration is set in the defines at the top of ``main.xc`` which allows different sample rates, master clock frequencies and number of data bits etc. to be set before compilation. Sample rates of 44.1 kHz to 192 kHz have been tested.
+The application supports a simple |I2S| digital loopback which plays the samples received on all 8 ADC channels back out on the 8 DAC channels.
+All of the |I2S| configuration is set in the defines at the top of ``main.xc`` which allows different sample rates, master clock frequencies and number of data bits etc. to be set before compilation. Sample rates of 44.1 kHz to 192 kHz have been tested.
 
 Two build configurations are included:
 
-    - XMOS_MASTER - This configures the ADCs and DACs to I2S slave and the xcore.ai device drives the I2S clocks. The on-chip application PLL is configured to drive the master clock to the mixed signal devices.
-    - XMOS_SLAVES - This configures one the DACs to I2S master and the remaining DAC, all ADCs and the xcore.ai device to I2S slave. The on-chip application PLL is configured to drive the master clock to the mixed signal devices.
+    - XMOS_MASTER - This configures the ADCs and DACs to |I2S| slave and the xcore.ai device drives the |I2S| clocks. The on-chip application PLL is configured to drive the master clock to the mixed signal devices.
+    - XMOS_SLAVE - This configures one the DACs to |I2S| master and the remaining DAC, all ADCs and the xcore.ai device to |I2S| slave. The on-chip application PLL is configured to drive the master clock to the mixed signal devices.
 
 
 To build and run the example, run the following from an XTC tools terminal::
@@ -30,7 +30,7 @@ The application binaries can be built using ``xmake``::
 
 To run the application use the following command::
 
-    xrun bin/XMOS_MASTER/app_xu316_i2s_loopback_XMOS_MASTER.xe 
+    xrun bin/XMOS_MASTER/app_xu316_i2s_loopback_XMOS_MASTER.xe
 
 or::
 
@@ -51,7 +51,7 @@ Required tools and libraries
 Required hardware
 .................
 
-The hardware targeted is the `XK-AUDIO-XU316-MC board <https://www.xmos.com/download/XCORE_AI-Multichannel-Audio-Platform-1V1-Hardware-Manual(1V1).pdf>`_ although thanks to this library, porting it to other platforms supported by ``lib_board_support`` should be trivial.
+The hardware targeted is the `XK-AUDIO-316-MC board <https://www.xmos.com/download/XCORE_AI-Multichannel-Audio-Platform-1V1-Hardware-Manual(1V1).pdf>`_ although thanks to this library, porting it to other platforms supported by ``lib_board_support`` should be trivial.
 
 Prerequisites
 ..............
