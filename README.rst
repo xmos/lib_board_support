@@ -49,6 +49,8 @@ The following application notes use this library:
   * `AN02016: Integrating Audio Weaver (AWE) Core into USB Audio <https://www.xmos.com/file/an02016>`_
   * `AN02003: SPDIF/ADAT/I2S Receive to I2S Slave Bridge with ASRC <https://www.xmos.com/file/an02003>`_
 
+A number of simple examples are also included in this library under the `examples` directory.
+
 Support
 *******
 
