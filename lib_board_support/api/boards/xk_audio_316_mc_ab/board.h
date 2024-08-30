@@ -49,7 +49,7 @@ typedef enum {
 /** @struct xk_audio_316_mc_ab_config_t
  *  @brief Configuration struct type for setting the hardware profile.
  *  @var xk_audio_316_mc_ab_config_t::clk_mode
- *  See xk_audio_316_mc_ab_mclk_modes_t for available options.
+ *  See xk_audio_316_mc_ab_mclk_modes_t for available clock mode options.
  *  @var xk_audio_316_mc_ab_config_t::dac_is_clock_master
  *  Boolean setting for whether the DAC or the xcore.ai is I2S clock master. Set to 0 to make the xcore.ai master.
  *  @var xk_audio_316_mc_ab_config_t::default_mclk
@@ -92,16 +92,16 @@ void xk_audio_316_mc_ab_board_setup(const REFERENCE_PARAM(xk_audio_316_mc_ab_con
 
 /** Initialises the audio hardware ready for a configuration. Must be called once *after* xk_audio_316_mc_ab_board_setup().
  *
- *  \param   i2c        client side of I2C master interface connection.
- *  \param   config     Reference to the xk_audio_316_mc_ab_config_t configuration struct.
+ *  \param   i2c        Client side of I2C master interface connection.
+ *  \param   config     Reference to the xk_audio_316_mc_ab_config_t hardware configuration struct.
  */
 void xk_audio_316_mc_ab_AudioHwInit(CLIENT_INTERFACE(i2c_master_if, i2c), const REFERENCE_PARAM(xk_audio_316_mc_ab_config_t, config));
 
 
 /** Configures the audio hardware following initialisation. This is typically called each time a sample rate or stream format change occurs.
  *
- *  \param   i2c            client side of I2C master interface connection.
- *  \param   config         Reference to the xk_audio_316_mc_ab_config_t configuration struct.
+ *  \param   i2c            Client side of I2C master interface connection.
+ *  \param   config         Reference to the xk_audio_316_mc_ab_config_t hardware configuration struct.
  *  \param   samFreq        The sample rate in Hertz.
  *  \param   mClk           The master clock rate in Hertz.
  *  \param   dsdMode        Controls whether the DAC is to be set into DSD mode (1) or PCM mode (0).
@@ -119,7 +119,7 @@ void xk_audio_316_mc_ab_AudioHwConfig(  CLIENT_INTERFACE(i2c_master_if, i2c),
 /** Causes the tile[0] to exit, freeing up a thread. Must be called from tile[1]. Once called,
  * no more HW config calls from tile[1] will be supported.
  *
- *  \param   config     Reference to the xk_audio_316_mc_ab_config_t configuration struct.
+ *  \param   i2c     Client side of I2C master interface connection.
  */
 void xk_audio_316_mc_ab_i2c_master_exit(CLIENT_INTERFACE(i2c_master_if, i2c));
 
