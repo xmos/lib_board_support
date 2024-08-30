@@ -3,6 +3,8 @@
 /// Hardware setup APIs for the xk_audio_216_mc_ab
 #pragma once
 
+#include <xccompat.h>
+
 /**
  * \addtogroup xk_audio_216_mc_ab xk_audio_216_mc_ab
  *
@@ -46,8 +48,8 @@ typedef struct {
 } xk_audio_216_mc_ab_config_t;
 
 //////// Convenience APIs for use with lib_xua
-void xk_audio_216_mc_ab_AudioHwInit(const xk_audio_216_mc_ab_config_t & config);
-void xk_audio_216_mc_ab_AudioHwConfig(const xk_audio_216_mc_ab_config_t & config,
+void xk_audio_216_mc_ab_AudioHwInit(chanend c, const REFERENCE_PARAM(xk_audio_216_mc_ab_config_t, config));
+void xk_audio_216_mc_ab_AudioHwConfig(const REFERENCE_PARAM(xk_audio_216_mc_ab_config_t, config),
                                       unsigned samFreq,
                                       unsigned mClk,
                                       unsigned dsdMode,

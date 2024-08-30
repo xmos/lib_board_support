@@ -10,20 +10,23 @@
  * @{
  */
 
-#if defined(__XC__) || defined(__DOXYGEN__)
+#include "i2c.h"
 
+
+#if __XC__
+#define BS_PORT port
+#else
+#include <xcore/port.h>
+#define BS_PORT port_t
+#endif
+
+#include <xccompat.h>
 #include "i2c.h"
 
 /* I2C interface ports */
-extern port p_scl;
-extern port p_sda;
+extern BS_PORT p_scl;
+extern BS_PORT p_sda;
 
-
-/** This define is a specialised alias of the I2C master task and provides the remote
- * I2C master running on a different tile. For this hardware this task needs to be run
- * on tile[0].
- */
- #define xk_audio_316_mc_ab_i2c_master(i2c) i2c_master((i2c), 1, p_scl, p_sda, 100)
 
 /** Type of clock to be instantiated. This may be a fixed clock using the application PLL,
  * an adjustable clock using the CS2100 external PLL or and adjustable clock using application
@@ -72,19 +75,27 @@ typedef struct {
     unsigned i2s_chans_per_frame;
 } xk_audio_316_mc_ab_config_t;
 
+
+/** Starts an I2C master task on. Must be started from tile[0] *after* xk_audio_316_mc_ab_board_setup() and *before* and tile[1] HW calls.
+ *
+ *  \param   i2c        client side of I2C master interface connection.
+ *  \param   config     Reference to the xk_audio_316_mc_ab_config_t configuration struct.
+ */
+void xk_audio_316_mc_ab_i2c_master(SERVER_INTERFACE(i2c_master_if, i2c[1]));
+
 /** Performs the required port operations to enable and the audio hardware on the platform. Must be called from tile[0]
  * and *before* xk_audio_316_mc_ab_AudioHwInit() is called.
  *
  *  \param   config     Reference to the xk_audio_316_mc_ab_config_t configuration struct.
  */
-void xk_audio_316_mc_ab_board_setup(const xk_audio_316_mc_ab_config_t &config);
+void xk_audio_316_mc_ab_board_setup(const REFERENCE_PARAM(xk_audio_316_mc_ab_config_t, config));
 
 /** Initialises the audio hardware ready for a configuration. Must be called once *after* xk_audio_316_mc_ab_board_setup().
  *
  *  \param   i2c        client side of I2C master interface connection.
  *  \param   config     Reference to the xk_audio_316_mc_ab_config_t configuration struct.
  */
-void xk_audio_316_mc_ab_AudioHwInit(client interface i2c_master_if i2c, const xk_audio_316_mc_ab_config_t& config);
+void xk_audio_316_mc_ab_AudioHwInit(CLIENT_INTERFACE(i2c_master_if, i2c), const REFERENCE_PARAM(xk_audio_316_mc_ab_config_t, config));
 
 
 /** Configures the audio hardware following initialisation. This is typically called each time a sample rate or stream format change occurs.
@@ -97,15 +108,21 @@ void xk_audio_316_mc_ab_AudioHwInit(client interface i2c_master_if i2c, const xk
  *  \param   sampRes_DAC    The sample resolution of the DAC output in bits. Typically 16, 24 or 32.
  *  \param   sampRes_ADC    The sample resolution of the ADC input in bits. Typically 16, 24 or 32.
  */
-void xk_audio_316_mc_ab_AudioHwConfig(  client interface i2c_master_if i2c,
-                                        const xk_audio_316_mc_ab_config_t& config,
+void xk_audio_316_mc_ab_AudioHwConfig(  CLIENT_INTERFACE(i2c_master_if, i2c),
+                                        const REFERENCE_PARAM(xk_audio_316_mc_ab_config_t, config),
                                         unsigned samFreq,
                                         unsigned mClk,
                                         unsigned dsdMode,
                                         unsigned sampRes_DAC,
                                         unsigned sampRes_ADC);
 
-#endif
+/** Causes the tile[0] to exit, freeing up a thread. Must be called from tile[1]. Once called,
+ * no more HW config calls from tile[1] will be supported.
+ *
+ *  \param   config     Reference to the xk_audio_316_mc_ab_config_t configuration struct.
+ */
+void xk_audio_316_mc_ab_i2c_master_exit(CLIENT_INTERFACE(i2c_master_if, i2c));
+
 
 /**@}*/ // END: addtogroup xk_audio_316_mc_ab
 

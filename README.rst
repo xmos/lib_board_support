@@ -5,7 +5,7 @@ lib_board_support
 #################
 
 :vendor: XMOS
-:version: 0.1.1
+:version: 1.0.0
 :scope: General Use
 :description: Support library for XMOS development kits
 :category: General Purpose
@@ -48,6 +48,8 @@ The following application notes use this library:
 
   * `AN02016: Integrating Audio Weaver (AWE) Core into USB Audio <https://www.xmos.com/file/an02016>`_
   * `AN02003: SPDIF/ADAT/I2S Receive to I2S Slave Bridge with ASRC <https://www.xmos.com/file/an02003>`_
+
+A number of simple examples are also included in this library under the `examples` directory.
 
 Support
 *******
