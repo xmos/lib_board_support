@@ -14,18 +14,18 @@
 
 
 #if __XC__
-#define BS_PORT port
+#define BS_PORT_T port
 #else
 #include <xcore/port.h>
-#define BS_PORT port_t
+#define BS_PORT_T port_t
 #endif
 
 #include <xccompat.h>
 #include "i2c.h"
 
-/* I2C interface ports */
-extern BS_PORT p_scl;
-extern BS_PORT p_sda;
+/** I2C interface ports */
+extern BS_PORT_T p_scl;
+extern BS_PORT_T p_sda;
 
 
 /** Type of clock to be instantiated. This may be a fixed clock using the application PLL,
@@ -117,7 +117,8 @@ void xk_audio_316_mc_ab_AudioHwConfig(  CLIENT_INTERFACE(i2c_master_if, i2c),
                                         unsigned sampRes_ADC);
 
 /** Causes the tile[0] to exit, freeing up a thread. Must be called from tile[1]. Once called,
- * no more HW config calls from tile[1] will be supported.
+ * HW config calls from tile[1] will block forever. It is possible to re-start xk_audio_316_mc_ab_i2c_master()
+ * on tile[0] if needed to re-enable this service.
  *
  *  \param   i2c     Client side of I2C master interface connection.
  */

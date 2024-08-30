@@ -42,7 +42,7 @@ typedef enum {
  *  @var xk_audio_216_mc_ab_config_t::clk_mode
  *  See xk_audio_216_mc_ab_clk_mode_t for clock mode available options.
  *  @var xk_audio_216_mc_ab_config_t::codec_is_clk_master
- *  Boolean setting for whether the DAC or the xcore.ai is I2S clock master. Set to 0 to make the xcore.ai master.
+ *  Boolean setting for whether the DAC or the xcore-200 is I2S clock master. Set to 0 to make the xcore-200 master.
  *  @var xk_audio_216_mc_ab_config_t::usb_sel
  *  USB port slection - see xk_audio_216_mc_ab_usb_sel_t for options.
  *  @var xk_audio_216_mc_ab_config_t::pll_sync_freq
