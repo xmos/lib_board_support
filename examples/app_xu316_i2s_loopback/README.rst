@@ -15,7 +15,7 @@ All of the |I2S| configuration is set in the defines at the top of ``main.xc`` w
 Two build configurations are included:
 
     - XMOS_MASTER - This configures the ADCs and DACs to |I2S| slave and the xcore.ai device drives the |I2S| clocks. The on-chip application PLL is configured to drive the master clock to the mixed signal devices.
-    - XMOS_SLAVES - This configures one the DACs to |I2S| master and the remaining DAC, all ADCs and the xcore.ai device to |I2S| slave. The on-chip application PLL is configured to drive the master clock to the mixed signal devices.
+    - XMOS_SLAVE - This configures one the DACs to |I2S| master and the remaining DAC, all ADCs and the xcore.ai device to |I2S| slave. The on-chip application PLL is configured to drive the master clock to the mixed signal devices.
 
 
 To build and run the example, run the following from an XTC tools terminal::
@@ -30,7 +30,7 @@ The application binaries can be built using ``xmake``::
 
 To run the application use the following command::
 
-    xrun bin/XMOS_MASTER/app_xu316_i2s_loopback_XMOS_MASTER.xe 
+    xrun bin/XMOS_MASTER/app_xu316_i2s_loopback_XMOS_MASTER.xe
 
 or::
 
@@ -51,7 +51,7 @@ Required tools and libraries
 Required hardware
 .................
 
-The hardware targeted is the `XK-AUDIO-316-MC board <hhttps://www.xmos.com/download/XCORE_AI-Multichannel-Audio-Platform-1V1-Hardware-Manual(1V1).pdf>`_ although thanks to this library, porting it to other platforms supported by ``lib_board_support`` should be trivial.
+The hardware targeted is the `XK-AUDIO-316-MC board <https://www.xmos.com/download/XCORE_AI-Multichannel-Audio-Platform-1V1-Hardware-Manual(1V1).pdf>`_ although thanks to this library, porting it to other platforms supported by ``lib_board_support`` should be trivial.
 
 Prerequisites
 ..............

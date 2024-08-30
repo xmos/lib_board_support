@@ -4,15 +4,18 @@
 #pragma once
 
 #if __XC__
+#define BS_PORT port
+#else
+#include <xcore/port.h>
+#define BS_PORT port_t
+#endif
 
-#include <i2c.h>
+#include <xccompat.h>
+#include "i2c.h"
 
 /* I2C interface ports */
-extern port p_scl;
-extern port p_sda;
-
-/// Start an i2s master thread which uses the DAC pins
-#define xk_audio_316_mc_ab_i2c_master(i2c) i2c_master((i2c), 1, p_scl, p_sda, 100)
+extern BS_PORT p_scl;
+extern BS_PORT p_sda;
 
 
 typedef enum {
@@ -42,11 +45,14 @@ typedef struct {
     unsigned i2s_chans_per_frame;
 } xk_audio_316_mc_ab_config_t;
 
-void xk_audio_316_mc_ab_board_setup(const xk_audio_316_mc_ab_config_t &config);
+/// Start an i2s master thread which uses the DAC pins
+void xk_audio_316_mc_ab_i2c_master(SERVER_INTERFACE(i2c_master_if, i2c[1]));
 
-void xk_audio_316_mc_ab_AudioHwInit(client interface i2c_master_if i2c, const xk_audio_316_mc_ab_config_t& config);
+void xk_audio_316_mc_ab_board_setup(const REFERENCE_PARAM(xk_audio_316_mc_ab_config_t, config));
+
+void xk_audio_316_mc_ab_AudioHwInit(CLIENT_INTERFACE(i2c_master_if, i2c), const REFERENCE_PARAM(xk_audio_316_mc_ab_config_t, config));
 
 
-void xk_audio_316_mc_ab_AudioHwConfig(client interface i2c_master_if i2c, const xk_audio_316_mc_ab_config_t& config, unsigned samFreq, unsigned mClk, unsigned dsdMode, unsigned sampRes_DAC, unsigned sampRes_ADC);
+void xk_audio_316_mc_ab_AudioHwConfig(CLIENT_INTERFACE(i2c_master_if, i2c), const REFERENCE_PARAM(xk_audio_316_mc_ab_config_t, config), unsigned samFreq, unsigned mClk, unsigned dsdMode, unsigned sampRes_DAC, unsigned sampRes_ADC);
 
-#endif
+void xk_audio_316_mc_ab_i2c_master_exit(CLIENT_INTERFACE(i2c_master_if, i2c));
