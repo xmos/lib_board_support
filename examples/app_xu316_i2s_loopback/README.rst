@@ -51,7 +51,7 @@ Required tools and libraries
 Required hardware
 .................
 
-The hardware targeted is the `XK-AUDIO-XU316-MC board <hhttps://www.xmos.com/download/XCORE_AI-Multichannel-Audio-Platform-1V1-Hardware-Manual(1V1).pdf>`_ although thanks to this library, porting it to other platforms supported by ``lib_board_support`` should be trivial.
+The hardware targeted is the `XK-AUDIO-316-MC board <hhttps://www.xmos.com/download/XCORE_AI-Multichannel-Audio-Platform-1V1-Hardware-Manual(1V1).pdf>`_ although thanks to this library, porting it to other platforms supported by ``lib_board_support`` should be trivial.
 
 Prerequisites
 ..............
