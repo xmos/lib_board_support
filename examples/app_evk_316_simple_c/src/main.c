@@ -7,7 +7,6 @@
 #include <xcore/channel.h>
 #include "xk_evk_xu316/board.h"
 #include "xk_audio_216_mc_ab/board.h" // Not needed by this example application. This is just here to test inclusion from C.
-#include "xk_audio_316_mc_ab/board.h" // Not needed by this example application. This is just here to test inclusion from C.
 
 // Board configuration from lib_board_support
 static const xk_evk_xu316_config_t hw_config = {

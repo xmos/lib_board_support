@@ -58,6 +58,15 @@ void xk_audio_316_mc_ab_board_setup(const xk_audio_316_mc_ab_config_t &config)
     delay_milliseconds(10);
 }
 
+void xk_audio_316_mc_ab_i2c_master(server interface i2c_master_if i2c)
+{
+    i2c_master(&i2c, 1, p_scl, p_sda, 100);
+}
+
+void xk_audio_316_mc_ab_i2c_master_exit(i2c_cli i2c){
+    i2c.shutdown();
+}
+
 /* Working around not being able to extend an unsafe interface (Bugzilla #18670)*/
 static i2c_regop_res_t i2c_reg_write(i2c_cli i2c, uint8_t device_addr, uint8_t reg, uint8_t data)
 {

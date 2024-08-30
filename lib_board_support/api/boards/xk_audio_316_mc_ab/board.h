@@ -17,9 +17,6 @@
 extern BS_PORT p_scl;
 extern BS_PORT p_sda;
 
-/// Start an i2s master thread which uses the DAC pins
-#define xk_audio_316_mc_ab_i2c_master(i2c) i2c_master((i2c), 1, p_scl, p_sda, 100)
-
 
 typedef enum {
     CLK_FIXED,
@@ -48,9 +45,14 @@ typedef struct {
     unsigned i2s_chans_per_frame;
 } xk_audio_316_mc_ab_config_t;
 
+/// Start an i2s master thread which uses the DAC pins
+void xk_audio_316_mc_ab_i2c_master(SERVER_INTERFACE(i2c_master_if, i2c));
+
 void xk_audio_316_mc_ab_board_setup(const REFERENCE_PARAM(xk_audio_316_mc_ab_config_t, config));
 
 void xk_audio_316_mc_ab_AudioHwInit(CLIENT_INTERFACE(i2c_master_if, i2c), const REFERENCE_PARAM(xk_audio_316_mc_ab_config_t, config));
 
 
 void xk_audio_316_mc_ab_AudioHwConfig(CLIENT_INTERFACE(i2c_master_if, i2c), const REFERENCE_PARAM(xk_audio_316_mc_ab_config_t, config), unsigned samFreq, unsigned mClk, unsigned dsdMode, unsigned sampRes_DAC, unsigned sampRes_ADC);
+
+void xk_audio_316_mc_ab_i2c_master_exit(CLIENT_INTERFACE(i2c_master_if, i2c));
