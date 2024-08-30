@@ -46,7 +46,7 @@ typedef struct {
 } xk_audio_316_mc_ab_config_t;
 
 /// Start an i2s master thread which uses the DAC pins
-void xk_audio_316_mc_ab_i2c_master(SERVER_INTERFACE(i2c_master_if, i2c));
+void xk_audio_316_mc_ab_i2c_master(SERVER_INTERFACE(i2c_master_if, i2c[1]));
 
 void xk_audio_316_mc_ab_board_setup(const REFERENCE_PARAM(xk_audio_316_mc_ab_config_t, config));
 

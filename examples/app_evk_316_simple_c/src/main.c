@@ -1,9 +1,7 @@
 // Copyright 2024 XMOS LIMITED.
 // This Software is subject to the terms of the XMOS Public Licence: Version 1.
 
-#include <platform.h>
 #include <stdio.h>
-#include <xs1.h>
 #include <xcore/channel.h>
 #include "xk_evk_xu316/board.h"
 #include "xk_audio_216_mc_ab/board.h" // Not needed by this example application. This is just here to test inclusion from C.
