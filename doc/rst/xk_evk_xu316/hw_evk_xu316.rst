@@ -13,7 +13,7 @@ from `XMOS`.
 
 The XK-EVK-XU316  allows testing in multiple application scenarios and provides a good general software development
 board for simple tests and demos. The XK-EVK-XU316 comprises an `xCORE.ai` processor with a set of I/O devices and 
-connectors arranged around it, as shown in ::ref:`hw_evk_xu316_block_diagram`. 
+connectors arranged around it, as shown in :ref:`hw_evk_xu316_block_diagram`. 
 
 .. _hw_evk_xu316_block_diagram:
 .. figure:: xk_evk_xu316_block_diagram.*
