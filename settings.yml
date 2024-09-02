@@ -6,6 +6,7 @@ version: 1.0.0
 
 documentation:
   exclude_patterns_path: doc/exclude_patterns.inc
+  substitutions_path: doc/substitutions.inc
   root_doc: doc/rst/lib_board_support.rst
   linkcheck_ignore_regex: ['.*an02003.*']
   cognidox_part_number: XM-
