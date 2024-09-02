@@ -5,7 +5,7 @@ The `XMOS xCORE.ai Evaluation Kit` (XK-EVK-XU316) is an evaluation board for the
 from `XMOS`.
 
 .. _hw_evk_xu316_image:
-.. figure:: images/xk_evk_xu316.*
+.. figure:: xk_evk_xu316.*
     :scale: 50%
     :align: center
 
@@ -16,7 +16,7 @@ board for simple tests and demos. The XK-EVK-XU316 comprises an `xCORE.ai` proce
 connectors arranged around it, as shown in ::ref:`hw_evk_xu316_block_diagram`. 
 
 .. _hw_evk_xu316_block_diagram:
-.. figure:: images/xk_evk_xu316_block_diagram.*
+.. figure:: xk_evk_xu316_block_diagram.*
     :scale: 70%
     :align: center
 

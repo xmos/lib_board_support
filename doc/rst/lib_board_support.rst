@@ -49,6 +49,20 @@ The following boards are supported in this repo with interfaces provided in the 
 |XK_AUDIO_216_MC_AB  | XC / C              |
 +--------------------+---------------------+
 
+The following section provides specific details on eacho of the boards supported by this library.
+
+.. toctree::
+
+   xk_audio_316_mc_ab/hw_316_mc
+   xk_audio_216_mc_ab/hw_216_mc
+   xk_evk_xu316/hw_evk_xu316
+
+********************************
+Application Programmer Interface
+********************************
+
+This section contains the details of the API support by lib_board_support.
+
 Common API
 ==========
 

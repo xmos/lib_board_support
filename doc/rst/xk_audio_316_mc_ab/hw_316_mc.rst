@@ -24,7 +24,7 @@ Hardware Features
 The location of the various featurs of the xcore.ai Multichannel Audio Board (XK-AUDIO-316-MC) is shown in :ref:`xk_audio_316_mc_block_diagram`. 
 
 .. _xk_audio_316_mc_block_diagram:
-.. figure:: images/xk_316_audio_mc.pdf
+.. figure:: xk_316_audio_mc.pdf
     :scale: 70%
 
     xcore.ai Multichannel Audio Board block diagram
