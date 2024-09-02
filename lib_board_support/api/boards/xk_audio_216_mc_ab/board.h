@@ -59,14 +59,12 @@ typedef struct {
 
 /** Initialises the audio hardware ready for a configuration. Must be called once *after* xk_audio_316_mc_ab_board_setup().
  *
- *  \param   c          Channel end for I2C master interface connection.
  *  \param   config     Reference to the xk_audio_216_mc_ab_config_t hardware configuration struct.
  */
-void xk_audio_216_mc_ab_AudioHwInit(chanend c, const REFERENCE_PARAM(xk_audio_216_mc_ab_config_t, config));
+void xk_audio_216_mc_ab_AudioHwInit(const REFERENCE_PARAM(xk_audio_216_mc_ab_config_t, config));
 
 /** Configures the audio hardware following initialisation. This is typically called each time a sample rate or stream format change occurs.
  *
- *  \param   i2c            Client side of I2C master interface connection.
  *  \param   config         Reference to the xk_audio_216_mc_ab_config_t hardware configuration struct.
  *  \param   samFreq        The sample rate in Hertz.
  *  \param   mClk           The master clock rate in Hertz.
