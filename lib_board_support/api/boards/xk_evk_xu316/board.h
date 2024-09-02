@@ -37,13 +37,13 @@ typedef enum
  * so the API may be used over a channel end however it still only occupies one thread.
  * May be exited after config by sending AUDIOHW_CMD_EXIT if dynamic configuration is not required.
  *
- *  \param   c    Channel connecting I2C master server and HW config functions.
+ *  \param   c    Server side of channel connecting I2C master server and HW config functions.
  */
 void xk_evk_xu316_AudioHwRemote(chanend c);
 
 /** Initialises the audio hardware ready for a configuration. Must be called once *after* xk_evk_xu316_AudioHwRemote().
  *
- *  \param   i2c        Client side of I2C master interface connection.
+ *  \param   c          Client side of channel connecting I2C master server and HW config functions..
  *  \param   config     Reference to the xk_audio_316_mc_ab_config_t hardware configuration struct.
  */
 void xk_evk_xu316_AudioHwInit(chanend c, const REFERENCE_PARAM(xk_evk_xu316_config_t, config));
@@ -57,7 +57,7 @@ void xk_evk_xu316_AudioHwInit(chanend c, const REFERENCE_PARAM(xk_evk_xu316_conf
  *  \param   sampRes_ADC    The sample resolution of the ADC input in bits. Typically 16, 24 or 32.
  */
 void xk_evk_xu316_AudioHwConfig(unsigned samFreq, unsigned mClk, unsigned dsdMode,
-    unsigned sampRes_DAC, unsigned sampRes_ADC);
+                                unsigned sampRes_DAC, unsigned sampRes_ADC);
 
 /**@}*/ // END: addtogroup xk_evk_xu316
 
