@@ -43,7 +43,7 @@ A flexible clocking scheme is provided for both audio and other system services.
 
 The 24MHz fixed output is provided to the xCORE-200 device as the main processor clock. It also provides the reference clock to a Cirrus Logic CS2100, which provides a very low jitter audio clock from a synchronisation signal provided from the xCORE-200.
 
-Either the locally generated clock (from the PL611) or the recovered low jitter clock (from the CS2100) may be selected to clock the audio stages; the xCORE-200, the ADC/DAC and Digital output stages. Selection is conntrolled via an additional I/O, bit 5 of PORT 8C.
+Either the locally generated clock (from the PL611) or the recovered low jitter clock (from the CS2100) may be selected to clock the audio stages; the xCORE-200, the ADC/DAC and Digital output stages. Selection is controlled via an additional I/O, bit 5 of PORT 8C.
 
 LEDs, Buttons and Other IO
 ++++++++++++++++++++++++++
