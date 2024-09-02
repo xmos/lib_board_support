@@ -10,9 +10,7 @@ The XK-AUDIO-316-MC is based around the XU316-1024-TQ128-C24 multicore microcont
 
 Exploiting the flexible programmability of the xcore.ai architecture, the XK-AUDIO-316-MC supports a USB audio source, streaming 8 analogue input and 8 analogue output audio channels simultaneously - at up to 192kHz. It also supports digital input/output streams (S/PDIF and ADAT) and MIDI. Ideal for consumer and professional USB audio interfaces. The board can also be used for testing general purpose audio DSP activities - mixing, filtering, etc.
 
-The guaranteed Hardware-ResponseTM times of xCORE technology always ensure lowest latency (round trip as low as 3ms), bit perfect audio streaming to and from the USB host
-
-For full details regarding the hardware please refer to `xcore.ai Multichannel Audio Platform Hardware Manual <ADD LINK HERE>`_.
+For full details regarding the hardware please refer to `xcore.ai Multichannel Audio Platform Hardware Manual <https://www.xmos.com/download/XCORE_AI-Multichannel-Audio-Platform-1V1-Hardware-Manual(1V1).pdf>`_.
 
 The XK-AUDIO-316-MC reference hardware has an associated firmware application that uses `lib_xua` to implement fully-featured and production ready USB Audio solution. Full details of this application can be found later in this document.
 

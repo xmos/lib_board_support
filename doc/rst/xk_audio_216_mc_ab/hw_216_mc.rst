@@ -16,8 +16,6 @@ simultaneously - at up to 192kHz.
 
 For full details regarding the hardware please refer to `xCORE-200 Multichannel Audio Platform Hardware Manual <https://www.xmos.com/support/boards?product=18334&component=18687>`_.
 
-The reference board has an associated firmware application that uses the USB Audio 2.0 software reference
-platform. Details of this application can be found in section :ref:`usb_audio_sec_216_audio_sw`.
 
 Analogue Input & Output
 +++++++++++++++++++++++
