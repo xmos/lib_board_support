@@ -76,7 +76,7 @@ typedef struct {
 } xk_audio_316_mc_ab_config_t;
 
 
-/** Starts an I2C master task on. Must be started from tile[0] *after* xk_audio_316_mc_ab_board_setup() and *before* and tile[1] HW calls.
+/** Starts an I2C master task. Must be started from tile[0] *after* xk_audio_316_mc_ab_board_setup() and *before* and tile[1] HW calls.
  *
  *  \param   i2c        client side of I2C master interface connection.
  *  \param   config     Reference to the xk_audio_316_mc_ab_config_t configuration struct.
