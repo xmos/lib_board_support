@@ -71,6 +71,8 @@ This section contains the details of the API support by lib_board_support. The A
 Common API
 ==========
 
+This section contains the list of supported boards, one of which needs to be globally defined as ``BOARD_SUPPORT_BOARD`` in your project.
+
 .. doxygengroup:: bs_common
    :content-only:
 
