@@ -39,7 +39,7 @@ Usage
 *****
 
 This repo supports XCommon CMake. Simply add `lib_board_support` to an applications cmake file using the `APP_DEPENDENT_MODULES` entry. The application
-must provide the xn file although example xn files are provided in this repo in the `xn_files` directory.
+must provide the ``xn`` file although example ``xn`` files are provided in this repo in the `xn_files` directory.
 
 The application must use the APIs for the specific board that it is using. To ensure that only the correct sources for the board in use get compiled in, it is necessary to set the preprocessor value `BOARD_SUPPORT_BOARD` in your project to one of the available boards listed in `api/boards/boards_utils.h`. This can be done in the app with the following snippet of cmake::
 
