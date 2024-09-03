@@ -41,12 +41,17 @@ typedef enum
  */
 void xk_evk_xu316_AudioHwRemote(chanend c);
 
-/** Initialises the audio hardware ready for a configuration. Must be called once *after* xk_evk_xu316_AudioHwRemote().
+/** Initialises the client side channel for remote communications with I2C. Must be called on tile[1] *before* xk_evk_xu316_AudioHwInit(). 
  *
- *  \param   c          Client side of channel connecting I2C master server and HW config functions..
+ *  \param   c    Client side of channel connecting I2C master server and HW config functions.
+ */
+void xk_evk_xu316_AudioHwChanInit(chanend c);
+
+/** Initialises the audio hardware ready for a configuration. Must be called once *after* xk_evk_xu316_AudioHwRemote() and xk_evk_xu316_AudioHwChanInit().
+ *
  *  \param   config     Reference to the xk_audio_316_mc_ab_config_t hardware configuration struct.
  */
-void xk_evk_xu316_AudioHwInit(chanend c, const REFERENCE_PARAM(xk_evk_xu316_config_t, config));
+void xk_evk_xu316_AudioHwInit(const REFERENCE_PARAM(xk_evk_xu316_config_t, config));
 
 /** Configures the audio hardware following initialisation. This is typically called each time a sample rate or stream format change occurs.
  *
