@@ -1,27 +1,28 @@
 // Copyright 2024 XMOS LIMITED.
 // This Software is subject to the terms of the XMOS Public Licence: Version 1.
-/// Hardware setup APIs for the XK-EVK-XU316
 
 #ifndef __XK_EVK_XU316_BOARD_H__
 #define __XK_EVK_XU316_BOARD_H__
 
 #include <xccompat.h>
 
-/**
- * \addtogroup xk_evk_xu316 xk_evk_xu316
- *
- * The common defines for using lib_board_support.
- * @{
- */
 
-/** @struct xk_evk_xu316_config_t
+/**
  *  @brief Configuration struct type for setting the hardware profile.
- *  @var xk_audio_316_mc_ab_config_t::clk_mode
- *  See xk_audio_316_mc_ab_mclk_modes_t for available clock mode options.
+ *  @var 
  */
 typedef struct {
+    /** xk_audio_316_mc_ab_config_t::clk_mode See xk_audio_316_mc_ab_mclk_modes_t for available clock mode options. */
     unsigned default_mclk;
 } xk_evk_xu316_config_t;
+
+
+/**
+ * \addtogroup xk_evk_xu316
+ *
+ * API for the xk_evk_xu316 board.
+ * @{
+ */
 
 /** Command enumeration for channel based commands to I2C master server on other tile.
  */

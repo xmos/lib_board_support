@@ -5,7 +5,7 @@
 #include <xs1.h>
 
 /**
- * \addtogroup bs_common bs_common
+ * \addtogroup bs_common
  *
  * The common defines for using lib_board_support.
  * @{
