@@ -25,8 +25,8 @@ on tile[0]: port p_i2c_sda = XS1_PORT_1O;
 // CODEC reset line
 on tile[1]: out port p_codec_reset  = PORT_CODEC_RST_N;
 
-// CODEC Reset
-#define CODEC_RELEASE_RESET      (0x8) // Release codec from
+// CODEC Reset bit mask
+#define CODEC_RELEASE_RESET      (0x8) // Release codec from reset
 
 
 static inline void AIC3204_REGREAD(unsigned reg, unsigned &val, client interface i2c_master_if i2c)
@@ -105,12 +105,16 @@ static inline void CODEC_REGREAD(unsigned reg, unsigned &val)
     }
 }
 
-/* Note this is called from tile[1] but the I2C lines to the CODEC are on tile[0]
- * use a channel to communicate CODEC reg read/writes to a remote core */
-void xk_evk_xu316_AudioHwInit(chanend c, const xk_evk_xu316_config_t &config)
+void xk_evk_xu316_AudioHwChanInit(chanend c)
 {
     unsafe{uc_audiohw = c;}
+}
 
+
+/* Note this is called from tile[1] but the I2C lines to the CODEC are on tile[0]
+ * use a channel to communicate CODEC reg read/writes to a remote core */
+void xk_evk_xu316_AudioHwInit(const xk_evk_xu316_config_t &config)
+{
     unsigned regVal = 0;
 
     /* Take CODEC out of reset */
