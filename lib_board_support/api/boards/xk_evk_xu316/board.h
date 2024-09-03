@@ -41,7 +41,7 @@ typedef enum
  */
 void xk_evk_xu316_AudioHwRemote(chanend c);
 
-/** Initialises the client side channel for remote communications with I2C. Must be called on tile[1] *before* xk_evk_xu316_AudioHwInit calls. 
+/** Initialises the client side channel for remote communications with I2C. Must be called on tile[1] *before* xk_evk_xu316_AudioHwInit(). 
  *
  *  \param   c    Client side of channel connecting I2C master server and HW config functions.
  */
