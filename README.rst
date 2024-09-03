@@ -40,6 +40,8 @@ Required Libraries (dependencies)
 *********************************
 
   * lib_i2c (www.github.com/xmos/lib_i2c)
+  * lib_sw_pll (www.github.com/xmos/lib_sw_pll)
+  * lib_xassert (www.github.com/xmos/lib_xassert)
 
 Related Application Notes
 *************************
