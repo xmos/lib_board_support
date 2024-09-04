@@ -10,23 +10,13 @@
  * @{
  */
 
-#include "i2c.h"
-
-
-#if __XC__
-#define BS_PORT_T port
-#else
-#include <xcore/port.h>
-#define BS_PORT_T port_t
-#endif
-
 #include <xccompat.h>
+#include "i2c.h"
 #include "i2c.h"
 
 /** I2C interface ports */
-extern BS_PORT_T p_scl;
-extern BS_PORT_T p_sda;
-
+extern port p_scl;
+extern port p_sda;
 
 /** Type of clock to be instantiated. This may be a fixed clock using the application PLL,
  * an adjustable clock using the CS2100 external PLL or and adjustable clock using application
@@ -63,7 +53,7 @@ typedef enum {
  *  Number of bits per data frame in I2S.
  *  @var xk_audio_316_mc_ab_config_t::i2s_chans_per_frame
  *  This defines the number of audio channels per frame (a frame is a complete cycle of FSYNC or LRCLK).
- * 
+ *
  */
 typedef struct {
     xk_audio_316_mc_ab_mclk_modes_t clk_mode;
