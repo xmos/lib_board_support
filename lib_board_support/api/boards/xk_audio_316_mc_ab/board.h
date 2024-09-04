@@ -2,18 +2,6 @@
 // This Software is subject to the terms of the XMOS Public Licence: Version 1.
 #pragma once
 
-
-
-#include "i2c.h"
-
-
-#if __XC__
-#define BS_PORT_T port
-#else
-#include <xcore/port.h>
-#define BS_PORT_T port_t
-#endif
-
 #include <xccompat.h>
 #include "i2c.h"
 
@@ -24,11 +12,9 @@
  * @{
  */
 
-/** I2C interface port SCL */
-extern BS_PORT_T p_scl;
-/** I2C interface port SDA */
-extern BS_PORT_T p_sda;
-
+/** I2C interface ports */
+extern port p_scl;
+extern port p_sda;
 
 /** 
  * @brief Type of clock to be instantiated. This may be a fixed clock using the application PLL,
