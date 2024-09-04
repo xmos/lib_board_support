@@ -6,7 +6,7 @@ lib_board_support
 Introduction
 ************
 
-This repo contains board specific hardware configuration code for various `XMOS` evaluation and development kits. 
+This repo contains board specific hardware configuration code for various ``XMOS`` evaluation and development kits. 
 By keeping the board-specific code in a dedicated repository various applications need not replicate commonly used code such as initialisation of on-board peripherals and in addition any updates or fixes can easily be rolled out to all dependent applications.
 
 ****************
@@ -38,7 +38,7 @@ The following section provides specific details of the features for each of the 
 Usage
 *****
 
-This repo supports XCommon CMake. Simply add `lib_board_support` to an applications cmake file using the `APP_DEPENDENT_MODULES` entry. The application
+This repo supports XCommon CMake. Simply add ``lib_board_support`` to an applications cmake file using the `APP_DEPENDENT_MODULES` entry. The application
 must provide the ``xn`` file although example ``xn`` files are provided in this repo in the `xn_files` directory.
 
 The application must use the APIs for the specific board that it is using. To ensure that only the correct sources for the board in use get compiled in, it is necessary to set the preprocessor value `BOARD_SUPPORT_BOARD` in your project to one of the available boards listed in `api/boards/boards_utils.h`. This can be done in the app with the following snippet of cmake::
