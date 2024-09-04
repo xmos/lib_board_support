@@ -8,8 +8,8 @@ documentation:
   exclude_patterns_path: doc/exclude_patterns.inc
   substitutions_path: doc/substitutions.inc
   root_doc: doc/rst/lib_board_support.rst
-  linkcheck_ignore_regex: ['.*an02003.*']
-  cognidox_part_number: XM-
+  linkcheck_ignore_regex: ['']
+  cognidox_part_number: XM-015142-UG
   doxygen_projects:
     lib_board_support:
       doxyfile_path: doc/Doxyfile.inc
@@ -22,4 +22,4 @@ documentation:
       pdf_filename: '{{lib_name}}_v{{version}}_readme'
       pdf_short: yes
 software:
-  cognidox_part_number: XM-
+  cognidox_part_number: XM-015141-SM
