@@ -48,7 +48,11 @@ pipeline {
                             withVenv {
                                 sh "pip install -e ../infr_scripts_py"
                                 sh "pip install -e ../infr_apps"
-                                sh "tree"                       
+
+                                // Grab dependancies before changelog check
+                                withTools(params.TOOLS_VERSION) {
+                                    sh "cmake  -G \"Unix Makefiles\" -B build"
+                                }
 
                                 // installPipfile(false)
                                 withTools(params.TOOLS_VERSION) {                            

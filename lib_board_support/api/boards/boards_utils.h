@@ -5,13 +5,13 @@
 #include <xs1.h>
 
 /**
- * \addtogroup bs_common bs_common
+ * \addtogroup bs_common
  *
  * The common defines for using lib_board_support.
  * @{
  */
 
-/** List of supported boards */
+/* List of supported boards */
 #define XK_AUDIO_216_MC_AB 0
 #define XK_AUDIO_316_MC_AB 1
 #define XK_EVK_XU316 2

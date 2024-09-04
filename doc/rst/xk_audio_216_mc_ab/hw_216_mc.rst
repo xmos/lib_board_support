@@ -23,7 +23,7 @@ Analogue Input & Output
 A total of eight single-ended analog input channels are provided via 3.5mm stereo jacks. Each is fed into a CirrusLogic CS5368 ADC.
 Similarly a total of eight single-ended analog output channels are provided. Each is fed into a CirrusLogic CS4384 DAC.
 
-The four digital I2S/TDM input and output channels are mapped to the xCORE input/outputs through a header array. This jumper allows channel selection when the ADC/DAC is used in TDM mode
+The four digital |I2S|/TDM input and output channels are mapped to the xCORE input/outputs through a header array. This jumper allows channel selection when the ADC/DAC is used in TDM mode
 
 Digital Input & Output
 ++++++++++++++++++++++
