@@ -11,6 +11,8 @@ lib_board_support change log
   * ADDED: I2C master exit API for XK-AUDIO-316-MC
   * FIXED: Uninitialised global interface for XK-AUDIO-216-MC setup
   * ADDED: Explicit xk_evk_xu316_AudioHwChanInit() API
+  * ADDED: NULL_BOARD default option so library can be included in a project
+    without being used.
 
   * Changes to dependencies:
 
