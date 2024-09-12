@@ -19,10 +19,10 @@ The XK-AUDIO-316-MC reference hardware has an associated firmware application th
 Hardware Features
 +++++++++++++++++
 
-The location of the various featurs of the xcore.ai Multichannel Audio Board (XK-AUDIO-316-MC) is shown in :ref:`xk_audio_316_mc_block_diagram`. 
+The location of the various features of the xcore.ai Multichannel Audio Board (XK-AUDIO-316-MC) is shown in :ref:`xk_audio_316_mc_block_diagram`.
 
 .. _xk_audio_316_mc_block_diagram:
-.. figure:: xk_316_audio_mc.pdf
+.. figure:: ../../images/xk_316_audio_mc.png
     :scale: 70%
 
     xcore.ai Multichannel Audio Board block diagram
@@ -87,7 +87,7 @@ MIDI
 ++++
 
 MIDI input and output is provided on the board via standard 5-pin DIN connectors compliant to the MIDI specification.
-The signals are buffered using 5V line drivers and are then connected ports on the xCORE, via a 5V to 3.3V buffer. 
+The signals are buffered using 5V line drivers and are then connected ports on the xCORE, via a 5V to 3.3V buffer.
 A 1-bit port is used for receive and a 4-bit port is used for transmit. A pullup resistor on the MIDI output ensures there
 is no MIDI output when the xCORE device is not actively driving the output.
 
@@ -107,7 +107,7 @@ Three methods of generating an audio master clock are provided on the board:
 Selecting between these methods is done via writing to bits 6 and 7 of PORT 8D on tile[0]. See :ref:`hw_316_ctrlport`.
 
 .. note::
-    
+
     The supplied software currently supports the xcore.ai secondary PLL or CS2100 device.
 
 .. _hw_316_ctrlport:
@@ -138,8 +138,8 @@ Control I/O
 
 
 .. note::
-     
-    To use the xCORE application PLL bit 7 should be set to 0. To use one of the external PLL's bit 7 should be set to 1. 
+
+    To use the xCORE application PLL bit 7 should be set to 0. To use one of the external PLL's bit 7 should be set to 1.
 
 
 LEDs, Buttons and Other IO
@@ -147,25 +147,25 @@ LEDs, Buttons and Other IO
 
 All programmable I/O on the board is configured for 3.3 volts.
 
-Four green LED's and three push buttons are provided for general purpose user interfacing. 
+Four green LED's and three push buttons are provided for general purpose user interfacing.
 
 The LEDs are connected to PORT 4F and the buttons are connected to bits [0:2] of PORT 4E, both on tile 0. Bit 3 of this
 port is connected to the (currently unused) ADC interrupt line.
 
-The board also includes support for an AES11 format Word Clock input via 75 ohm BNC. The software does not currently 
+The board also includes support for an AES11 format Word Clock input via 75 ohm BNC. The software does not currently
 support any functionality related to this and it is provided for future expansion.
 
-All spare I/O is brought out and made available on 0.1" headers for easy connection of expansion 
+All spare I/O is brought out and made available on 0.1" headers for easy connection of expansion
 boards etc.
 
 Power
 +++++
 
 The board is capable of acting as a USB2.0 self or bus powered device. If bus powered, the board takes
-power from the ``USB DEVICE`` connector (micro-B receptacle). If self powered, board takes power 
+power from the ``USB DEVICE`` connector (micro-B receptacle). If self powered, board takes power
 from ``EXTERNAL POWER`` input (micro-B receptacle).
 
-A Power Source Select (marked ``PWR SRC``) is used to select between bus and self-powered configuration. 
+A Power Source Select (marked ``PWR SRC``) is used to select between bus and self-powered configuration.
 
 .. note::
 
@@ -174,6 +174,6 @@ A Power Source Select (marked ``PWR SRC``) is used to select between bus and sel
 Debug
 +++++
 
-For convenience the board includes an on-board xTAG4 for debugging via JTAG/xSCOPE. 
-This is accessed via the USB (micro-B) receptacle marked ``DEBUG``. 
+For convenience the board includes an on-board xTAG4 for debugging via JTAG/xSCOPE.
+This is accessed via the USB (micro-B) receptacle marked ``DEBUG``.
 

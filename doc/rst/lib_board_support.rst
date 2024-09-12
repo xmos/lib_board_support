@@ -6,7 +6,7 @@ lib_board_support
 Introduction
 ************
 
-This repo contains board specific hardware configuration code for various ``XMOS`` evaluation and development kits. 
+This repo contains board specific hardware configuration code for various ``XMOS`` evaluation and development kits.
 By keeping the board-specific code in a dedicated repository various applications need not replicate commonly used code such as initialisation of on-board peripherals and in addition any updates or fixes can easily be rolled out to all dependent applications.
 
 ****************
@@ -54,14 +54,14 @@ From the application where board initialisation of configuration is done it is n
 
 From then onwards in your code you may call the relevant API functions to setup and configure the board hardware. Examples of doing this are provided in the `examples` directory of this repo.
 
-Note that in some cases, the XCORE tile that calls the configuration function (usually from |I2S| initilaisation) is different from the tile where |I2C| master is placed. Since |I2C| master is required by most audio CODECs for configuration and XCORE tiles can only communicate with each other via channels, a remote server is needed to provide the |I2C| setup. This usually takes the form of a task which is run on a thread placed on the |I2C| tile and is controlled via a channel from the other tile where |I2S| resides. The cross-tile channel must be declared at the top-level XC main function. The included examples show examples of this using both XC and C.
+Note that in some cases, the `xcore` tile that calls the configuration function (usually from |I2S| initilaisation) is different from the tile where |I2C| master is placed. Since |I2C| master is required by most audio CODECs for configuration and XCORE tiles can only communicate with each other via channels, a remote server is needed to provide the |I2C| setup. This usually takes the form of a task which is run on a thread placed on the |I2C| tile and is controlled via a channel from the other tile where |I2S| resides. The cross-tile channel must be declared at the top-level XC main function. The included examples show examples of this using both XC and C.
 
 
 ********************************
 Application Programmer Interface
 ********************************
 
-This section contains the details of the API support by lib_board_support. The API is broken down into 2 sections:
+This section contains the details of the API support by `lib_board_support`. The API is broken down into 2 sections:
 
 1. Boards: This includes subdirectories for each supported board which need to be included in your application.
 2. Drivers: This includes sources for configuring peripheral devices which may be on one or more of
@@ -110,15 +110,57 @@ XK_EVK_XU316 API
 Example Applications
 ********************
 
-Example applications are provided to show how to use lib_board_support.
+Some simple example applications are provided in order to show how to use `lib_board_support`.
 
 Simple C Usage
 ==============
 
-The applications `app_evk_316_simple_c <https://github.com/xmos/lib_board_support/tree/develop/examples/app_evk_316_simple_c>`_ and `app_xu316_mc_simple_c <https://github.com/xmos/lib_board_support/blob/develop/examples/app_xu316_mc_simple_c/README.rst>`_ provide a bare-bones application where the hardware setup is called from C. They show how to use the cross-tile communications in conjunction with the |I2C| master server. The applications only setup the hardware and then exit the |I2C| server.
+The applications `app_evk_316_simple_c` and `app_xk_audio_316_mc_simple_c` provide a bare-bones
+application where the hardware setup is called from C.
+
+They run on the `XK-EVK-XU316` and `XK-AUDIO-316-MC` boards respectively.
+
+They show how to use the cross-tile communications in conjunction with the |I2C| master server.
+The applications only setup the hardware and then exit the |I2C| server.
 
 XC Usage Example
 ================
 
-A more sophisticated example is provided, written in XC, by `app_xu316_i2s_loopback <https://github.com/xmos/lib_board_support/tree/develop/examples/app_xu316_i2s_loopback>`_. This application sets up the hardware on the `XK_AUDIO_316_MC_AB` board and then runs an |I2S| loopback application to take samples from the on-board ADCs and send the signals out through the DACs. It keeps the |I2C| master server running in case the application wants to change sample rate which requires |I2C| configuration of the audio CODECs.
+A more sophisticated example is provided, written in XC, by `app_xk_audio_316_mc_loopback`.
+
+This application sets up the hardware on the `XK_AUDIO_316_MC` board and then runs an |I2S|
+loopback application to take samples from the on-board ADCs and send the signals out through the
+DACs. It keeps the |I2C| master server running in case the application wants to change sample rate
+which requires |I2C| configuration of the audio CODECs.
+
+Two build configurations are included:
+
+    - `XMOS_MASTER` - This configures the ADCs and DACs to |I2S| slave and the xcore.ai device
+      drives the |I2S| clocks. The on-chip application PLL is configured to drive the master clock
+      to the mixed signal devices.
+    - `XMOS_SLAVE` - This configures one the DACs to |I2S| master and the remaining DAC, all ADCs
+      and the `xcore.ai` device to |I2S| slave. The on-chip application PLL is configured to drive
+      the master clock to the mixed signal devices.
+
+To build and run the example, run the following from an XTC tools terminal to configure the build::
+
+    cd examples/app_xk_audio_316_mc_loopback
+    cmake -G "Unix Makefiles" -B build
+
+All required dependencies will be downloaded by the build system if not already present.
+
+The application binaries can be built using ``xmake``::
+
+    xmake -C build
+
+To run the application use the following command::
+
+    xrun bin/XMOS_MASTER/app_xk_audio_316_mc_loopback_XMOS_MASTER.xe
+
+or::
+
+    xrun bin/XMOS_SLAVE/app_xk_audio_316_mc_loopback_XMOS_SLAVE.xe
+
+Connect an analog audio source to the chosen ADC input channels and then monitor the looped back
+output on the chosen DAC output channels.
 
