@@ -33,7 +33,6 @@ The following section provides specific details of the features for each of the 
    xk_audio_216_mc_ab/hw_216_mc
    xk_evk_xu316/hw_evk_xu316
 
-
 *****
 Usage
 *****

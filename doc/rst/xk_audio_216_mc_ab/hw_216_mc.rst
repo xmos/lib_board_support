@@ -16,7 +16,6 @@ simultaneously - at up to 192kHz.
 
 For full details regarding the hardware please refer to `xcore-200 Multichannel Audio Platform Hardware Manual <https://www.xmos.com/support/boards?product=18334&component=18687>`_.
 
-
 Analogue Input & Output
 +++++++++++++++++++++++
 

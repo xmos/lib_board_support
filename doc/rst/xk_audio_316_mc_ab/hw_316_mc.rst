@@ -12,8 +12,6 @@ Exploiting the flexible programmability of the xcore.ai architecture, the XK-AUD
 
 For full details regarding the hardware please refer to `xcore.ai Multichannel Audio Platform Hardware Manual <https://www.xmos.com/download/XCORE_AI-Multichannel-Audio-Platform-1V1-Hardware-Manual(1V1).pdf>`_.
 
-The XK-AUDIO-316-MC reference hardware has an associated firmware application that uses `lib_xua` to implement fully-featured and production ready USB Audio solution. Full details of this application can be found later in this document.
-
 |newpage|
 
 Hardware Features
