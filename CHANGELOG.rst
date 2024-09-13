@@ -1,8 +1,8 @@
 lib_board_support Changelog
 ===========================
 
-UNRELEASED
-----------
+1.0.1
+------
 
   * CHANGED: Documentation improvements
 
