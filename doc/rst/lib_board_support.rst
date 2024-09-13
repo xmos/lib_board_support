@@ -141,7 +141,7 @@ XC Usage Example
 
 A more sophisticated example is also provided, written in XC, by `app_xk_audio_316_mc_loopback`.
 
-This application sets up the hardware on the `XK_AUDIO_316_MC` board and then runs an |I2S|
+This application sets up the hardware on the `XK-AUDIO-316-MC` board and then runs an |I2S|
 loopback application to take samples from the on-board ADCs and send the signals out through the
 DACs. It keeps the |I2C| master server running in case the application wants to change sample rate
 which requires |I2C| configuration of the audio CODECs.
