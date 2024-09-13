@@ -23,6 +23,11 @@ pipeline {
             defaultValue: '15.3.0',
             description: 'The XTC tools version'
         )
+        string(
+            name: 'XMOSDOC_VERSION',
+            defaultValue: '6.0.0',
+            description: 'The xmosdoc version'
+        )
     }
     environment {
         REPO = 'lib_board_support'
@@ -55,7 +60,7 @@ pipeline {
                                 }
 
                                 // installPipfile(false)
-                                withTools(params.TOOLS_VERSION) {                            
+                                withTools(params.TOOLS_VERSION) {
                                     withEnv(["REPO=${REPO}", "XMOS_ROOT=.."]) {
                                         xcoreLibraryChecks("${REPO}", false)
                                         // junit "junit_lib.xml"
@@ -65,23 +70,7 @@ pipeline {
                         } // dir
                     } // steps
                 }
-                stage('Docs') {
-                    environment { XMOSDOC_VERSION = "v5.0" }
-                    steps {
-                        dir("${REPO}") {
-                            sh "docker pull ghcr.io/xmos/xmosdoc:$XMOSDOC_VERSION"
-                            sh """docker run -u "\$(id -u):\$(id -g)" \
-                                --rm \
-                                -v \$(pwd):/build \
-                                ghcr.io/xmos/xmosdoc:$XMOSDOC_VERSION -v html latex"""
 
-                            // Zip and archive doc files
-                            zip dir: "doc/_build/html", zipFile: "${REPO}_docs_html.zip"
-                            archiveArtifacts artifacts: "${REPO}_docs_html.zip"
-                            archiveArtifacts artifacts: "doc/_build/pdf/${REPO}_*.pdf"
-                        }
-                    }
-                }
                 stage('Build'){
                     steps {
                         dir("${REPO}") {
@@ -108,6 +97,19 @@ pipeline {
                         }
                     }
                 }
+
+                stage('Documentation') {
+                    steps {
+                        dir("${REPO}") {
+                            withVenv {
+                                sh "pip install git+ssh://git@github.com/xmos/xmosdoc@v${params.XMOSDOC_VERSION}"
+                                    sh 'xmosdoc'
+                                    zip zipFile: "${REPO}_docs.zip", archive: true, dir: 'doc/_build'
+                            } // withVenv
+                        } // dir
+                    } // steps
+                } // Documentation
+
             }
             post {
                 always{

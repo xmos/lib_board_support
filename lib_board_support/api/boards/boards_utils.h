@@ -12,12 +12,26 @@
  */
 
 /* List of supported boards */
+
+/** Define representing Null board i.e. no board in use*/
 #define NULL_BOARD                  0
+
+/** Define representing XK-AUDIO-216-MC Board */
 #define XK_AUDIO_216_MC_AB          1
+
+/** Define representing XK-AUDIO-316-MC Board */
 #define XK_AUDIO_316_MC_AB          2
+
+/** Define representing XK-EVK-XU316 board */
 #define XK_EVK_XU316                3
+
+/** Total number of boards supported by the library */
 #define BOARD_SUPPORT_N_BOARDS      4  // max board + 1
 
+/** Define that should be set to the current board type in use
+  *
+  * Default value: NULL_BOARD
+  */
 #ifndef BOARD_SUPPORT_BOARD
 #define BOARD_SUPPORT_BOARD         NULL_BOARD // This means none of the BSP sources are compiled in to the project
 #endif
