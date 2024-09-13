@@ -10,7 +10,7 @@ xcore-200 Multi-Channel Audio Board
 
 The XK-AUDIO-216-MC is based around the XE216-512-TQ128 multicore microcontroller; an dual-tile xcore-200 device with an integrated High Speed USB 2.0 PHY, RGMII (Gigabit Ethernet) interface and 16 logical cores delivering up to 2000MIPS of deterministic and responsive processing power.
 
-Exploiting the flexible programmability of the xcore-200 architecture, the XK-AUDIO-216-MC supports
+Exploiting the flexible programmability of the `xcore-200` architecture, the XK-AUDIO-216-MC supports
 either USB or network audio source, streaming 8 analogue input and 8 analogue output audio channels
 simultaneously - at up to 192kHz.
 

@@ -9,18 +9,18 @@ from `XMOS`.
     :scale: 50%
     :align: center
 
-    xcore.ai Evaluation Kit
+    `xcore.ai` Evaluation Kit
 
 The XK-EVK-XU316  allows testing in multiple application scenarios and provides a good general software development
 board for simple tests and demos. The XK-EVK-XU316 comprises an `xcore.ai` processor with a set of I/O devices and
-connectors arranged around it, as shown in :ref:`hw_evk_xu316_block_diagram`.
+connectors arranged around it, as shown in :numref:`hw_evk_xu316_block_diagram`.
 
 .. _hw_evk_xu316_block_diagram:
 .. figure:: ../../images/xk_evk_xu316_block_diagram.png
     :scale: 70%
     :align: center
 
-    xcore.ai Evaluation Kit block diagram
+    `xcore.ai` Evaluation Kit block diagram
 
 External hardware features board include, four general purpose LEDs, two general purpose push-button switches,
 a PDM microphone connector, audio codec with line-in and line-out jack, QSPI flash memory, LPDDR1 external memory
@@ -30,13 +30,10 @@ integrated `xTAG` debug adapter and a reset switch with LED to indicate running.
 For full details regarding the hardware please refer to `XK-EVK-XU316 xcore.ai Evaluation Kit Manual
 <https://www.xmos.ai/download/xcore.ai-explorer-board-v2.0-hardware-manual(5).pdf>`_.
 
-The XK-EVK-XU316 hardware has an associated firmware application that uses ``lib_xua`` to implement an example USB
-Audio device.
-
 .. warning::
 
-    The `xcore.ai Evaluation Kit` is a general purpose evaluation platform and should be considered as an example rather
-    than a fully fledged reference design.
+    The `xcore.ai Evaluation Kit` is a general purpose evaluation platform and should be considered
+    an "example" rather than a fully fledged reference design.
 
 Analogue Audio Input & Output
 +++++++++++++++++++++++++++++
