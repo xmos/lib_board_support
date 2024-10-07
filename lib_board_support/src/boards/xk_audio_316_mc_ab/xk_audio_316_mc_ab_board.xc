@@ -481,74 +481,88 @@ void xk_audio_316_mc_ab_AudioHwConfig(i2c_cli i2c, const xk_audio_316_mc_ab_conf
         /* Do nothing - the SW_PLL configures the AppPLL */
     }
 
-    // Now configure the DACs sample rate and clocks (All I2S slave initially)
-
-    // Do any changes to input clocks here
-    // The following divider generates the DAC clock from the master clock.
-    // DAC clock needs to be 5.6448MHz for 44.1/88.2/176.4kHz SRs and 6.144MHz for 48/96/192 SRs.
-    // So if using 22.5792/24.576 MCLK this needs to be 4. For 45.1584/49.152MHz this needs to be 8. Note to set a divider of 4 we write 0x03.
-    WriteAllDacRegs(i2c, PCM5122_DDAC,           0x03); // sets DAC clock divider NDAC to 4.
-
-    // IDAC is how many DSP clocks are present in an audio frame.
-    // DSP clock in this system is equal to Master clock (as NMAC = 1 set above).
-    // So IDAC becomes the ratio of Fs to MCLK.
-    // For 22.5792/24.576MHz MCLK this is 512 for 44.1/48, 256 for 88.2/96, 128 for 176.4/192 and 64 for 352.8/384.
-    // For 45.1584/49.152MHz MCLK this is 1024 for 44.1/48, 512 for 88.2/96, 256 for 176.4/192 and 128 for 352.8/384.
-    // Settings below are for 22.5792/24.576.
-
-    //OSR CLK divider is set to one (as its based on the output from the DAC CLK, which is already PLL/16)
-    unsigned regVal_DOSR = (mClk/(samFreq * config.i2s_chans_per_frame * 32)) - 1;
-    WriteAllDacRegs(i2c, PCM5122_DOSR, regVal_DOSR);
-
-    if(samFreq <= 48000)
-    {
-        WriteAllDacRegs(i2c, PCM5122_I16E_FS,      0x00); // Set FS to single speed mode
-        WriteAllDacRegs(i2c, PCM5122_IDAC_MS,      0x02); // IDAC MS Byte
-        WriteAllDacRegs(i2c, PCM5122_IDAC_LS,      0x00); // IDAC LS Byte
-    }
-    else if((samFreq > 48000) && (samFreq <= 96000))
-    {
-        WriteAllDacRegs(i2c, PCM5122_I16E_FS,      0x01); // Set FS to double speed mode
-        WriteAllDacRegs(i2c, PCM5122_IDAC_MS,      0x01); // IDAC MS Byte
-        WriteAllDacRegs(i2c, PCM5122_IDAC_LS,      0x00); // IDAC LS Byte
-    }
-    else if((samFreq > 96000) && (samFreq <= 192000))
-    {
-        WriteAllDacRegs(i2c, PCM5122_I16E_FS,      0x02); // Set FS to quad speed mode
-        WriteAllDacRegs(i2c, PCM5122_IDAC_MS,      0x00); // IDAC MS Byte
-        WriteAllDacRegs(i2c, PCM5122_IDAC_LS,      0x80); // IDAC LS Byte
-    }
-    else if((samFreq > 192000) && (samFreq <= 384000)) // In case we ever use this mode.
-    {
-        WriteAllDacRegs(i2c, PCM5122_I16E_FS,      0x03); // Set FS to octal speed mode
-        WriteAllDacRegs(i2c, PCM5122_IDAC_MS,      0x00); // IDAC MS Byte
-        WriteAllDacRegs(i2c, PCM5122_IDAC_LS,      0x40); // IDAC LS Byte
-    }
-    
-    /* Set DAC3 to I2S master */
+    /* Set one DAC to I2S master, the others to slave*/
     if(config.dac_is_clock_master)
     {
+        unsigned regVal;
+
+        //OSR CLK divider is set to one (as its based on the output from the DAC CLK, which is already PLL/16)
+        regVal = (mClk/(samFreq * config.i2s_chans_per_frame * 32))-1;
+        WriteAllDacRegs(i2c, PCM5122_DOSR, regVal);
+
+
+        //# FS setting should be set based on sample rate
+        regVal = samFreq/96000;
+        WriteAllDacRegs(i2c, PCM5122_I16E_FS, regVal);
+
+        //IDAC1  sets the number of miniDSP instructions per clock.
+        regVal = 192000/samFreq;
+        WriteAllDacRegs(i2c, PCM5122_IDAC_MS, regVal);
+
         i2c_regop_res_t result = I2C_REGOP_SUCCESS;
-        const int dacAddr = PCM5122_3_I2C_DEVICE_ADDR;
-    
+        const int MasterDacAddr = PCM5122_3_I2C_DEVICE_ADDR;
+
         /* Master mode setting */
         // BCK, LRCK output
-        result |= i2c_reg_write(i2c, dacAddr, PCM5122_BCK_LRCLK, 0x11);
+        result |= i2c_reg_write(i2c, MasterDacAddr, PCM5122_BCK_LRCLK, 0x11);
 
         // Master mode BCK divider setting (making 64fs)
-        unsigned regVal = (mClk/(samFreq * config.i2s_chans_per_frame * config.i2s_n_bits)) - 1;
-        result |= i2c_reg_write(i2c, dacAddr, PCM5122_DBCK, regVal);
+        regVal = (mClk/(samFreq * config.i2s_chans_per_frame * config.i2s_n_bits))-1;
+        result |= i2c_reg_write(i2c, MasterDacAddr, PCM5122_DBCK, regVal);
 
         // Master mode LRCK divider setting (divide BCK by a further 64 (256 for TDM) to make 1fs)
-        regVal = (config.i2s_chans_per_frame * config.i2s_n_bits) - 1;
-        result |= i2c_reg_write(i2c, dacAddr, PCM5122_DLRCK, regVal);
+        regVal = (config.i2s_chans_per_frame * config.i2s_n_bits)-1;
+        result |= i2c_reg_write(i2c, MasterDacAddr, PCM5122_DLRCK, regVal);
 
         // Master mode BCK, LRCK divider reset release
-        result |= i2c_reg_write(i2c, dacAddr, PCM5122_RBCK_LRCLK, 0x3f);
+        result |= i2c_reg_write(i2c, MasterDacAddr, PCM5122_RBCK_LRCLK, 0x3f);
 
-        assert(result == I2C_REGOP_SUCCESS && msg("DAC I2C write reg failed to I2S master DAC"));
+        assert(result == I2C_REGOP_SUCCESS && msg("DAC I2C write reg failed"));
     }
+    else
+    {
+        // Do any changes to input clocks here
+        // The following divider generates the DAC clock from the master clock.
+        // DAC clock needs to be 5.6448MHz for 44.1/88.2/176.4kHz SRs and 6.144MHz for 48/96/192 SRs.
+        // So if using 22.5792/24.576 MCLK this needs to be 4. For 45.1584/49.152MHz this needs to be 8. Note to set a divider of 4 we write 0x03.
+        WriteAllDacRegs(i2c, PCM5122_DDAC,           0x03); // sets DAC clock divider NDAC to 4.
 
+        // IDAC is how many DSP clocks are present in an audio frame.
+        // DSP clock in this system is equal to Master clock (as NMAC = 1 set above).
+        // So IDAC becomes the ratio of Fs to MCLK.
+        // For 22.5792/24.576MHz MCLK this is 512 for 44.1/48, 256 for 88.2/96, 128 for 176.4/192 and 64 for 352.8/384.
+        // For 45.1584/49.152MHz MCLK this is 1024 for 44.1/48, 512 for 88.2/96, 256 for 176.4/192 and 128 for 352.8/384.
+        // Settings below are for 22.5792/24.576.
+
+        if(samFreq <= 48000)
+        {
+            WriteAllDacRegs(i2c, PCM5122_DOSR,         0x07); // Set OSR divider to 8.
+            WriteAllDacRegs(i2c, PCM5122_I16E_FS,      0x00); // Set FS to single speed mode
+            WriteAllDacRegs(i2c, PCM5122_IDAC_MS,      0x02); // IDAC MS Byte
+            WriteAllDacRegs(i2c, PCM5122_IDAC_LS,      0x00); // IDAC LS Byte
+        }
+        else if((samFreq > 48000) && (samFreq <= 96000))
+        {
+            WriteAllDacRegs(i2c, PCM5122_DOSR,         0x03); // Set OSR divider to 4.
+            WriteAllDacRegs(i2c, PCM5122_I16E_FS,      0x01); // Set FS to double speed mode
+            WriteAllDacRegs(i2c, PCM5122_IDAC_MS,      0x01); // IDAC MS Byte
+            WriteAllDacRegs(i2c, PCM5122_IDAC_LS,      0x00); // IDAC LS Byte
+        }
+        else if((samFreq > 96000) && (samFreq <= 192000))
+        {
+            WriteAllDacRegs(i2c, PCM5122_DOSR,         0x01); // Set OSR divider to 2.
+            WriteAllDacRegs(i2c, PCM5122_I16E_FS,      0x02); // Set FS to quad speed mode
+            WriteAllDacRegs(i2c, PCM5122_IDAC_MS,      0x00); // IDAC MS Byte
+            WriteAllDacRegs(i2c, PCM5122_IDAC_LS,      0x80); // IDAC LS Byte
+        }
+        else if((samFreq > 192000) && (samFreq <= 384000)) // In case we ever use this mode.
+        {
+            WriteAllDacRegs(i2c, PCM5122_DOSR,         0x00); // Set OSR divider to 1.
+            WriteAllDacRegs(i2c, PCM5122_I16E_FS,      0x03); // Set FS to octal speed mode
+            WriteAllDacRegs(i2c, PCM5122_IDAC_MS,      0x00); // IDAC MS Byte
+            WriteAllDacRegs(i2c, PCM5122_IDAC_LS,      0x40); // IDAC LS Byte
+        }
+    }
 
     WriteAllDacRegs(i2c, PCM5122_STANDBY_PWDN,   0x00); // Set DAC in run mode (no standby or powerdown)
     delay_milliseconds(1);
@@ -556,4 +570,3 @@ void xk_audio_316_mc_ab_AudioHwConfig(i2c_cli i2c, const xk_audio_316_mc_ab_conf
 }
 
 #endif
-
