@@ -48,7 +48,9 @@ pipeline {
                             checkout scm
                             createVenv()
                             withTools(params.TOOLS_VERSION) {
-                                sh "cmake  -G \"Unix Makefiles\" -B build"
+                                dir("examples") {
+                                    sh "cmake  -G \"Unix Makefiles\" -B build"
+                                }
                             }
                         } // dir
                     } // steps
