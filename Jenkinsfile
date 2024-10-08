@@ -1,6 +1,6 @@
 // This file relates to internal XMOS infrastructure and should be ignored by external users
 
-@Library('xmos_jenkins_shared_library@v0.33.0') _
+@Library('xmos_jenkins_shared_library@v0.34.0') _
 
 getApproval()
 
@@ -25,13 +25,13 @@ pipeline {
         )
         string(
             name: 'XMOSDOC_VERSION',
-            defaultValue: '6.0.0',
+            defaultValue: '6.1.0',
             description: 'The xmosdoc version'
         )
     }
     environment {
         REPO = 'lib_board_support'
-        PYTHON_VERSION = "3.10"
+        PYTHON_VERSION = "3.12.1"
         VENV_DIRNAME = ".venv"
     }
 
@@ -41,36 +41,23 @@ pipeline {
                 label 'linux&&64'
             }
             stages{
-                stage('Checkout and lib checks'){
+                stage('Checkout'){
                     steps {
                         println "Stage running on: ${env.NODE_NAME}"
-                        sh "git clone -b v1.2.1 git@github.com:xmos/infr_scripts_py"
-                        sh "git clone -b v1.6.0 git@github.com:xmos/infr_apps"
-
                         dir("${REPO}") {
                             checkout scm
                             createVenv()
-                            withVenv {
-                                sh "pip install -e ../infr_scripts_py"
-                                sh "pip install -e ../infr_apps"
-
-                                // Grab dependancies before changelog check
-                                withTools(params.TOOLS_VERSION) {
-                                    sh "cmake  -G \"Unix Makefiles\" -B build"
-                                }
-
-                                // installPipfile(false)
-                                withTools(params.TOOLS_VERSION) {
-                                    withEnv(["REPO=${REPO}", "XMOS_ROOT=.."]) {
-                                        xcoreLibraryChecks("${REPO}", false)
-                                        // junit "junit_lib.xml"
-                                    } // withEnv
-                                } // withTools
-                            } // Venv
+                            withTools(params.TOOLS_VERSION) {
+                                sh "cmake  -G \"Unix Makefiles\" -B build"
+                            }
                         } // dir
                     } // steps
                 }
-
+                stage('Library checks') {
+                    steps {
+                        runLibraryChecks("${WORKSPACE}/${REPO}", "v2.0.1")
+                    } // steps
+                }  // Library checks
                 stage('Build'){
                     steps {
                         dir("${REPO}") {
@@ -78,7 +65,7 @@ pipeline {
                                 withTools(params.TOOLS_VERSION) {
                                     sh "cmake  -G \"Unix Makefiles\" -B build"
                                     archiveArtifacts artifacts: "build/manifest.txt", allowEmptyArchive: false
-                                    sh "xmake -C build -j"
+                                    sh "xmake -C build -j 16"
                                     archiveArtifacts artifacts: "**/*.xe", allowEmptyArchive: false
                                     stash name: "xe_files", includes: "**/*.xe"
                                 }
@@ -97,7 +84,6 @@ pipeline {
                         }
                     }
                 }
-
                 stage('Documentation') {
                     steps {
                         dir("${REPO}") {
@@ -114,6 +100,7 @@ pipeline {
             post {
                 always{
                     dir("${REPO}/tests") {
+                        // No test yet so this is a placeholder
                         // junit 'results.xml'
                     }
                 }
