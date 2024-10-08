@@ -4,7 +4,7 @@ project(app_evk_316_simple_c)
 
 set(APP_HW_TARGET                   XCORE-AI-EXPLORER) # This is the XTC tools supplied XN file for the XK_EVK_XU316
 
-set(APP_DEPENDENT_MODULES           "lib_board_support(1.0.0)")
+include(../deps.cmake)
 
 set(APP_COMPILER_FLAGS              -Os
                                     -g
