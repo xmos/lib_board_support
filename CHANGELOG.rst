@@ -1,6 +1,12 @@
 lib_board_support Changelog
 ===========================
 
+1.1.0
+------
+
+  * FIXED: DAC setup on channels 0..2 when dac_is_clock_master which caused distortion
+    at higher sample rates
+
 1.0.1
 ------
 

@@ -481,39 +481,41 @@ void xk_audio_316_mc_ab_AudioHwConfig(i2c_cli i2c, const xk_audio_316_mc_ab_conf
         /* Do nothing - the SW_PLL configures the AppPLL */
     }
 
-    /* Set one DAC to I2S master */
+    /* Set one DAC to I2S master, the others to slave*/
     if(config.dac_is_clock_master)
     {
-        i2c_regop_res_t result = I2C_REGOP_SUCCESS;
         unsigned regVal;
-        const int dacAddr = PCM5122_3_I2C_DEVICE_ADDR;
 
         //OSR CLK divider is set to one (as its based on the output from the DAC CLK, which is already PLL/16)
         regVal = (mClk/(samFreq * config.i2s_chans_per_frame * 32))-1;
-        result |= i2c_reg_write(i2c, dacAddr, PCM5122_DOSR, regVal);
+        WriteAllDacRegs(i2c, PCM5122_DOSR, regVal);
+
 
         //# FS setting should be set based on sample rate
         regVal = samFreq/96000;
-        result |= i2c_reg_write(i2c, dacAddr, PCM5122_I16E_FS, regVal);
+        WriteAllDacRegs(i2c, PCM5122_I16E_FS, regVal);
 
         //IDAC1  sets the number of miniDSP instructions per clock.
         regVal = 192000/samFreq;
-        result |= i2c_reg_write(i2c, dacAddr, PCM5122_IDAC_MS, regVal);
+        WriteAllDacRegs(i2c, PCM5122_IDAC_MS, regVal);
+
+        i2c_regop_res_t result = I2C_REGOP_SUCCESS;
+        const int MasterDacAddr = PCM5122_3_I2C_DEVICE_ADDR;
 
         /* Master mode setting */
         // BCK, LRCK output
-        result |= i2c_reg_write(i2c, dacAddr, PCM5122_BCK_LRCLK, 0x11);
+        result |= i2c_reg_write(i2c, MasterDacAddr, PCM5122_BCK_LRCLK, 0x11);
 
         // Master mode BCK divider setting (making 64fs)
         regVal = (mClk/(samFreq * config.i2s_chans_per_frame * config.i2s_n_bits))-1;
-        result |= i2c_reg_write(i2c, dacAddr, PCM5122_DBCK, regVal);
+        result |= i2c_reg_write(i2c, MasterDacAddr, PCM5122_DBCK, regVal);
 
         // Master mode LRCK divider setting (divide BCK by a further 64 (256 for TDM) to make 1fs)
         regVal = (config.i2s_chans_per_frame * config.i2s_n_bits)-1;
-        result |= i2c_reg_write(i2c, dacAddr, PCM5122_DLRCK, regVal);
+        result |= i2c_reg_write(i2c, MasterDacAddr, PCM5122_DLRCK, regVal);
 
         // Master mode BCK, LRCK divider reset release
-        result |= i2c_reg_write(i2c, dacAddr, PCM5122_RBCK_LRCLK, 0x3f);
+        result |= i2c_reg_write(i2c, MasterDacAddr, PCM5122_RBCK_LRCLK, 0x3f);
 
         assert(result == I2C_REGOP_SUCCESS && msg("DAC I2C write reg failed"));
     }
@@ -564,8 +566,7 @@ void xk_audio_316_mc_ab_AudioHwConfig(i2c_cli i2c, const xk_audio_316_mc_ab_conf
 
     WriteAllDacRegs(i2c, PCM5122_STANDBY_PWDN,   0x00); // Set DAC in run mode (no standby or powerdown)
     delay_milliseconds(1);
-    WriteAllDacRegs(i2c, PCM5122_MUTE,           0x00); // Un-mute both channels
+    WriteAllDacRegs(i2c, PCM5122_MUTE,           0x00); // Un-mute all channels
 }
 
 #endif
-
