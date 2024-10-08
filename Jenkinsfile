@@ -60,9 +60,9 @@ pipeline {
                         runLibraryChecks("${WORKSPACE}/${REPO}", "v2.0.1")
                     } // steps
                 }  // Library checks
-                stage('Build'){
+                stage('Build examples'){
                     steps {
-                        dir("${REPO}") {
+                        dir("${REPO}/examples") {
                             withVenv {
                                 withTools(params.TOOLS_VERSION) {
                                     sh "cmake  -G \"Unix Makefiles\" -B build"
