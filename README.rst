@@ -5,7 +5,7 @@ lib_board_support
 #################
 
 :vendor: XMOS
-:version: 1.0.0
+:version: 1.0.1
 :scope: General Use
 :description: Support library for XMOS development kits
 :category: General Purpose
@@ -15,16 +15,17 @@ lib_board_support
 Summary
 *******
 
-``lib_board_support`` contains board specific hardware configuration code for various XMOS
+``lib_board_support`` contains board specific hardware configuration code for various `XMOS`
 evaluation and development kits.
 
 Features
 ********
 
-  * Support for the following boards
+  * Support for the following boards:
      * ``XK_EVK_XU316``
      * ``XK_AUDIO_316_MC``
      * ``XK_AUDIO_216_MC``
+  * Simple examples to demonstrating usage from both `XC` and `C`.
 
 Known Issues
 ************
@@ -48,10 +49,8 @@ Related Application Notes
 
 The following application notes use this library:
 
+  * `AN02003: SPDIF/ADAT/I²S Receive to I²S Slave Bridge with ASRC <https://www.xmos.com/file/an02003>`_
   * `AN02016: Integrating Audio Weaver (AWE) Core into USB Audio <https://www.xmos.com/file/an02016>`_
-  * `AN02003: SPDIF/ADAT/I2S Receive to |I2S| Slave Bridge with ASRC <https://www.xmos.com/file/an02003>`_
-
-A number of simple examples are also included in this library under the `examples` directory to demonstrate usage of lib_board_support from XC and C.
 
 Support
 *******

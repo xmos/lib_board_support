@@ -4,8 +4,7 @@ project(app_xu316_i2s_loopback)
 
 set(APP_HW_TARGET                   xk-audio-316-mc.xn)
 
-set(APP_DEPENDENT_MODULES           "lib_board_support(1.0.0)"
-                                    "lib_i2s(5.1.0)")
+include(../deps.cmake)
 
 set(COMPILER_FLAGS_COMMON           -Os
                                     -g

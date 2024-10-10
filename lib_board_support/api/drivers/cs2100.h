@@ -66,7 +66,7 @@ static inline void PllMult(unsigned output, unsigned ref, UNSAFE client interfac
     unsigned char data[1] = {0};
     i2c_regop_res_t result;
 
-    /* PLL expects 12:20 format, convert output and ref to 12:20 */
+    /* PLL expects 20.12 format, convert output and ref to 20.12 */
     /* Shift up the dividend by 12 to retain format... */
     unsigned mult = (unsigned) ((((unsigned long long)output) << 32) / (((unsigned long long)ref) << 20));
 
