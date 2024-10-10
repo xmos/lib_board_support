@@ -13,6 +13,8 @@ lib_board_support change log
 
     - lib_sw_pll: 2.2.0 -> 2.3.0
 
+    - lib_xassert: 4.2.0 -> 4.3.0
+
 1.0.1
 -----
 
