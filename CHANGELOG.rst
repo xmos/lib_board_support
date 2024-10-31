@@ -1,6 +1,17 @@
 lib_board_support change log
 ============================
 
+UNRELEASED
+----------
+
+  * Changes to dependencies:
+
+    - lib_i2c: 6.3.0 -> 6.3.1
+
+    - lib_sw_pll: 2.3.0 -> 2.3.1
+
+    - lib_xassert: 4.3.0 -> 4.3.3
+
 1.1.0
 -----
 
