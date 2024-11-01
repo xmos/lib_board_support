@@ -1,5 +1,5 @@
 xcore.ai Evaluation Kit
-.......................
+=======================
 
 The `XMOS xcore.ai Evaluation Kit` (XK-EVK-XU316) is an evaluation board for the `xcore.ai` multi-core microcontroller
 from `XMOS`.
@@ -36,7 +36,7 @@ For full details regarding the hardware please refer to `XK-EVK-XU316 xcore.ai E
     an "example" rather than a fully fledged reference design.
 
 Analogue Audio Input & Output
-+++++++++++++++++++++++++++++
+-----------------------------
 
 A stereo CODEC (TLV320AIC3204), connected to the xcore.ai device via an |I2S| interface, provides analogue input/output
 functionality at line level.
@@ -44,12 +44,12 @@ functionality at line level.
 The audio CODEC is are configured by the `xcore.ai` device via an |I2C| bus.
 
 Audio Clocking
-++++++++++++++
+--------------
 
 `xcore.ai` devices are equipped with a secondary (or `application`) PLL which is used to generate the audio clocks for the CODEC.
 
 LEDs, Buttons and Other IO
-++++++++++++++++++++++++++
+--------------------------
 
 Four green LED's and two push buttons are provided for general purpose user interfacing.
 
@@ -59,7 +59,7 @@ All spare I/O is brought out and made available on 0.1" headers for easy connect
 boards etc.
 
 Power
-+++++
+-----
 
 The XK-EVK-XU316 requires a 5V power source that is normally provided through the micro-USB cable J3.
 The voltage is converted by on-board regulators to the 0V9, 1V8 and 3V3 supplies used by the components.
@@ -68,7 +68,7 @@ The board should therefore be configured to present itself as a bus powered devi
 active USB host.
 
 Debug
-+++++
+-----
 
 For convenience the board includes an on-board xTAG4 for debugging via JTAG/xSCOPE.
 This is accessed via the USB (micro-B) receptacle marked ``DEBUG``.
