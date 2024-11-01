@@ -3,6 +3,21 @@
 @Library('xmos_jenkins_shared_library@v0.34.0') _
 
 getApproval()
+def archiveLib(String repoName) {
+    sh "git -C ${repoName} clean -xdf"
+    sh "zip ${repoName}_sw.zip -r ${repoName}"
+    archiveArtifacts artifacts: "${repoName}_sw.zip", allowEmptyArchive: false
+}
+
+def checkout_shallow()
+{
+  checkout scm: [
+    $class: 'GitSCM',
+    branches: scm.branches,
+    userRemoteConfigs: scm.userRemoteConfigs,
+    extensions: [[$class: 'CloneOption', depth: 1, shallow: true, noTags: false]]
+  ]
+}
 
 pipeline {
     agent none
@@ -28,44 +43,50 @@ pipeline {
             defaultValue: '6.1.2',
             description: 'The xmosdoc version'
         )
+        string(
+            name: 'INFR_APPS_VERSION',
+            defaultValue: 'v2.0.1',
+            description: 'The infr_apps version'
+        )
     }
     environment {
         REPO = 'lib_board_support'
         PYTHON_VERSION = "3.12.1"
-        VENV_DIRNAME = ".venv"
     }
 
     stages {
         stage('Build and tests') {
             agent {
-                label 'linux&&64'
+                label 'documentation && linux && x86_64'
             }
             stages{
                 stage('Checkout'){
                     steps {
                         println "Stage running on: ${env.NODE_NAME}"
                         dir("${REPO}") {
-                            checkout scm
+                            checkout_shallow()
                             createVenv()
                             withTools(params.TOOLS_VERSION) {
                                 dir("examples") {
-                                    sh "cmake  -G \"Unix Makefiles\" -B build"
+                                    sh 'cmake -G "Unix Makefiles" -B build -DDEPS_CLONE_SHALLOW=TRUE'
                                 }
                             }
                         } // dir
                     } // steps
-                }
+                } // stage('Checkout')
                 stage('Library checks') {
                     steps {
-                        runLibraryChecks("${WORKSPACE}/${REPO}", "v2.0.1")
+                        warnError("lib checks") {
+                            runLibraryChecks("${WORKSPACE}/${REPO}", "${params.INFR_APPS_VERSION}")
+                        }
                     } // steps
-                }  // Library checks
+                }  // stage('Library checks')
                 stage('Build examples'){
                     steps {
                         dir("${REPO}/examples") {
                             withVenv {
                                 withTools(params.TOOLS_VERSION) {
-                                    sh "cmake  -G \"Unix Makefiles\" -B build"
+                                    sh 'cmake -G "Unix Makefiles" -B build -DDEPS_CLONE_SHALLOW=TRUE'
                                     archiveArtifacts artifacts: "build/manifest.txt", allowEmptyArchive: false
                                     sh "xmake -C build -j 16"
                                     archiveArtifacts artifacts: "**/*.xe", allowEmptyArchive: false
@@ -74,7 +95,7 @@ pipeline {
                             }
                         }
                     }
-                }
+                } // stage('Build examples')
                 stage('Test'){
                     steps {
                         dir("${REPO}") {
@@ -85,19 +106,21 @@ pipeline {
                             }
                         }
                     }
-                }
+                } // stage('Test')
                 stage('Documentation') {
                     steps {
                         dir("${REPO}") {
-                            withVenv {
-                                sh "pip install git+ssh://git@github.com/xmos/xmosdoc@v${params.XMOSDOC_VERSION}"
-                                    sh 'xmosdoc'
-                                    zip zipFile: "${REPO}_docs.zip", archive: true, dir: 'doc/_build'
-                            } // withVenv
+                            warnError("Docs") {
+                                buildDocs()
+                            } // warnError("Docs")
                         } // dir
                     } // steps
-                } // Documentation
-
+                } // stage('Documentation')
+                stage("Archive Lib") {
+                    steps {
+                        archiveLib(REPO)
+                    }
+                } //stage("Archive Lib")
             }
             post {
                 always{
