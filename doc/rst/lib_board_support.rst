@@ -61,12 +61,12 @@ the relevant header file. For example::
 From then onwards the code may call the relevant API functions to setup and configure the board
 hardware. Examples are provided in the `examples` directory of this repo.
 
-Note that in some cases, the `xcore` tile that calls the configuration function (usually from |I2S|
-initialisation) is different from the tile where |I2C| master is placed. Since |I2C| master is
+Note that in some cases, the `xcore` tile that calls the configuration function (usually from I²S
+initialisation) is different from the tile where I²C master is placed. Since I²C master is
 required by most audio CODECs for configuration and `xcore` tiles can only communicate with each
-other via channels, a remote server is needed to provide the |I2C| setup. This usually takes the
-form of a task which is run on a thread placed on the |I2C| tile and is controlled via a channel
-from the other tile where |I2S| resides. The cross-tile channel must be declared at the top-level
+other via channels, a remote server is needed to provide the I²C setup. This usually takes the
+form of a task which is run on a thread placed on the I²C tile and is controlled via a channel
+from the other tile where I²S resides. The cross-tile channel must be declared at the top-level
 XC main function. The included examples provide a reference for this using both XC and C.
 
 ********************************
@@ -133,8 +133,8 @@ application where the hardware setup is called from C.
 
 These applications run on the `XK-EVK-XU316` and `XK-AUDIO-316-MC` boards respectively.
 
-They show how to use the cross-tile communications in conjunction with the |I2C| master server.
-The applications only setup the hardware and then exit the |I2C| server.
+They show how to use the cross-tile communications in conjunction with the I²C master server.
+The applications only setup the hardware and then exit the I²C server.
 
 XC Usage Example
 ================

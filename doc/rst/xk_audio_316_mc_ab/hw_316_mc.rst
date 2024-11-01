@@ -51,9 +51,9 @@ It includes the following features:
 
 - M: 3 general purpose buttons
 
-- O: Flexible |I2S|/TDM input data routing
+- O: Flexible I²S/TDM input data routing
 
-- P: Flexible |I2S|/TDM output data routing
+- P: Flexible I²S/TDM output data routing
 
 - Q: Integrated power supply
 
@@ -71,9 +71,9 @@ A total of eight single-ended analog input channels are provided via 3.5mm stere
 
 A total of eight single-ended analog output channels are provided. These are fed from four PCM5122 stereo DAC's from Texas instruments.
 
-All ADC's and DAC's are configured via an |I2C| bus. Due to an clash of device addresses a |I2C| multiplexor is used.
+All ADC's and DAC's are configured via an I²C bus. Due to an clash of device addresses a I²C multiplexor is used.
 
-The four digital |I2S|/TDM input and output channels are mapped to the xCORE input/outputs through a header array. These jumpers allow channel selection when the ADCs/DACs are used in TDM mode.
+The four digital I²S/TDM input and output channels are mapped to the xCORE input/outputs through a header array. These jumpers allow channel selection when the ADCs/DACs are used in TDM mode.
 
 Digital Input & Output
 ----------------------
@@ -98,7 +98,7 @@ Three methods of generating an audio master clock are provided on the board:
 
     * A Cirrus Logic CS2100-CP PLL device.  The CS2100 features both a clock generator and clock multiplier/jitter reduced clock frequency synthesizer (clean up) and can generate a low jitter audio clock based on a synchronisation signal provided by the `xcore`
 
-    * A Skyworks Si5351B PLL device. The Si5351 is an |I2C| configurable clock generator that is suited for replacing crystals, crystal oscillators, VCXOs, phase-locked loops (PLLs), and fanout buffers.
+    * A Skyworks Si5351B PLL device. The Si5351 is an I²C configurable clock generator that is suited for replacing crystals, crystal oscillators, VCXOs, phase-locked loops (PLLs), and fanout buffers.
 
     * `xcore.ai` devices are equipped with a secondary (or `application`) PLL which can be used to generate audio clocks.
 
