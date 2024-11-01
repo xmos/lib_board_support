@@ -1,6 +1,11 @@
 lib_board_support change log
 ============================
 
+1.1.1
+-----
+  * CHANGED: Documentation improvements
+  * REMOVED: Dependency of examples on lib_i2s
+
 1.1.0
 -----
 
