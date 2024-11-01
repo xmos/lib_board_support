@@ -2,7 +2,6 @@
 
 @Library('xmos_jenkins_shared_library@v0.34.0') _
 
-getApproval()
 def archiveLib(String repoName) {
     sh "git -C ${repoName} clean -xdf"
     sh "zip ${repoName}_sw.zip -r ${repoName}"
@@ -18,20 +17,16 @@ def checkout_shallow()
     extensions: [[$class: 'CloneOption', depth: 1, shallow: true, noTags: false]]
   ]
 }
-
+getApproval()
 pipeline {
     agent none
 
     options {
-        disableConcurrentBuilds()
+        buildDiscarder(xmosDiscardBuildSettings())
         skipDefaultCheckout()
         timestamps()
-        // on develop discard builds after a certain number else keep forever
-        buildDiscarder(logRotator(
-            numToKeepStr:         env.BRANCH_NAME ==~ /develop/ ? '25' : '',
-            artifactNumToKeepStr: env.BRANCH_NAME ==~ /develop/ ? '25' : ''
-        ))
     }
+
     parameters {
         string(
             name: 'TOOLS_VERSION',
