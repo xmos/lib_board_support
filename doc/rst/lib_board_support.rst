@@ -139,25 +139,14 @@ The applications only setup the hardware and then exit the |I2C| server.
 XC Usage Example
 ================
 
-A more sophisticated example is also provided, written in XC, by `app_xk_audio_316_mc_loopback`.
+The application `app_xk_audio_316_mc_simple_xc` demonstrates calling the hardware setup API from C.
+It runs on the `XK-AUDIO-316-MC` board.
 
-This application sets up the hardware on the `XK-AUDIO-316-MC` board and then runs an |I2S|
-loopback application to take samples from the on-board ADCs and send the signals out through the
-DACs. It keeps the |I2C| master server running in case the application wants to change sample rate
-which requires |I2C| configuration of the audio CODECs.
+Building and running
+====================
+To build and run an example, run the following from an XTC tools terminal to configure the build::
 
-Two build configurations are included:
-
-    - `XMOS_MASTER` - This configures the ADCs and DACs to |I2S| slave and the xcore.ai device
-      drives the |I2S| clocks. The on-chip application PLL is configured to drive the master clock
-      to the mixed signal devices.
-    - `XMOS_SLAVE` - This configures one the DACs to |I2S| master and the remaining DAC, all ADCs
-      and the `xcore.ai` device to |I2S| slave. The on-chip application PLL is configured to drive
-      the master clock to the mixed signal devices.
-
-To build and run the example, run the following from an XTC tools terminal to configure the build::
-
-    cd examples/app_xk_audio_316_mc_loopback
+    cd examples/<app_name>
     cmake -G "Unix Makefiles" -B build
 
 Any missing dependencies will be downloaded by the build system at this point.
@@ -168,12 +157,13 @@ The application binaries can be built using ``xmake``::
 
 To run the application use the following command::
 
-    xrun bin/XMOS_MASTER/app_xk_audio_316_mc_loopback_XMOS_MASTER.xe
+    xrun --io bin/<app_name>/<app_name>.xe
 
-or::
+For example::
 
-    xrun bin/XMOS_SLAVE/app_xk_audio_316_mc_loopback_XMOS_SLAVE.xe
+    cd examples/app_xk_audio_316_mc_simple_xc
+    cmake -G "Unix Makefiles" -B build
+    xmake -C build
+    xrun --io bin/app_xk_audio_316_mc_simple_xc.xe
 
-Connect an analog audio source to the chosen ADC input channels and then monitor the looped back
-output on the chosen DAC output channels.
 
