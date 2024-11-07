@@ -157,7 +157,7 @@ The application binaries can be built using ``xmake``::
 
 To run the application use the following command::
 
-    xrun --io bin/<app_name>/<app_name>.xe
+    xrun --io bin/<app_name>.xe
 
 For example::
 

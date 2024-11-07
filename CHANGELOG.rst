@@ -9,7 +9,7 @@ lib_board_support change log
 
   * Changes to dependencies:
 
-    - lib_i2c: 6.3.0 -> 6.3.1
+    - lib_i2c: 6.3.0 -> 6.4.0
 
     - lib_sw_pll: 2.3.0 -> 2.3.1
 
