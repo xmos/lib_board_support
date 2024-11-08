@@ -2,7 +2,7 @@
 .. _usb_audio_sec_hw_316_mc:
 
 xcore.ai Multi-Channel Audio Board
-...................................
+==================================
 
 The `XMOS xcore.ai Multichannel Audio Board` (XK-AUDIO-316-MC) is a complete hardware and software reference platform targeted at up to 32-channel USB audio applications, such as DJ decks, mixers and other musical instrument interfaces.  The board can also be used to prototype products with reduced feature sets or HiFi style products.
 
@@ -15,7 +15,7 @@ For full details regarding the hardware please refer to `xcore.ai Multichannel A
 |newpage|
 
 Hardware Features
-+++++++++++++++++
+-----------------
 
 The location of the various features of the `xcore.ai Multichannel Audio Board` (XK-AUDIO-316-MC) is shown in :numref:`xk_audio_316_mc_block_diagram`.
 
@@ -51,9 +51,9 @@ It includes the following features:
 
 - M: 3 general purpose buttons
 
-- O: Flexible |I2S|/TDM input data routing
+- O: Flexible I²S/TDM input data routing
 
-- P: Flexible |I2S|/TDM output data routing
+- P: Flexible I²S/TDM output data routing
 
 - Q: Integrated power supply
 
@@ -65,24 +65,24 @@ It includes the following features:
 
 
 Analogue Input & Output
-+++++++++++++++++++++++
+-----------------------
 
 A total of eight single-ended analog input channels are provided via 3.5mm stereo jacks. These inputs feed into a pair of quad-channel PCM1865 ADCs from Texas Instruments.
 
 A total of eight single-ended analog output channels are provided. These are fed from four PCM5122 stereo DAC's from Texas instruments.
 
-All ADC's and DAC's are configured via an |I2C| bus. Due to an clash of device addresses a |I2C| multiplexor is used.
+All ADC's and DAC's are configured via an I²C bus. Due to an clash of device addresses a I²C multiplexor is used.
 
-The four digital |I2S|/TDM input and output channels are mapped to the xCORE input/outputs through a header array. These jumpers allow channel selection when the ADCs/DACs are used in TDM mode.
+The four digital I²S/TDM input and output channels are mapped to the xCORE input/outputs through a header array. These jumpers allow channel selection when the ADCs/DACs are used in TDM mode.
 
 Digital Input & Output
-++++++++++++++++++++++
+----------------------
 
 Optical and coaxial digital audio transmitters are used to provide digital audio input output in formats such as IEC60958 consumer mode (S/PDIF) and ADAT.
 The output data streams from the `xcore` are re-clocked using the external master clock to synchronise the data into the audio clock domain. This is achieved using simple external D-type flip-flops.
 
 MIDI
-++++
+----
 
 MIDI input and output is provided on the board via standard 5-pin DIN connectors compliant to the MIDI specification.
 The signals are buffered using 5V line drivers and are then connected ports on the xCORE, via a 5V to 3.3V buffer.
@@ -90,7 +90,7 @@ A 1-bit port is used for receive and a 4-bit port is used for transmit. A pull-u
 is no MIDI output when the `xcore` device is not actively driving the output.
 
 Audio Clocking
-++++++++++++++
+--------------
 
 In order to accommodate a multitude of clocking options a flexible clocking scheme is provided for the audio subsystem.
 
@@ -98,7 +98,7 @@ Three methods of generating an audio master clock are provided on the board:
 
     * A Cirrus Logic CS2100-CP PLL device.  The CS2100 features both a clock generator and clock multiplier/jitter reduced clock frequency synthesizer (clean up) and can generate a low jitter audio clock based on a synchronisation signal provided by the `xcore`
 
-    * A Skyworks Si5351B PLL device. The Si5351 is an |I2C| configurable clock generator that is suited for replacing crystals, crystal oscillators, VCXOs, phase-locked loops (PLLs), and fanout buffers.
+    * A Skyworks Si5351B PLL device. The Si5351 is an I²C configurable clock generator that is suited for replacing crystals, crystal oscillators, VCXOs, phase-locked loops (PLLs), and fanout buffers.
 
     * `xcore.ai` devices are equipped with a secondary (or `application`) PLL which can be used to generate audio clocks.
 
@@ -111,7 +111,7 @@ Selecting between these methods is done via writing to bits 6 and 7 of PORT 8D o
 .. _hw_316_ctrlport:
 
 Control I/O
-+++++++++++
+-----------
 
 4 bits of PORT 8C are used to control external hardware on the board. This is described in :ref:`table_316_ctrlport`.
 
@@ -141,7 +141,7 @@ Control I/O
 
 
 LEDs, Buttons and Other IO
-++++++++++++++++++++++++++
+--------------------------
 
 All programmable I/O on the board is configured for 3.3 volts.
 
@@ -157,7 +157,7 @@ All spare I/O is brought out and made available on 0.1" headers for easy connect
 boards etc.
 
 Power
-+++++
+-----
 
 The board is capable of acting as a USB2.0 self or bus powered device. If bus powered, the board takes
 power from the ``USB DEVICE`` connector (micro-B receptacle). If self powered, board takes power
@@ -170,7 +170,7 @@ A power source select jumper (marked ``PWR SRC``) is used to select between bus 
     To remain USB compliant the software should be properly configured for bus vs self powered operation
 
 Debug
-+++++
+-----
 
 For convenience the board includes an on-board xTAG4 for debugging via JTAG/xSCOPE.
 This is accessed via the USB (micro-B) receptacle marked ``DEBUG``.

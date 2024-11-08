@@ -2,8 +2,8 @@
 
 lib_name: lib_board_support
 project: '{{lib_name}}'
-title: '{{lib_name}}: XMOS Board Support'
-version: 1.1.0
+title: '{{lib_name}}: XMOS board support'
+version: 1.1.1
 
 documentation:
   exclude_patterns_path: doc/exclude_patterns.inc

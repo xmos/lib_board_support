@@ -1,6 +1,20 @@
 lib_board_support change log
 ============================
 
+1.1.1
+-----
+
+  * CHANGED: Documentation improvements
+  * REMOVED: Dependency of examples on lib_i2s
+
+  * Changes to dependencies:
+
+    - lib_i2c: 6.3.0 -> 6.4.0
+
+    - lib_sw_pll: 2.3.0 -> 2.3.1
+
+    - lib_xassert: 4.3.0 -> 4.3.1
+
 1.1.0
 -----
 
