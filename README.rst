@@ -5,7 +5,7 @@ lib_board_support: XMOS board support
 #####################################
 
 :vendor: XMOS
-:version: 1.1.1
+:version: 1.2.0
 :scope: General Use
 :description: Support library for XMOS development kits
 :category: General Purpose
@@ -27,6 +27,7 @@ Features
     * ``XK_EVK_XU316``
     * ``XK_AUDIO_316_MC``
     * ``XK_AUDIO_216_MC``
+    * ``XK-VOICE-L71``
  * Simple examples to demonstrating usage from both `XC` and `C`.
 
 ************
