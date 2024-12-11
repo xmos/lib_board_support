@@ -4,7 +4,7 @@ lib_board_support change log
 1.2.0
 -----
 
-  * ADDED: Support for xk-voice-l71.xn
+  * ADDED: Support for XK-VOICE-L71
 
 
 1.1.1
