@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.21)
 include($ENV{XMOS_CMAKE_PATH}/xcommon.cmake)
 project(lib_board_support)
-add_subdirectory(app_xk_316_audio_mc_loopback)
+add_subdirectory(app_xk_audio_316_mc_simple_xc)
 add_subdirectory(app_evk_316_simple_c)
 add_subdirectory(app_xk_audio_316_mc_simple_c)

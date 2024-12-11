@@ -1,22 +1,32 @@
 // This file relates to internal XMOS infrastructure and should be ignored by external users
 
-@Library('xmos_jenkins_shared_library@v0.33.0') _
+@Library('xmos_jenkins_shared_library@v0.34.0') _
 
+def archiveLib(String repoName) {
+    sh "git -C ${repoName} clean -xdf"
+    sh "zip ${repoName}_sw.zip -r ${repoName}"
+    archiveArtifacts artifacts: "${repoName}_sw.zip", allowEmptyArchive: false
+}
+
+def checkout_shallow()
+{
+  checkout scm: [
+    $class: 'GitSCM',
+    branches: scm.branches,
+    userRemoteConfigs: scm.userRemoteConfigs,
+    extensions: [[$class: 'CloneOption', depth: 1, shallow: true, noTags: false]]
+  ]
+}
 getApproval()
-
 pipeline {
     agent none
 
     options {
-        disableConcurrentBuilds()
+        buildDiscarder(xmosDiscardBuildSettings())
         skipDefaultCheckout()
         timestamps()
-        // on develop discard builds after a certain number else keep forever
-        buildDiscarder(logRotator(
-            numToKeepStr:         env.BRANCH_NAME ==~ /develop/ ? '25' : '',
-            artifactNumToKeepStr: env.BRANCH_NAME ==~ /develop/ ? '25' : ''
-        ))
     }
+
     parameters {
         string(
             name: 'TOOLS_VERSION',
@@ -25,67 +35,62 @@ pipeline {
         )
         string(
             name: 'XMOSDOC_VERSION',
-            defaultValue: '6.0.0',
+            defaultValue: 'v6.1.3',
             description: 'The xmosdoc version'
+        )
+        string(
+            name: 'INFR_APPS_VERSION',
+            defaultValue: 'v2.0.1',
+            description: 'The infr_apps version'
         )
     }
     environment {
         REPO = 'lib_board_support'
-        PYTHON_VERSION = "3.10"
-        VENV_DIRNAME = ".venv"
+        PYTHON_VERSION = "3.12.1"
     }
 
     stages {
         stage('Build and tests') {
             agent {
-                label 'linux&&64'
+                label 'documentation && linux && x86_64'
             }
             stages{
-                stage('Checkout and lib checks'){
+                stage('Checkout'){
                     steps {
                         println "Stage running on: ${env.NODE_NAME}"
-                        sh "git clone -b v1.2.1 git@github.com:xmos/infr_scripts_py"
-                        sh "git clone -b v1.6.0 git@github.com:xmos/infr_apps"
-
                         dir("${REPO}") {
-                            checkout scm
+                            checkout_shallow()
                             createVenv()
-                            withVenv {
-                                sh "pip install -e ../infr_scripts_py"
-                                sh "pip install -e ../infr_apps"
-
-                                // Grab dependancies before changelog check
-                                withTools(params.TOOLS_VERSION) {
-                                    sh "cmake  -G \"Unix Makefiles\" -B build"
+                            withTools(params.TOOLS_VERSION) {
+                                dir("examples") {
+                                    sh 'cmake -G "Unix Makefiles" -B build -DDEPS_CLONE_SHALLOW=TRUE'
                                 }
-
-                                // installPipfile(false)
-                                withTools(params.TOOLS_VERSION) {
-                                    withEnv(["REPO=${REPO}", "XMOS_ROOT=.."]) {
-                                        xcoreLibraryChecks("${REPO}", false)
-                                        // junit "junit_lib.xml"
-                                    } // withEnv
-                                } // withTools
-                            } // Venv
+                            }
                         } // dir
                     } // steps
-                }
-
-                stage('Build'){
+                } // stage('Checkout')
+                stage('Library checks') {
                     steps {
-                        dir("${REPO}") {
+                        warnError("lib checks") {
+                            runLibraryChecks("${WORKSPACE}/${REPO}", "${params.INFR_APPS_VERSION}")
+                        }
+                    } // steps
+                }  // stage('Library checks')
+                stage('Build examples'){
+                    steps {
+                        dir("${REPO}/examples") {
                             withVenv {
                                 withTools(params.TOOLS_VERSION) {
-                                    sh "cmake  -G \"Unix Makefiles\" -B build"
+                                    sh 'cmake -G "Unix Makefiles" -B build -DDEPS_CLONE_SHALLOW=TRUE'
                                     archiveArtifacts artifacts: "build/manifest.txt", allowEmptyArchive: false
-                                    sh "xmake -C build -j"
+                                    sh "xmake -C build -j 16"
                                     archiveArtifacts artifacts: "**/*.xe", allowEmptyArchive: false
                                     stash name: "xe_files", includes: "**/*.xe"
                                 }
                             }
                         }
                     }
-                }
+                } // stage('Build examples')
                 stage('Test'){
                     steps {
                         dir("${REPO}") {
@@ -96,24 +101,26 @@ pipeline {
                             }
                         }
                     }
-                }
-
+                } // stage('Test')
                 stage('Documentation') {
                     steps {
                         dir("${REPO}") {
-                            withVenv {
-                                sh "pip install git+ssh://git@github.com/xmos/xmosdoc@v${params.XMOSDOC_VERSION}"
-                                    sh 'xmosdoc'
-                                    zip zipFile: "${REPO}_docs.zip", archive: true, dir: 'doc/_build'
-                            } // withVenv
+                            warnError("Docs") {
+                                buildDocs()
+                            } // warnError("Docs")
                         } // dir
                     } // steps
-                } // Documentation
-
+                } // stage('Documentation')
+                stage("Archive Lib") {
+                    steps {
+                        archiveLib(REPO)
+                    }
+                } //stage("Archive Lib")
             }
             post {
                 always{
                     dir("${REPO}/tests") {
+                        // No test yet so this is a placeholder
                         // junit 'results.xml'
                     }
                 }
