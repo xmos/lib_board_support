@@ -8,20 +8,29 @@
 #include "i2c.h"
 
 
+
+
+/** 
+ * @brief Type of clock to be instantiated. This may be a fixed clock using the application PLL,
+ *  an adjustable clock using the CS2100 external PLL or an adjustable or fixed clock using 
+ *  the on-chip application PLL.
+ */
+typedef enum {
+    CLK_FIXED,      /** Generate fixed MCLK from XCORE using APP_PLL */ 
+    CLK_EXTERNAL    /** Expect an externally provided MCLK  */
+} xk_voice_l71_mclk_modes_t;
+
+
 /**
  *  @brief Configuration struct type for setting the hardware profile.
  *  @var 
  */
 typedef struct {
     /** xk_voice_l71_config_t::clk_mode See xk_voice_l71_mclk_modes_t for available clock mode options. */
-    
-    // xk_voice_l71_mclk_modes_t clk_mode;
+    xk_voice_l71_mclk_modes_t clk_mode;
     char dac_is_clock_master;
     unsigned default_mclk;
-    unsigned pll_sync_freq;
-    // xk_voice_l71_pcm_format_t pcm_format;
-    unsigned i2s_n_bits;
-    unsigned i2s_chans_per_frame;
+
 } xk_voice_l71_config_t;
 
 
@@ -40,21 +49,6 @@ typedef enum
     AUDIOHW_CMD_REGRD,
     AUDIOHW_CMD_EXIT
 } audioHwCmd_t;
-
-/** 
- * @brief Starts an I2C master task. Must be started from tile[0] *after* xk_audio_316_mc_ab_board_setup() and *before* and tile[1] HW calls.
- *
- *  \param   i2c        client side of I2C master interface connection.
- */
-void xk_voice_l71_i2c_master(SERVER_INTERFACE(i2c_master_if, i2c[1]));
-
-/** 
- * @brief Performs the required port operations to enable and the audio hardware on the platform. Must be called from tile[0]
- *  and *before* xk_audio_316_mc_ab_AudioHwInit() is called.
- *
- *  \param   config     Reference to the xk_audio_316_mc_ab_config_t configuration struct.
- */
-void xk_voice_l71_board_setup(const REFERENCE_PARAM(xk_voice_l71_config_t, config));
 
 
 /** Starts an I2C master server task. Must be started *before* the tile[1] xk_voice_l71_AudioHwInit calls. 
@@ -80,16 +74,14 @@ void xk_voice_l71_AudioHwInit( const REFERENCE_PARAM(xk_voice_l71_config_t, conf
 
 /** Configures the audio hardware following initialisation. This is typically called each time a sample rate or stream format change occurs.
  *
+ *  \param   config         Reference to the xk_voice_l71_config_t hardware configuration struct.
  *  \param   samFreq        The sample rate in Hertz.
  *  \param   mClk           The master clock rate in Hertz.
- *  \param   dsdMode        Controls whether the DAC is to be set into DSD mode (1) or PCM mode (0).
- *  \param   sampRes_DAC    The sample resolution of the DAC output in bits. Typically 16, 24 or 32.
- *  \param   sampRes_ADC    The sample resolution of the ADC input in bits. Typically 16, 24 or 32.
  */
 void xk_voice_l71_AudioHwConfig( 
                                 const REFERENCE_PARAM(xk_voice_l71_config_t, config),
-                                unsigned samFreq, unsigned mClk, unsigned dsdMode,
-                                unsigned sampRes_DAC, unsigned sampRes_ADC);
+                                unsigned samFreq,
+                                unsigned mClk);
 
 /**@}*/ // END: addtogroup xk_voice_l71
 
