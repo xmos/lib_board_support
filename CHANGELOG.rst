@@ -6,7 +6,6 @@ lib_board_support change log
 
   * ADDED: Support for XK-VOICE-L71
 
-
 1.1.1
 -----
 
