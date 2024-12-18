@@ -75,12 +75,11 @@ void xk_voice_l71_AudioHwInit( const REFERENCE_PARAM(xk_voice_l71_config_t, conf
 /** Configures the audio hardware following initialisation. This is typically called each time a sample rate or stream format change occurs.
  *
  *  \param   config         Reference to the xk_voice_l71_config_t hardware configuration struct.
- *  \param   samFreq        The sample rate in Hertz.
+ *  \param   sample_rate    The sample rate in Hertz.
  *  \param   mClk           The master clock rate in Hertz.
  */
-void xk_voice_l71_AudioHwConfig( 
-                                const REFERENCE_PARAM(xk_voice_l71_config_t, config),
-                                unsigned samFreq,
+void xk_voice_l71_AudioHwConfig(const REFERENCE_PARAM(xk_voice_l71_config_t, config),
+                                unsigned sample_rate,
                                 unsigned mClk);
 
 /**@}*/ // END: addtogroup xk_voice_l71
