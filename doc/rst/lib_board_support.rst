@@ -24,6 +24,8 @@ The following boards are supported in this repo with interfaces provided in the 
 +--------------------+---------------------+
 |XK_AUDIO_216_MC_AB  |       XC / C        |
 +--------------------+---------------------+
+|XK_EVK_XU316        |       XC            |
++--------------------+---------------------+
 
 The following section provides specific details of the features for each of the boards supported by this library.
 
@@ -116,6 +118,13 @@ XK_EVK_XU316 API
     :members:
 
 .. doxygengroup:: xk_evk_xu316
+   :content-only:
+
+XK_EVK_XU216 API
+================
+
+
+.. doxygengroup:: xk_evk_xu216
    :content-only:
 
 

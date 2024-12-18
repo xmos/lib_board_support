@@ -1,16 +1,13 @@
 // Copyright 2024 XMOS LIMITED.
 // This Software is subject to the terms of the XMOS Public Licence: Version 1.
 #include <xs1.h>
-
-
-#include <boards_utils.h>
-
 #if BOARD_SUPPORT_BOARD == XK_EVK_XU216
+#include <xk_evk_xe216/board.h>
 
 [[combinable]]
 void ar8035_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
                        CLIENT_INTERFACE(ethernet_cfg_if, i_eth),
-                       out_port_t p_eth_reset) {
+                       out port p_eth_reset) {
   ethernet_link_state_t link_state = ETHERNET_LINK_DOWN;
   ethernet_speed_t link_speed = LINK_1000_MBPS_FULL_DUPLEX;
   const int phy_reset_delay_ms = 1;
