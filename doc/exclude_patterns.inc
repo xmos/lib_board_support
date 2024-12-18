@@ -4,3 +4,4 @@ LICENSE.rst
 hw_216_mc.rst
 hw_316_mc.rst
 hw_evk_xu316.rst
+hw_evk_xe216.rst

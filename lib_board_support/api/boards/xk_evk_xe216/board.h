@@ -21,15 +21,14 @@
 /** Task that connects to the SMI master and MAC to configure the
  * ar8035 PHY and monitor the link status. Note this is combinable
  * and therefore does not need to take a whole thread.
+ * This take must be run from tile[1]
  *
  *  \param i_smi        Client register read/write interface
  *  \param i_eth        Client MAC configuration interface
- *  \param p_eth_reset  Port connected to the PHY reset pin
  */
 [[combinable]]
 void ar8035_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
-                       CLIENT_INTERFACE(ethernet_cfg_if, i_eth),
-                       out port p_eth_reset);
+                       CLIENT_INTERFACE(ethernet_cfg_if, i_eth));
 
 
 

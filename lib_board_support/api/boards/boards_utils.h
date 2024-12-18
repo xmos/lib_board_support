@@ -36,7 +36,7 @@
   * Default value: NULL_BOARD
   */
 #ifndef BOARD_SUPPORT_BOARD
-#define BOARD_SUPPORT_BOARD         NULL_BOARD // This means none of the BSP sources are compiled in to the project
+#define BOARD_SUPPORT_BOARD         NULL_BOARD /** This means none of the BSP sources are compiled in to the project */
 #endif
 
 #if BOARD_SUPPORT_BOARD >= BOARD_SUPPORT_N_BOARDS
