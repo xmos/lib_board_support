@@ -25,8 +25,11 @@
 /** Define representing XK-EVK-XU316 board */
 #define XK_EVK_XU316                3
 
+/** Define representing XK-EVK-XU216 board */
+#define XK_EVK_XU216                4
+
 /** Total number of boards supported by the library */
-#define BOARD_SUPPORT_N_BOARDS      4  // max board + 1
+#define BOARD_SUPPORT_N_BOARDS      5  // max board + 1
 
 /** Define that should be set to the current board type in use
   *
