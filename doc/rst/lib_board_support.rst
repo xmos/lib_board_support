@@ -48,7 +48,7 @@ Usage
 This repo supports the `XMOS` build system; `XCommon CMake`. To use the library add ``lib_board_support``
 to an applications `CMakeLists.txt` file using the `APP_DEPENDENT_MODULES` entry. The application
 must provide a relevant ``xn`` file,  although example ``xn`` files are provided in alongside this
-libray (see `xn_files` directory).
+library (see `xn_files` directory).
 
 The application must use the APIs for the specific board that it is using.
 To ensure that only the correct sources for the board in use get compiled in, it is necessary to
@@ -76,6 +76,11 @@ other via channels, a remote server is needed to provide the I²C setup. This us
 form of a task which is run on a thread placed on the I²C tile and is controlled via a channel
 from the other tile where I²S resides. The cross-tile channel must be declared at the top-level
 XC main function. The included examples provide a reference for this using both XC and C.
+
+.. note::
+    Sample XN files (hardware description for compiler) are provided in ``/xn_files`` in the cases
+    where the compiler doesn't support the platform directly. These can be copied into your
+    application directory where needed. See ``/examples`` for usage.
 
 |newpage|
 
