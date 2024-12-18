@@ -235,7 +235,7 @@ void xk_evk_xu316_AudioHwInit(const xk_evk_xu316_config_t &config)
     delay_milliseconds(1);
 
 
-    // Set the fractional divider if used
+    // Setup master clock
     sw_pll_fixed_clock(config.default_mclk);
 
     delay_milliseconds(1);

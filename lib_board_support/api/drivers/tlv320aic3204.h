@@ -1,5 +1,6 @@
 // Copyright 2024 XMOS LIMITED.
 // This Software is subject to the terms of the XMOS Public Licence: Version 1.
+
 #ifndef TLV320AIC3204_H_
 #define TLV320AIC3204_H_
 

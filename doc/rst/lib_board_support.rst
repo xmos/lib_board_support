@@ -24,6 +24,8 @@ The following boards are supported in this repo with interfaces provided in the 
 +--------------------+---------------------+
 |XK_AUDIO_216_MC_AB  |       XC / C        |
 +--------------------+---------------------+
+|XK-VOICE-L71        |       XC / C        |
++--------------------+---------------------+
 
 The following section provides specific details of the features for each of the boards supported by this library.
 
@@ -32,6 +34,7 @@ The following section provides specific details of the features for each of the 
    xk_audio_316_mc_ab/hw_316_mc
    xk_audio_216_mc_ab/hw_216_mc
    xk_evk_xu316/hw_evk_xu316
+   xk_voice_l71/hw_xk_voice_l71.rst
 
 *****
 Usage
