@@ -9,6 +9,8 @@ Introduction
 This repo contains board specific hardware configuration code for various `XMOS` evaluation and development kits.
 By keeping the board-specific code in a dedicated repository various applications need not replicate commonly used code such as initialisation of on-board peripherals and in addition any updates or fixes can easily be rolled out to all dependent applications.
 
+|newpage|
+
 ****************
 Supported Boards
 ****************
@@ -27,7 +29,8 @@ The following boards are supported in this repo with interfaces provided in the 
 |XK_EVK_XU316        |       XC            |
 +--------------------+---------------------+
 
-The following section provides specific details of the features for each of the boards supported by this library.
+
+The following sections provide specific details of the features for each of the boards supported by this library.
 
 .. toctree::
 
@@ -35,6 +38,8 @@ The following section provides specific details of the features for each of the 
    xk_audio_216_mc_ab/hw_216_mc
    xk_evk_xu316/hw_evk_xu316
    xk_evk_xe216/hw_evk_xe216
+
+|newpage|
 
 *****
 Usage
@@ -72,6 +77,8 @@ form of a task which is run on a thread placed on the I²C tile and is controlle
 from the other tile where I²S resides. The cross-tile channel must be declared at the top-level
 XC main function. The included examples provide a reference for this using both XC and C.
 
+|newpage|
+
 ********************************
 Application Programmer Interface
 ********************************
@@ -83,6 +90,7 @@ This section contains the details of the API support by `lib_board_support`. The
    the supported boards.
 
 
+
 Common API
 ==========
 
@@ -91,6 +99,8 @@ This section contains the list of supported boards, one of which needs to be glo
 
 .. doxygengroup:: bs_common
    :content-only:
+
+|newpage|
 
 
 XK_AUDIO_316_MC_AB API
@@ -102,6 +112,9 @@ XK_AUDIO_316_MC_AB API
 .. doxygengroup:: xk_audio_316_mc_ab
    :content-only:
 
+|newpage|
+
+
 XK_AUDIO_216_MC_AB API
 ======================
 
@@ -111,6 +124,7 @@ XK_AUDIO_216_MC_AB API
 .. doxygengroup:: xk_audio_216_mc_ab
    :content-only:
 
+|newpage|
 
 XK_EVK_XU316 API
 ================
@@ -121,12 +135,16 @@ XK_EVK_XU316 API
 .. doxygengroup:: xk_evk_xu316
    :content-only:
 
+|newpage|
+
 XK_EVK_XU216 API
 ================
 
 
 .. doxygengroup:: xk_evk_xu216
    :content-only:
+
+|newpage|
 
 
 ********************
@@ -176,4 +194,6 @@ For example::
     xmake -C build
     xrun --io bin/app_xk_audio_316_mc_simple_xc.xe
 
+
+|newpage|
 
