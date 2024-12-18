@@ -26,7 +26,7 @@ The following boards are supported in this repo with interfaces provided in the 
 +--------------------+---------------------+
 |XK_AUDIO_216_MC_AB  |       XC / C        |
 +--------------------+---------------------+
-|XK_EVK_XU316        |       XC            |
+|XK_EVK_XE216        |       XC            |
 +--------------------+---------------------+
 
 

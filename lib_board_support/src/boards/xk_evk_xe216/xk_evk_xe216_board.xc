@@ -1,10 +1,11 @@
 // Copyright 2024 XMOS LIMITED.
 // This Software is subject to the terms of the XMOS Public Licence: Version 1.
 
-#if BOARD_SUPPORT_BOARD == XK_EVK_XU216
+#include <xk_evk_xe216/board.h>
+#include <boards_utils.h>
+#if BOARD_SUPPORT_BOARD == XK_EVK_XE216
 #include <xs1.h>
 #include <platform.h>
-#include <xk_evk_xe216/board.h>
 
 // Pin connected to PHY reset
 port p_eth_reset  = on tile[1]: XS1_PORT_1N;
@@ -46,4 +47,4 @@ void ar8035_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
     }
 }
 
-#endif // BOARD_SUPPORT_BOARD == XK_EVK_XU216
+#endif // BOARD_SUPPORT_BOARD == XK_EVK_XE216

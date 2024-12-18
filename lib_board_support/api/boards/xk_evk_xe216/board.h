@@ -1,11 +1,11 @@
 // Copyright 2024 XMOS LIMITED.
 // This Software is subject to the terms of the XMOS Public Licence: Version 1.
 
-#ifndef __XK_EVK_XU216_BOARD_H__
-#define __XK_EVK_XU216_BOARD_H__
+#ifndef __XK_EVK_XE216_BOARD_H__
+#define __XK_EVK_XE216_BOARD_H__
 
-#if (BOARD_SUPPORT_BOARD == XK_EVK_XU216) || defined(__DOXYGEN__)
-
+#include <boards_utils.h>
+#if (BOARD_SUPPORT_BOARD == XK_EVK_XE216) || defined(__DOXYGEN__)
 #include <xccompat.h>
 #include "smi.h"
 
@@ -34,7 +34,7 @@ void ar8035_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
 
 /**@}*/ // END: addtogroup xk_evk_xu216
 
-#endif // (BOARD_SUPPORT_BOARD == XK_EVK_XU216) || defined(__DOXYGEN__)
+#endif // (BOARD_SUPPORT_BOARD == XK_EVK_XE216) || defined(__DOXYGEN__)
 
 
 #endif // __XK_EVK_XU216_BOARD_H__
