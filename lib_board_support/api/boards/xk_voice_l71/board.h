@@ -48,7 +48,7 @@ typedef enum
     AUDIOHW_CMD_REGWR,
     AUDIOHW_CMD_REGRD,
     AUDIOHW_CMD_EXIT
-} audioHwCmd_t;
+} xk_voice_l71_audioHwCmd_t;
 
 
 /** Starts an I2C master server task. Must be started *before* the tile[1] xk_voice_l71_AudioHwInit calls. 

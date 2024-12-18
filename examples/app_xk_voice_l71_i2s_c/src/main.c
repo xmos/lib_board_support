@@ -5,17 +5,11 @@
 #include <xcore/channel.h>
 #include "xk_voice_l71/board.h"
 
-
-
-
-// Copyright 2022-2024 XMOS LIMITED.
-// This Software is subject to the terms of the XMOS Public Licence: Version 1.
-
-#include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include <xscope.h>
 #include <xs1.h>
+#include <xclib.h>
 #include <xcore/assert.h>
 #include <platform.h>
 
@@ -53,7 +47,7 @@ static void i2s_init(void *app_data, i2s_config_t *i2s_config){
 
     i2s_config->mode = I2S_MODE_I2S;
     i2s_config->mclk_bclk_ratio = (MCLK_FREQUENCY / (I2S_FREQUENCY * 32 * 2));
-    printf("Ratio: %u\n", i2s_config->mclk_bclk_ratio);
+    printf("I2S mclk:bclk Ratio: %u\n", i2s_config->mclk_bclk_ratio);
 
     for(int i = 0; i < N_SINE; i++){
         cb_args->sine_table[i] = (1 << 30) * sin(6.2831853072 * i / N_SINE);
@@ -77,7 +71,7 @@ static void i2s_send(void *app_data, size_t num_out, int32_t *i2s_sample_buf){
 
     for(int i = 0; i < num_out; i++){
         i2s_sample_buf[i] = cb_args->sine_table[cb_args->counter];
-        // printf("%ld\n", i2s_sample_buf[i]);
+        // printf("%ld\n", clz(i2s_sample_buf[i]));
     }
     if(++(cb_args->counter) == N_SINE){
         cb_args->counter = 0;
