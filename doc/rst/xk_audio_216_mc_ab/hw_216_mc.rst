@@ -51,7 +51,5 @@ An array of 4*4 green LEDs, 3 buttons and a switch are provided for general purp
 
 A standard `XMOS` xSYS interface is provided to allow host debug of the board via JTAG.
 
-|newpage|
-
 
 

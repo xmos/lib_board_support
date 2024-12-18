@@ -1,6 +1,11 @@
 lib_board_support change log
 ============================
 
+1.2.0
+-----
+
+  * ADDED: Support for xk_evk_xe216 board ethernet PHY setup
+
 1.1.1
 -----
 
