@@ -7,6 +7,17 @@
 #include <xs1.h>
 #include <platform.h>
 
+static void set_smi_reg_bit(CLIENT_INTERFACE(smi_if, i_smi), phy_address, reg_addr, bit, val){
+    uint16_t reg_val = smi.read_reg(phy_address, reg_addr);
+    if(val){
+        reg_val |= (0x1 << bit);
+    } else {
+         reg_val & = ~(0x1 << bit);
+    }
+    smi.write_reg(phy_address, reg_addr, reg_val);
+}
+
+
 [[combinable]]
 void dp83826e_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
                          CLIENT_INTERFACE(ethernet_cfg_if, i_eth),
@@ -21,7 +32,10 @@ void dp83826e_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
     tmr :> t;
 
     while (smi_phy_is_powered_down(smi, phy_address));
-    smi_configure(smi, phy_address, LINK_100_MBPS_FULL_DUPLEX, SMI_ENABLE_AUTONEG);
+    // Ensure we are set into RXDV rather than CS mode
+    set_smi_reg_bit(i_smi, phy_address, RMII_AND_STATUS_REG, IO_CFG_CRS_RX_DV_BIT, 1);
+    // Do generic setup, set to 100Mbps always
+    smi_configure(smi, phy_address, LINK_100_MBPS_FULL_DUPLEX, SMI_DISABLE_AUTONEG);
 
     while (1) {
         select {
