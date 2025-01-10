@@ -27,7 +27,7 @@
  */
 [[combinable]]
 void dp83826e_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
-                       CLIENT_INTERFACE(ethernet_cfg_if, i_eth));
+                         CLIENT_INTERFACE(ethernet_cfg_if, i_eth));
 
 
 
