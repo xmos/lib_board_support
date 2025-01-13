@@ -31,6 +31,13 @@ void dp83826e_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
                          CLIENT_INTERFACE(ethernet_cfg_if, i_eth),
                          int phy_address);
 
+/** Sends hard reset to both PHYs. Both PHYs will be ready for SMI
+ * communication once this function has returned.
+ * This function must be called from Tile[1].
+ * 
+ */
+void reset_eth_phys(void);
+
 
 /**@}*/ // END: addtogroup xk_eth_xu316_dual_100m
 

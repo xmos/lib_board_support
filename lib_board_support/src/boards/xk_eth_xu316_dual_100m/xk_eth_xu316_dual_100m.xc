@@ -17,6 +17,16 @@ static void set_smi_reg_bit(CLIENT_INTERFACE(smi_if, i_smi), phy_address, reg_ad
     smi.write_reg(phy_address, reg_addr, reg_val);
 }
 
+// Bit 3 of this port is connected to the PHY resets. Other bits not pinned out.
+on tile[1]: out port p_phy_rst_n = PHY_RST_N;
+void reset_eth_phys(void){
+    // From dp83826e datasheet
+    p_phy_rst_n <: 0x00;
+    delay_microseconds(25);
+    p_phy_rst_n <: 0x08;
+    delay_milliseconds(2);
+}
+
 
 [[combinable]]
 void dp83826e_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
