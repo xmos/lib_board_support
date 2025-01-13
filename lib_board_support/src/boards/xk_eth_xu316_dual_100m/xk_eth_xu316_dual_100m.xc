@@ -35,19 +35,14 @@ void dp83826e_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
     // Ensure we are set into RXDV rather than CS mode
     set_smi_reg_bit(i_smi, phy_address, RMII_AND_STATUS_REG, IO_CFG_CRS_RX_DV_BIT, 1);
     // Do generic setup, set to 100Mbps always
-    smi_configure(smi, phy_address, LINK_100_MBPS_FULL_DUPLEX, SMI_DISABLE_AUTONEG);
+    smi_configure(smi, phy_address, link_speed, SMI_DISABLE_AUTONEG);
 
+    // Poll link state and update MAC if changed
     while (1) {
         select {
             case tmr when timerafter(t) :> t:
                 ethernet_link_state_t new_state = smi_get_link_state(smi, phy_address);
-                // Read LAN8710A status register bit 2 to get the current link speed
-                if ((new_state == ETHERNET_LINK_UP) && ((smi.read_reg(phy_address, 0x1F) >> 2) & 1)) {
-                    link_speed = LINK_10_MBPS_FULL_DUPLEX;
-                }
-                else {
-                    link_speed = LINK_100_MBPS_FULL_DUPLEX;
-                }
+
                 if (new_state != link_state) {
                     link_state = new_state;
                     eth.set_link_state(0, new_state, link_speed);
