@@ -26,7 +26,7 @@
             <Port Location="XS1_PORT_1L" Name="PHY_1_TX_EN"/>
             <Port Location="XS1_PORT_1I" Name="PHY_1_TXD_1B_0"/>
             <Port Location="XS1_PORT_1J" Name="PHY_1_TXD_1B_1"/>
-            <!-- Bits 7 and 8 of 8b port optionally used for data 0, 1 instead of 1b ports -->
+            <!-- Bits 6 and 7 of 8b port optionally used for Tx data 0, 1 instead of 1b ports -->
             <Port Location="XS1_PORT_8D" Name="PHY_1_TXD_8B"/> 
             <Port Location="XS1_PORT_1M" Name="PHY_1_RXDV"/>
             <Port Location="XS1_PORT_1N" Name="PHY_1_RXD_1B_0"/>
