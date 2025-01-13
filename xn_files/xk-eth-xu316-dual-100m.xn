@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Network xmlns="http://www.xmos.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.xmos.com http://www.xmos.com" ManuallySpecifiedRouting="true">
   <Type>Board</Type>
-  <Name>XS2 MC Audio</Name>
+  <Name>xk_eth_xu316_dual_100m</Name>
   <Declarations>
     <Declaration>tileref tile[2]</Declaration>
-    <Declaration>tileref usb_tile</Declaration>
   </Declarations>
   <Packages>
-    <Package id="0" Type="XS2-UnA-512-FB236">
+    <Package id="0" Type="XS3-UnA-1024-TQ128">
       <Nodes>
-        <Node Id="0" InPackageId="0" Type="XS2-L16A-512" Oscillator="24MHz" SystemFrequency="500MHz" referencefrequency="100MHz">
+        <Node Id="0" InPackageId="0" Type="XS3-L16A-1024" Oscillator="24MHz" SystemFrequency="600MHz" ReferenceFrequency="100MHz">
           <Boot>
-            <Source Location="SPI:bootFlash"/>
+            <Source Location="bootFlash"/>
           </Boot>
           <Tile Number="0" Reference="tile[0]">
+            <!-- QSPI flash -->
+            <Port Location="XS1_PORT_1B"  Name="PORT_SQI_CS"/>
+            <Port Location="XS1_PORT_1C"  Name="PORT_SQI_SCLK"/>
+            <Port Location="XS1_PORT_4B"  Name="PORT_SQI_SIO"/>
             <!-- PHY 1 Uses upper 2 bits of 4b ports -->
             <Port Location="XS1_PORT_1A" Name="PHY_0_TX_EN"/>
             <Port Location="XS1_PORT_4F" Name="PHY_0_TXD_4B"/>
@@ -38,8 +41,6 @@
             <Port Location="XS1_PORT_4A"  Name="PHY_RST_N"/>
           </Tile>
         </Node>
-        <Node Id="1" InPackageId="1" Type="periph:XS1-SU" Reference="usb_tile" Oscillator="24MHz">
-        </Node>
       </Nodes>
       <Links>
         <Link Encoding="5wire">
@@ -49,28 +50,33 @@
       </Links>
     </Package>
   </Packages>
+
+  <!-- XTAG4 -->
   <Nodes>
-    <Node Id="2" Type="device:" RoutingId="0x8000">
+    <Node Id="1" Type="device:" RoutingId="0x8000">
       <Service Id="0" Proto="xscope_host_data(chanend c);">
         <Chanend Identifier="c" end="3"/>
       </Service>
     </Node>
   </Nodes>
+
+  <!-- XSCOPE LINK -->
   <Links>
-    <Link Encoding="2wire" Delays="4,4" Flags="XSCOPE">
-      <LinkEndpoint NodeId="0" Link="XL0"/>
-      <LinkEndpoint NodeId="2" Chanend="1"/>
+    <Link Encoding="2wire" Delays="5clk" Flags="XSCOPE">
+      <LinkEndpoint NodeId="0" Link="XL1"/>
+      <LinkEndpoint NodeId="1" Chanend="1"/>
     </Link>
   </Links>
+
   <ExternalDevices>
-    <Device NodeId="0" Tile="0" Class="SQIFlash" Name="bootFlash" Type="S25FL116K" PageSize="256" SectorSize="4096" NumPages="8192">
-      <Attribute Name="PORT_SQI_CS" Value="PORT_SQI_CS"/>
-      <Attribute Name="PORT_SQI_SCLK"   Value="PORT_SQI_SCLK"/>
+    <Device NodeId="0" Tile="0" Class="SQIFlash" Name="bootFlash" Type="W25Q64JV" PageSize="256" SectorSize="4096" NumPages="32768">
+      <Attribute Name="PORT_SQI_CS"   Value="PORT_SQI_CS"/>
+      <Attribute Name="PORT_SQI_SCLK" Value="PORT_SQI_SCLK"/>
       <Attribute Name="PORT_SQI_SIO"  Value="PORT_SQI_SIO"/>
     </Device>
   </ExternalDevices>
+
   <JTAGChain>
     <JTAGDevice NodeId="0"/>
-    <JTAGDevice NodeId="1"/>
   </JTAGChain>
 </Network>
