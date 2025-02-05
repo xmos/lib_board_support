@@ -31,10 +31,9 @@ static void set_smi_reg_bit(CLIENT_INTERFACE(smi_if, i_smi), unsigned phy_addres
 
 void reset_eth_phys()
 {
-    // Timings from dp83826e datasheet
     p_phy_rst_n <: 0x00;
-    delay_microseconds(25);
-    p_phy_rst_n <: 0x08; // Set bit 3 high
+    delay_microseconds(100); // dp83826e datasheet says 25us min
+    p_phy_rst_n <: 0x08;     // Set bit 3 high
     delay_milliseconds(2);
 }
 
@@ -74,8 +73,8 @@ void dp83826e_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
                 if (new_state != link_state) {
                     link_state = new_state;
                     i_eth.set_link_state(0, new_state, link_speed);
+                    p_leds <: (link_state == ETHERNET_LINK_UP) ? LED_GRN : LED_YEL;
                 }
-                p_leds <: (link_state == ETHERNET_LINK_UP) ? LED_GRN : LED_YEL;
                 t += link_poll_period_ms * XS1_TIMER_KHZ;
                 break;
         }
