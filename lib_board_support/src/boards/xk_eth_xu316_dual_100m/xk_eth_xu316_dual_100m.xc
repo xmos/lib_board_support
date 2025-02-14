@@ -109,13 +109,41 @@ void dual_dp83826e_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
         int phy_address = phy_addresses[phy_idx];
         printf("Configuring PHY %d addr: 0x%x\n", phy_idx, phy_address);
 
-        while (smi_phy_is_powered_down(i_smi, phy_address));
+        while(smi_phy_is_powered_down(i_smi, phy_address));
         printf("PHY addr: 0x%x powered up\n", phy_address);
+
+        unsigned phy_id = smi_get_id(i_smi, phy_address);
+        printf("phy_id = 0x%08X\n", phy_id);
+
+        unsigned reg_read;
+        for(int reg_addr =0; reg_addr<32; reg_addr++) {
+            reg_read = i_smi.read_reg(phy_address, reg_addr);
+            printf("reg_addr = 0x%04X, reg_read = 0x%04X\n", reg_addr, reg_read);
+        }
+
+        for(int reg_addr =0x456; reg_addr<0x046A; reg_addr++){
+            reg_read = smi_mmd_read(i_smi, phy_address, 0x001F, reg_addr);
+            printf("reg_addr = 0x%04X, reg_read = 0x%04X\n", reg_addr, reg_read);
+        }
 
         // Ensure we are set into RXDV rather than CS mode
         set_smi_reg_bit(i_smi, phy_address, RMII_AND_STATUS_REG, IO_CFG_CRS_RX_DV_BIT, 1);
-        // Do generic setup, set to 100Mbps always
-        smi_configure(i_smi, phy_address, link_speed[phy_idx], SMI_DISABLE_AUTONEG);
+
+        reg_read = smi_mmd_read(i_smi, phy_address, 0x001F, 0x0460);
+        printf("reg_read1 = 0x%04X\n", reg_read);
+        // Set LED config to light the SPEED100M LED correctly. LEDCFG register (0x0460). LED2. Want to set bits 11-8 to 0x5.
+        // Datasheet says LED control is on bits 11-8 but I think it's really bits 4-7.
+        // Reset value seems to be 0x0565, If we write 0x0555 it seems to work.
+        // we should do a read modify write of bits 4-7.
+        // "Here this is a mistake in the datasheet, but please test which led has what registers, to my knowledge the settings described will configure the Leds mentioned."
+        // "Led LED grouping is swapped so LED1 is 3-0 LED2 is 7-4 and LED3 is 11-8 the description status the same. Please confirm with your tests"
+        smi_mmd_write(i_smi, phy_address, 0x001F, 0x0460, 0x0555);
+        //smi_mmd_write(i_smi, phy_address, 0x001F, 0x0469, 0x0410);
+        //smi_mmd_write(i_smi, phy_address, 0x001F, 0x0460, 0x0000);
+        
+        
+        reg_read = smi_mmd_read(i_smi, phy_address, 0x001F, 0x0460);
+        printf("reg_read2 = 0x%04X\n", reg_read);
 
         // Specific setup for PHY_0
         if(phy_idx == 0){
@@ -145,6 +173,8 @@ void dual_dp83826e_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
                     int phy_address = phy_addresses[phy_idx];
                     printf("Checking link state of PHY: %d addr: 0x%x\n", phy_idx, phy_address);
                     ethernet_link_state_t new_state = smi_get_link_state(i_smi, phy_address);
+                    unsigned basic_reg = i_smi.read_reg(phy_address, BASIC_STATUS_REG);
+                    printf("basic_reg = 0x%08X\n", basic_reg);
 
                     if (new_state != link_state[phy_idx]) {
                         link_state[phy_idx] = new_state;
