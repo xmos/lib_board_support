@@ -64,6 +64,85 @@ void dual_dp83826e_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
                               NULLABLE_CLIENT_INTERFACE(ethernet_cfg_if, i_eth_phy0),
                               NULLABLE_CLIENT_INTERFACE(ethernet_cfg_if, i_eth_phy1)){
     
+
+#if 0
+    int phy_address = 0x05;
+    p_leds <: LED_RED;
+    p_pwrdn_int :> int _; // Make Hi Z. This pin is pulled up by the PHY
+
+    reset_eth_phys();
+    
+
+    ethernet_link_state_t link_state = ETHERNET_LINK_DOWN;
+    ethernet_speed_t link_speed = LINK_100_MBPS_FULL_DUPLEX;
+    const int link_poll_period_ms = 1000;
+
+    while (smi_phy_is_powered_down(i_smi, phy_address));
+        unsigned phy_id;
+    phy_id = smi_get_id(i_smi, phy_address);
+    printf("phy_id = 0x%08X\n", phy_id);
+
+    // Ensure we are set into RXDV rather than CS mode
+    set_smi_reg_bit(i_smi, phy_address, IO_CONFIG_1_REG, IO_CFG_CRS_RX_DV_BIT, 1);
+
+    unsigned reg_read;
+    for(int reg_addr =0; reg_addr<32; reg_addr++)
+    {
+        reg_read = i_smi.read_reg(phy_address, reg_addr);
+        printf("reg_addr = 0x%04X, reg_read = 0x%04X\n", reg_addr, reg_read);
+    }
+
+    for(int reg_addr =0x456; reg_addr<0x046A; reg_addr++)
+    {
+        reg_read = smi_mmd_read(i_smi, phy_address, 0x001F, reg_addr);
+        printf("reg_addr = 0x%04X, reg_read = 0x%04X\n", reg_addr, reg_read);
+    }
+
+    reg_read = smi_mmd_read(i_smi, phy_address, 0x001F, 0x0460);
+    printf("reg_read1 = 0x%04X\n", reg_read);
+    // Set LED config to light the SPEED100M LED correctly. LEDCFG register (0x0460). LED2. Want to set bits 11-8 to 0x5.
+    // Datasheet says LED control is on bits 11-8 but I think it's really bits 4-7.
+    // Reset value seems to be 0x0565, If we write 0x0555 it seems to work.
+    // we should do a read modify write of bits 4-7.
+    // "Here this is a mistake in the datasheet, but please test which led has what registers, to my knowledge the settings described will configure the Leds mentioned."
+    // "Led LED grouping is swapped so LED1 is 3-0 LED2 is 7-4 and LED3 is 11-8 the description status the same. Please confirm with your tests"
+    smi_mmd_write(i_smi, phy_address, 0x001F, 0x0460, 0x0555);
+    //smi_mmd_write(i_smi, phy_address, 0x001F, 0x0469, 0x0410);
+    //smi_mmd_write(i_smi, phy_address, 0x001F, 0x0460, 0x0000);
+    
+    
+    reg_read = smi_mmd_read(i_smi, phy_address, 0x001F, 0x0460);
+    printf("reg_read2 = 0x%04X\n", reg_read);
+    // Do generic setup, set to 100Mbps always
+    //smi_configure(i_smi, phy_address, link_speed, SMI_DISABLE_AUTONEG);
+
+    timer tmr;
+    int t;
+    tmr :> t;
+
+    p_leds <: LED_YEL;
+
+    // Poll link state and update MAC if changed
+    while (1) {
+        select {
+            case tmr when timerafter(t) :> t:
+                ethernet_link_state_t new_state = smi_get_link_state(i_smi, phy_address);
+                unsigned basic_reg = i_smi.read_reg(phy_address, BASIC_STATUS_REG);
+                printf("basic_reg = 0x%08X\n", basic_reg);
+
+                if (new_state != link_state) {
+                    link_state = new_state;
+                    i_eth_phy0.set_link_state(0, new_state, link_speed);
+                    p_leds <: (link_state == ETHERNET_LINK_UP) ? LED_GRN : LED_YEL;
+                }
+                t += link_poll_period_ms * XS1_TIMER_KHZ;
+                break;
+        }
+    }
+
+#endif
+
+
     // Determine config. We always configure PHY0 because it is clock master.
     // We may use any combination of at least one PHY.
     // PHY0 is index 0 and PHY1 is index 1
@@ -115,22 +194,23 @@ void dual_dp83826e_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
         unsigned phy_id = smi_get_id(i_smi, phy_address);
         printf("phy_id = 0x%08X\n", phy_id);
 
-        unsigned reg_read;
-        for(int reg_addr =0; reg_addr<32; reg_addr++) {
-            reg_read = i_smi.read_reg(phy_address, reg_addr);
-            printf("reg_addr = 0x%04X, reg_read = 0x%04X\n", reg_addr, reg_read);
-        }
-
-        for(int reg_addr =0x456; reg_addr<0x046A; reg_addr++){
-            reg_read = smi_mmd_read(i_smi, phy_address, 0x001F, reg_addr);
-            printf("reg_addr = 0x%04X, reg_read = 0x%04X\n", reg_addr, reg_read);
-        }
-
         // Ensure we are set into RXDV rather than CS mode
-        set_smi_reg_bit(i_smi, phy_address, RMII_AND_STATUS_REG, IO_CFG_CRS_RX_DV_BIT, 1);
+        set_smi_reg_bit(i_smi, phy_address, IO_CONFIG_1_REG, IO_CFG_CRS_RX_DV_BIT, 1);
 
-        reg_read = smi_mmd_read(i_smi, phy_address, 0x001F, 0x0460);
-        printf("reg_read1 = 0x%04X\n", reg_read);
+        // unsigned reg_read;
+        // for(int reg_addr =0; reg_addr<32; reg_addr++) {
+        //     reg_read = i_smi.read_reg(phy_address, reg_addr);
+        //     printf("reg_addr = 0x%04X, reg_read = 0x%04X\n", reg_addr, reg_read);
+        // }
+
+        // for(int reg_addr =0x456; reg_addr<0x046A; reg_addr++){
+        //     reg_read = smi_mmd_read(i_smi, phy_address, 0x001F, reg_addr);
+        //     printf("reg_addr = 0x%04X, reg_read = 0x%04X\n", reg_addr, reg_read);
+        // }
+
+        // reg_read = smi_mmd_read(i_smi, phy_address, 0x001F, 0x0460);
+        // printf("reg_read1 = 0x%04X\n", reg_read);
+
         // Set LED config to light the SPEED100M LED correctly. LEDCFG register (0x0460). LED2. Want to set bits 11-8 to 0x5.
         // Datasheet says LED control is on bits 11-8 but I think it's really bits 4-7.
         // Reset value seems to be 0x0565, If we write 0x0555 it seems to work.
@@ -138,12 +218,11 @@ void dual_dp83826e_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
         // "Here this is a mistake in the datasheet, but please test which led has what registers, to my knowledge the settings described will configure the Leds mentioned."
         // "Led LED grouping is swapped so LED1 is 3-0 LED2 is 7-4 and LED3 is 11-8 the description status the same. Please confirm with your tests"
         smi_mmd_write(i_smi, phy_address, 0x001F, 0x0460, 0x0555);
-        //smi_mmd_write(i_smi, phy_address, 0x001F, 0x0469, 0x0410);
-        //smi_mmd_write(i_smi, phy_address, 0x001F, 0x0460, 0x0000);
         
-        
-        reg_read = smi_mmd_read(i_smi, phy_address, 0x001F, 0x0460);
-        printf("reg_read2 = 0x%04X\n", reg_read);
+        // Set pins to higher drive strength "impedance control". This is needed especially for clock signal
+        // smi_mmd_write(i_smi, phy_address, 0x001F, 0x0302, 0x4000);
+        // TODO this needs fixing when we sort timing out as it currently kills the MAC (bad CRC rx)
+
 
         // Specific setup for PHY_0
         if(phy_idx == 0){
@@ -155,6 +234,9 @@ void dual_dp83826e_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
             // TODO
         }
     }
+
+
+
 
     // Timer for polling
     timer tmr;
@@ -171,10 +253,10 @@ void dual_dp83826e_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
             case tmr when timerafter(t) :> t:
                 for(int phy_idx = idx_of_first_phy_to_poll; phy_idx < idx_of_first_phy_to_poll + num_phys_to_poll; phy_idx++){
                     int phy_address = phy_addresses[phy_idx];
-                    printf("Checking link state of PHY: %d addr: 0x%x\n", phy_idx, phy_address);
+                    // printf("Checking link state of PHY: %d addr: 0x%x\n", phy_idx, phy_address);
                     ethernet_link_state_t new_state = smi_get_link_state(i_smi, phy_address);
-                    unsigned basic_reg = i_smi.read_reg(phy_address, BASIC_STATUS_REG);
-                    printf("basic_reg = 0x%08X\n", basic_reg);
+                    // unsigned basic_reg = i_smi.read_reg(phy_address, BASIC_STATUS_REG);
+                    // printf("basic_reg = 0x%08X\n", basic_reg);
 
                     if (new_state != link_state[phy_idx]) {
                         link_state[phy_idx] = new_state;
