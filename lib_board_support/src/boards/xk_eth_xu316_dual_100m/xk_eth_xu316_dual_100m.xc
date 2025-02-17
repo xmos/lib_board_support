@@ -43,6 +43,17 @@ void reset_eth_phys()
     delay_milliseconds(2);
 }
 
+// TODO - make me return a rmii_port_timing_t when #125 is merged
+void get_port_timings(int phy_idx){
+    if(phy_idx == 0){
+        // 1, 1, 0, 0, 1
+        return;
+    } else {
+        // 0, 0, 0, 0, 4
+        return;
+    }
+}
+
 /* Other possible TODO items from Joe:
 RCSR Register (0x17):
 For RMII Master PHY (25M clock ref):
@@ -63,85 +74,6 @@ It would be useful to read and print registers SOR1 and SOR2 as these contain us
 void dual_dp83826e_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
                               NULLABLE_CLIENT_INTERFACE(ethernet_cfg_if, i_eth_phy0),
                               NULLABLE_CLIENT_INTERFACE(ethernet_cfg_if, i_eth_phy1)){
-    
-
-#if 0
-    int phy_address = 0x05;
-    p_leds <: LED_RED;
-    p_pwrdn_int :> int _; // Make Hi Z. This pin is pulled up by the PHY
-
-    reset_eth_phys();
-    
-
-    ethernet_link_state_t link_state = ETHERNET_LINK_DOWN;
-    ethernet_speed_t link_speed = LINK_100_MBPS_FULL_DUPLEX;
-    const int link_poll_period_ms = 1000;
-
-    while (smi_phy_is_powered_down(i_smi, phy_address));
-        unsigned phy_id;
-    phy_id = smi_get_id(i_smi, phy_address);
-    printf("phy_id = 0x%08X\n", phy_id);
-
-    // Ensure we are set into RXDV rather than CS mode
-    set_smi_reg_bit(i_smi, phy_address, IO_CONFIG_1_REG, IO_CFG_CRS_RX_DV_BIT, 1);
-
-    unsigned reg_read;
-    for(int reg_addr =0; reg_addr<32; reg_addr++)
-    {
-        reg_read = i_smi.read_reg(phy_address, reg_addr);
-        printf("reg_addr = 0x%04X, reg_read = 0x%04X\n", reg_addr, reg_read);
-    }
-
-    for(int reg_addr =0x456; reg_addr<0x046A; reg_addr++)
-    {
-        reg_read = smi_mmd_read(i_smi, phy_address, 0x001F, reg_addr);
-        printf("reg_addr = 0x%04X, reg_read = 0x%04X\n", reg_addr, reg_read);
-    }
-
-    reg_read = smi_mmd_read(i_smi, phy_address, 0x001F, 0x0460);
-    printf("reg_read1 = 0x%04X\n", reg_read);
-    // Set LED config to light the SPEED100M LED correctly. LEDCFG register (0x0460). LED2. Want to set bits 11-8 to 0x5.
-    // Datasheet says LED control is on bits 11-8 but I think it's really bits 4-7.
-    // Reset value seems to be 0x0565, If we write 0x0555 it seems to work.
-    // we should do a read modify write of bits 4-7.
-    // "Here this is a mistake in the datasheet, but please test which led has what registers, to my knowledge the settings described will configure the Leds mentioned."
-    // "Led LED grouping is swapped so LED1 is 3-0 LED2 is 7-4 and LED3 is 11-8 the description status the same. Please confirm with your tests"
-    smi_mmd_write(i_smi, phy_address, 0x001F, 0x0460, 0x0555);
-    //smi_mmd_write(i_smi, phy_address, 0x001F, 0x0469, 0x0410);
-    //smi_mmd_write(i_smi, phy_address, 0x001F, 0x0460, 0x0000);
-    
-    
-    reg_read = smi_mmd_read(i_smi, phy_address, 0x001F, 0x0460);
-    printf("reg_read2 = 0x%04X\n", reg_read);
-    // Do generic setup, set to 100Mbps always
-    //smi_configure(i_smi, phy_address, link_speed, SMI_DISABLE_AUTONEG);
-
-    timer tmr;
-    int t;
-    tmr :> t;
-
-    p_leds <: LED_YEL;
-
-    // Poll link state and update MAC if changed
-    while (1) {
-        select {
-            case tmr when timerafter(t) :> t:
-                ethernet_link_state_t new_state = smi_get_link_state(i_smi, phy_address);
-                unsigned basic_reg = i_smi.read_reg(phy_address, BASIC_STATUS_REG);
-                printf("basic_reg = 0x%08X\n", basic_reg);
-
-                if (new_state != link_state) {
-                    link_state = new_state;
-                    i_eth_phy0.set_link_state(0, new_state, link_speed);
-                    p_leds <: (link_state == ETHERNET_LINK_UP) ? LED_GRN : LED_YEL;
-                }
-                t += link_poll_period_ms * XS1_TIMER_KHZ;
-                break;
-        }
-    }
-
-#endif
-
 
     // Determine config. We always configure PHY0 because it is clock master.
     // We may use any combination of at least one PHY.
@@ -197,19 +129,6 @@ void dual_dp83826e_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
         // Ensure we are set into RXDV rather than CS mode
         set_smi_reg_bit(i_smi, phy_address, IO_CONFIG_1_REG, IO_CFG_CRS_RX_DV_BIT, 1);
 
-        // unsigned reg_read;
-        // for(int reg_addr =0; reg_addr<32; reg_addr++) {
-        //     reg_read = i_smi.read_reg(phy_address, reg_addr);
-        //     printf("reg_addr = 0x%04X, reg_read = 0x%04X\n", reg_addr, reg_read);
-        // }
-
-        // for(int reg_addr =0x456; reg_addr<0x046A; reg_addr++){
-        //     reg_read = smi_mmd_read(i_smi, phy_address, 0x001F, reg_addr);
-        //     printf("reg_addr = 0x%04X, reg_read = 0x%04X\n", reg_addr, reg_read);
-        // }
-
-        // reg_read = smi_mmd_read(i_smi, phy_address, 0x001F, 0x0460);
-        // printf("reg_read1 = 0x%04X\n", reg_read);
 
         // Set LED config to light the SPEED100M LED correctly. LEDCFG register (0x0460). LED2. Want to set bits 11-8 to 0x5.
         // Datasheet says LED control is on bits 11-8 but I think it's really bits 4-7.
@@ -219,19 +138,18 @@ void dual_dp83826e_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
         // "Led LED grouping is swapped so LED1 is 3-0 LED2 is 7-4 and LED3 is 11-8 the description status the same. Please confirm with your tests"
         smi_mmd_write(i_smi, phy_address, 0x001F, 0x0460, 0x0555);
         
-        // Set pins to higher drive strength "impedance control". This is needed especially for clock signal
-        // smi_mmd_write(i_smi, phy_address, 0x001F, 0x0302, 0x4000);
-        // TODO this needs fixing when we sort timing out as it currently kills the MAC (bad CRC rx)
-
+        // Set pins to higher drive strength "impedance control". This is needed especially for clock signal. This results in a wider eye by some 2ns also.
+        // Note we also ensure RXDV is set too
+        smi_mmd_write(i_smi, phy_address, 0x001F, 0x0302, 0xC100);
 
         // Specific setup for PHY_0
         if(phy_idx == 0){
-            // TODO
+            // None
         }
 
         // Specific setup for PHY_1 (if used)
         if(phy_idx == 1){
-            // TODO
+            // None
         }
     }
 
