@@ -43,32 +43,27 @@ void reset_eth_phys()
     delay_milliseconds(2);
 }
 
-// TODO - make me return a rmii_port_timing_t when #125 is merged
-void get_port_timings(int phy_idx){
+rmii_port_timing_t get_port_timings(int phy_idx){
+    rmii_port_timing_t port_timing = {0};
     if(phy_idx == 0){
-        // 1, 1, 0, 0, 1
-        return;
+        port_timing.clk_delay_tx_rising = 1;
+        port_timing.clk_delay_tx_falling = 1;
+        port_timing.clk_delay_rx_rising = 0;
+        port_timing.clk_delay_tx_rising = 0;
+        port_timing.pad_delay_rx = 1;
+    } else if(phy_idx == 2) {
+        port_timing.clk_delay_tx_rising = 0;
+        port_timing.clk_delay_tx_falling = 0;
+        port_timing.clk_delay_rx_rising = 0;
+        port_timing.clk_delay_tx_rising = 0;
+        port_timing.pad_delay_rx = 4;
     } else {
-        // 0, 0, 0, 0, 4
-        return;
+        fail("Invalid PHY idx\n");
     }
+
+    return port_timing;
 }
 
-/* Other possible TODO items from Joe:
-RCSR Register (0x17):
-For RMII Master PHY (25M clock ref):
-Set 25M clock ref, RMII mode, CRS_DV set as data valid not carrier sense: 0x0031
- 
-For RMII slave PHY (50M clock ref):
-Set 50M clock ref, RMII mode, CRS_DV set as data valid not carrier sense: 0x00B1
- 
-LEDCR register should be ok at default. Otherwise set to default: 0x0400.
- 
-LEDCFG Register might be ok at default. Depends on their definition of "High" given pin is active low.
-LED2 is set to output "Speed, High for 10BASE-T". Does high mean active? If so LED will light for 10BASE-T which isn't what we want? Will have to test and see.
- 
-It would be useful to read and print registers SOR1 and SOR2 as these contain useful read only status. These are at address 0x467 and 0x468.
-*/
 
 [[combinable]]
 void dual_dp83826e_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
@@ -113,18 +108,17 @@ void dual_dp83826e_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
 
     // PHY_0 is the clock master so we always configure this one, even if only PHY_1 is used
     // because PHY_1 is the clock slave and PHY_0 is the clock master
-    printf("Number of PHYs to configure: %d\n", num_phys_to_configure);
 
     // Setup PHYs. Always configure PHY_0, optionally PHY_1
     for(int phy_idx = 0; phy_idx < num_phys_to_configure; phy_idx++){
         int phy_address = phy_addresses[phy_idx];
-        printf("Configuring PHY %d addr: 0x%x\n", phy_idx, phy_address);
+        //printf("Configuring PHY %d addr: 0x%x\n", phy_idx, phy_address);
 
         while(smi_phy_is_powered_down(i_smi, phy_address));
-        printf("PHY addr: 0x%x powered up\n", phy_address);
+        // printf("PHY addr: 0x%x powered up\n", phy_address);
 
-        unsigned phy_id = smi_get_id(i_smi, phy_address);
-        printf("phy_id = 0x%08X\n", phy_id);
+        // unsigned phy_id = smi_get_id(i_smi, phy_address);
+        // printf("phy_id = 0x%08X\n", phy_id);
 
         // Ensure we are set into RXDV rather than CS mode
         set_smi_reg_bit(i_smi, phy_address, IO_CONFIG_1_REG, IO_CFG_CRS_RX_DV_BIT, 1);
@@ -154,16 +148,13 @@ void dual_dp83826e_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
     }
 
 
-
-
     // Timer for polling
     timer tmr;
     int t;
     tmr :> t;
 
-    // Check the link status of the used PHYs
-    printf("Number of PHYs to poll: %d\n", num_phys_to_poll);
-    printf("ID of first PHY to poll: %d\n", idx_of_first_phy_to_poll);
+    // printf("Number of PHYs to poll: %d\n", num_phys_to_poll);
+    // printf("ID of first PHY to poll: %d\n", idx_of_first_phy_to_poll);
 
     // Poll link state and update MAC if changed
     while (1) {
@@ -171,10 +162,7 @@ void dual_dp83826e_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
             case tmr when timerafter(t) :> t:
                 for(int phy_idx = idx_of_first_phy_to_poll; phy_idx < idx_of_first_phy_to_poll + num_phys_to_poll; phy_idx++){
                     int phy_address = phy_addresses[phy_idx];
-                    // printf("Checking link state of PHY: %d addr: 0x%x\n", phy_idx, phy_address);
                     ethernet_link_state_t new_state = smi_get_link_state(i_smi, phy_address);
-                    // unsigned basic_reg = i_smi.read_reg(phy_address, BASIC_STATUS_REG);
-                    // printf("basic_reg = 0x%08X\n", basic_reg);
 
                     if (new_state != link_state[phy_idx]) {
                         link_state[phy_idx] = new_state;
@@ -183,7 +171,7 @@ void dual_dp83826e_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
                         } else {
                             i_eth_phy1.set_link_state(0, new_state, link_speed[phy_idx]);
                         }
-                        printf("Link state of PHY: %d addr: 0x%x changed: %d\n", phy_idx, phy_address, link_state[phy_idx]);
+                        // printf("Link state of PHY: %d addr: 0x%x changed: %d\n", phy_idx, phy_address, link_state[phy_idx]);
                     }
                 }
                 // Do LEDs. Red means no link(s). Green means all links up. Yellow means one of two links up (if 2 PHYs uses).
@@ -207,6 +195,5 @@ void dual_dp83826e_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
         }
     }
 }
-
 
 #endif // BOARD_SUPPORT_BOARD == XK_ETH_XU316_DUAL_100M
