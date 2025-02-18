@@ -1,4 +1,4 @@
-// Copyright 2024 XMOS LIMITED.
+// Copyright 2024-2025 XMOS LIMITED.
 // This Software is subject to the terms of the XMOS Public Licence: Version 1.
 #pragma once
 
@@ -28,8 +28,11 @@
 /** Define representing XK-EVK-XU216 board */
 #define XK_EVK_XE216                4
 
+/** Define representing XK-ETH-XU316-DUAL-100M board */
+#define XK_ETH_XU316_DUAL_100M      5
+
 /** Total number of boards supported by the library */
-#define BOARD_SUPPORT_N_BOARDS      5  // max board + 1
+#define BOARD_SUPPORT_N_BOARDS      6  // max board + 1
 
 /** Define that should be set to the current board type in use
   *
