@@ -164,16 +164,7 @@ void dual_dp83826e_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
                     int phy_address = phy_addresses[phy_idx];
                     ethernet_link_state_t new_state = smi_get_link_state(i_smi, phy_address);
 
-                    // Get the current link state that the mac is aware of. In case the mac has restarted and lost all state...
-                    unsigned link_state_known_to_mac, link_speed_known_to_mac;
-                    if(phy_idx == 0)
-                    {
-                        i_eth_phy0.get_link_state(0, link_state_known_to_mac, link_speed_known_to_mac);
-                    } else {
-                        i_eth_phy1.get_link_state(0, link_state_known_to_mac, link_speed_known_to_mac);
-                    }
-
-                    if ((new_state != link_state[phy_idx]) || (new_state != link_state_known_to_mac)) {
+                    if (new_state != link_state[phy_idx]) {
                         link_state[phy_idx] = new_state;
                         if(phy_idx == 0){
                             i_eth_phy0.set_link_state(0, new_state, link_speed[phy_idx]);
@@ -201,6 +192,11 @@ void dual_dp83826e_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
                 }
                 t += link_poll_period_ms * XS1_TIMER_KHZ;
             break;
+            case i_eth_phy0.mac_started():
+                // Mac has just started, or restarted
+                i_eth_phy0.set_link_state(0, link_state[0], link_speed[0]);
+                break;
+
         }
     }
 }
