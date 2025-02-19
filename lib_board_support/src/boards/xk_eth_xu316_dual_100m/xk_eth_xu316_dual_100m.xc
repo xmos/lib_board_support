@@ -131,7 +131,7 @@ void dual_dp83826e_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
         // "Here this is a mistake in the datasheet, but please test which led has what registers, to my knowledge the settings described will configure the Leds mentioned."
         // "Led LED grouping is swapped so LED1 is 3-0 LED2 is 7-4 and LED3 is 11-8 the description status the same. Please confirm with your tests"
         smi_mmd_write(i_smi, phy_address, 0x001F, 0x0460, 0x0555);
-        
+
         // Set pins to higher drive strength "impedance control". This is needed especially for clock signal. This results in a wider eye by some 2ns also.
         // Note we also ensure RXDV is set too
         smi_mmd_write(i_smi, phy_address, 0x001F, 0x0302, 0xC100);
@@ -164,7 +164,16 @@ void dual_dp83826e_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
                     int phy_address = phy_addresses[phy_idx];
                     ethernet_link_state_t new_state = smi_get_link_state(i_smi, phy_address);
 
-                    if (new_state != link_state[phy_idx]) {
+                    // Get the current link state that the mac is aware of. In case the mac has restarted and lost all state...
+                    unsigned link_state_known_to_mac, link_speed_known_to_mac;
+                    if(phy_idx == 0)
+                    {
+                        i_eth_phy0.get_link_state(0, link_state_known_to_mac, link_speed_known_to_mac);
+                    } else {
+                        i_eth_phy1.get_link_state(0, link_state_known_to_mac, link_speed_known_to_mac);
+                    }
+
+                    if ((new_state != link_state[phy_idx]) || (new_state != link_state_known_to_mac)) {
                         link_state[phy_idx] = new_state;
                         if(phy_idx == 0){
                             i_eth_phy0.set_link_state(0, new_state, link_speed[phy_idx]);
