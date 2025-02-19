@@ -192,10 +192,16 @@ void dual_dp83826e_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
                 }
                 t += link_poll_period_ms * XS1_TIMER_KHZ;
             break;
-            case i_eth_phy0.mac_started():
+
+            case use_phy0 => i_eth_phy0.mac_started():
                 // Mac has just started, or restarted
                 i_eth_phy0.set_link_state(0, link_state[0], link_speed[0]);
-                break;
+            break;
+
+            case use_phy1 => i_eth_phy1.mac_started():
+                // Mac has just started, or restarted
+                i_eth_phy1.set_link_state(0, link_state[1], link_speed[1]);
+            break;
 
         }
     }
