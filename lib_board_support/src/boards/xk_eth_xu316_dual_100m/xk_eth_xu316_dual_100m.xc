@@ -195,11 +195,13 @@ void dual_dp83826e_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
 #if ENABLE_MAC_START_NOTIFICATION
             case use_phy0 => i_eth_phy0.mac_started():
                 // Mac has just started, or restarted
+                i_eth_phy0.ack_mac_start();
                 i_eth_phy0.set_link_state(0, link_state[0], link_speed[0]);
             break;
 
             case use_phy1 => i_eth_phy1.mac_started():
                 // Mac has just started, or restarted
+                i_eth_phy1.ack_mac_start();
                 i_eth_phy1.set_link_state(0, link_state[1], link_speed[1]);
             break;
 #endif
