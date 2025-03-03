@@ -131,7 +131,7 @@ void dual_dp83826e_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
         // "Here this is a mistake in the datasheet, but please test which led has what registers, to my knowledge the settings described will configure the Leds mentioned."
         // "Led LED grouping is swapped so LED1 is 3-0 LED2 is 7-4 and LED3 is 11-8 the description status the same. Please confirm with your tests"
         smi_mmd_write(i_smi, phy_address, 0x001F, 0x0460, 0x0555);
-        
+
         // Set pins to higher drive strength "impedance control". This is needed especially for clock signal. This results in a wider eye by some 2ns also.
         // Note we also ensure RXDV is set too
         smi_mmd_write(i_smi, phy_address, 0x001F, 0x0302, 0xC100);
@@ -192,6 +192,19 @@ void dual_dp83826e_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
                 }
                 t += link_poll_period_ms * XS1_TIMER_KHZ;
             break;
+#if ENABLE_MAC_START_NOTIFICATION
+            case use_phy0 => i_eth_phy0.mac_started():
+                // Mac has just started, or restarted
+                i_eth_phy0.ack_mac_start();
+                i_eth_phy0.set_link_state(0, link_state[0], link_speed[0]);
+            break;
+
+            case use_phy1 => i_eth_phy1.mac_started():
+                // Mac has just started, or restarted
+                i_eth_phy1.ack_mac_start();
+                i_eth_phy1.set_link_state(0, link_state[1], link_speed[1]);
+            break;
+#endif
         }
     }
 }
