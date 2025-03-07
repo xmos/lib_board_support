@@ -6,6 +6,7 @@ lib_board_support change log
 
   * ADDED: Support for xk_evk_xe216 board ethernet PHY setup
   * ADDED: Initial support for xk_eth_xu316_dual_100m board ethernet PHY setup
+  * FIXED: Long delay in xk_evk_xu316_AudioHwInit() causing USB issues
 
 1.1.1
 -----

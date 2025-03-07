@@ -213,8 +213,8 @@ void xk_evk_xu316_AudioHwInit(const xk_evk_xu316_config_t &config)
     // Power up HPL and HPR drivers
     CODEC_REGWRITE(AIC3204_OP_PWR_CTRL, 0x30);
 
-    // Wait for 2.5 sec for soft stepping to take effect
-    delay_milliseconds(2500);
+    // Wait for for soft stepping to take effect
+    delay_milliseconds(25);
 
     //
     // Power Up DAC/ADC
