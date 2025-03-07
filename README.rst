@@ -38,6 +38,13 @@ Known issues
    SMI has not been added to this repo to avoid unneeded dependencies in non-Ethernet applications and will 
    be required by any Ethernet application for this board anyway.
 
+ * XK_ETH_XU316_DUAL_100M is currently an unreleased board and hence has no documentation.
+
+ * XK_ETH_XU316_DUAL_100M uses the TI DP83826 PHY. During testing we notice that very occasionally the first
+   packet sent after initialisation may be dropped for certain link partners. Subsequent packets are always OK. This is consistent with a similar bug seen on the `TI forum <https://e2e.ti.com/support/interface-group/interface/f/interface-forum/956808/dp83822i-after-link-up-first-packet-is-not-being-transmitted>`_. For most applications this is not
+   an issue however for test cases it may be worth noting. Sending an initial dummy Tx packet works around this issue.
+
+
 ****************
 Development repo
 ****************
