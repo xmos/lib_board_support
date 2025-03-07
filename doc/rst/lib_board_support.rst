@@ -17,17 +17,19 @@ Supported Boards
 
 The following boards are supported in this repo with interfaces provided in the languages shown in the table below.
 
-+--------------------+---------------------+
-| Board              | Supported Languages |
-+====================+=====================+
-|XK_EVK_XU316        |       XC / C        |
-+--------------------+---------------------+
-|XK_AUDIO_316_MC_AB  |       XC / C        |
-+--------------------+---------------------+
-|XK_AUDIO_216_MC_AB  |       XC / C        |
-+--------------------+---------------------+
-|XK_EVK_XE216        |       XC            |
-+--------------------+---------------------+
++-----------------------+---------------------+
+| Board                 | Supported Languages |
++=======================+=====================+
+|XK_EVK_XU316           |       XC / C        |
++-----------------------+---------------------+
+|XK_AUDIO_316_MC_AB     |       XC / C        |
++-----------------------+---------------------+
+|XK_AUDIO_216_MC_AB     |       XC / C        |
++-----------------------+---------------------+
+|XK_EVK_XE216           |       XC            |
++-----------------------+---------------------+
+|XK_ETH_XU316_DUAL_100M |       XC            |
++-----------------------+---------------------+
 
 
 The following sections provide specific details of the features for each of the boards supported by this library.
@@ -158,6 +160,7 @@ XK_ETH_XU316_DUAL_100M API
 .. doxygengroup:: xk_eth_xu316_dual_100m
    :content-only:
 
+|newpage|
 
 ********************
 Example Applications
