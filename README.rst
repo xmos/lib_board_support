@@ -28,6 +28,7 @@ Features
     * ``XK_AUDIO_316_MC``
     * ``XK_AUDIO_216_MC``
     * ``XK_EVK_XU216``
+    * ``XK_ETH_XU316_DUAL_100M``
  * Simple examples to demonstrating usage from both `XC` and `C`.
 
 ************
