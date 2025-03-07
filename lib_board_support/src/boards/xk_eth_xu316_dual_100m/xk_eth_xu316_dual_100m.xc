@@ -112,13 +112,8 @@ void dual_dp83826e_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
     // Setup PHYs. Always configure PHY_0, optionally PHY_1
     for(int phy_idx = 0; phy_idx < num_phys_to_configure; phy_idx++){
         int phy_address = phy_addresses[phy_idx];
-        //printf("Configuring PHY %d addr: 0x%x\n", phy_idx, phy_address);
 
         while(smi_phy_is_powered_down(i_smi, phy_address));
-        // printf("PHY addr: 0x%x powered up\n", phy_address);
-
-        // unsigned phy_id = smi_get_id(i_smi, phy_address);
-        // printf("phy_id = 0x%08X\n", phy_id);
 
         // Ensure we are set into RXDV rather than CS mode
         set_smi_reg_bit(i_smi, phy_address, IO_CONFIG_1_REG, IO_CFG_CRS_RX_DV_BIT, 1);
@@ -171,7 +166,6 @@ void dual_dp83826e_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
                         } else {
                             i_eth_phy1.set_link_state(0, new_state, link_speed[phy_idx]);
                         }
-                        // printf("Link state of PHY: %d addr: 0x%x changed: %d\n", phy_idx, phy_address, link_state[phy_idx]);
                     }
                 }
                 // Do LEDs. Red means no link(s). Green means all links up. Yellow means one of two links up (if 2 PHYs uses).
