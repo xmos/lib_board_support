@@ -9,29 +9,39 @@ Introduction
 This repo contains board specific hardware configuration code for various `XMOS` evaluation and development kits.
 By keeping the board-specific code in a dedicated repository various applications need not replicate commonly used code such as initialisation of on-board peripherals and in addition any updates or fixes can easily be rolled out to all dependent applications.
 
+|newpage|
+
 ****************
 Supported Boards
 ****************
 
 The following boards are supported in this repo with interfaces provided in the languages shown in the table below.
 
-+--------------------+---------------------+
-| Board              | Supported Languages |
-+====================+=====================+
-|XK_EVK_XU316        |       XC / C        |
-+--------------------+---------------------+
-|XK_AUDIO_316_MC_AB  |       XC / C        |
-+--------------------+---------------------+
-|XK_AUDIO_216_MC_AB  |       XC / C        |
-+--------------------+---------------------+
++-----------------------+---------------------+
+| Board                 | Supported Languages |
++=======================+=====================+
+|XK_EVK_XU316           |       XC / C        |
++-----------------------+---------------------+
+|XK_AUDIO_316_MC_AB     |       XC / C        |
++-----------------------+---------------------+
+|XK_AUDIO_216_MC_AB     |       XC / C        |
++-----------------------+---------------------+
+|XK_EVK_XE216           |       XC            |
++-----------------------+---------------------+
+|XK_ETH_XU316_DUAL_100M |       XC            |
++-----------------------+---------------------+
 
-The following section provides specific details of the features for each of the boards supported by this library.
+
+The following sections provide specific details of the features for each of the boards supported by this library.
 
 .. toctree::
 
    xk_audio_316_mc_ab/hw_316_mc
    xk_audio_216_mc_ab/hw_216_mc
    xk_evk_xu316/hw_evk_xu316
+   xk_evk_xe216/hw_evk_xe216
+
+|newpage|
 
 *****
 Usage
@@ -40,7 +50,7 @@ Usage
 This repo supports the `XMOS` build system; `XCommon CMake`. To use the library add ``lib_board_support``
 to an applications `CMakeLists.txt` file using the `APP_DEPENDENT_MODULES` entry. The application
 must provide a relevant ``xn`` file,  although example ``xn`` files are provided in alongside this
-libray (see `xn_files` directory).
+library (see `xn_files` directory).
 
 The application must use the APIs for the specific board that it is using.
 To ensure that only the correct sources for the board in use get compiled in, it is necessary to
@@ -69,6 +79,13 @@ form of a task which is run on a thread placed on the I²C tile and is controlle
 from the other tile where I²S resides. The cross-tile channel must be declared at the top-level
 XC main function. The included examples provide a reference for this using both XC and C.
 
+.. note::
+    Sample XN files (hardware description for compiler) are provided in ``/xn_files`` in the cases
+    where the compiler doesn't support the platform directly. These can be copied into your
+    application directory where needed. See ``/examples`` for usage.
+
+|newpage|
+
 ********************************
 Application Programmer Interface
 ********************************
@@ -80,6 +97,7 @@ This section contains the details of the API support by `lib_board_support`. The
    the supported boards.
 
 
+
 Common API
 ==========
 
@@ -88,6 +106,8 @@ This section contains the list of supported boards, one of which needs to be glo
 
 .. doxygengroup:: bs_common
    :content-only:
+
+|newpage|
 
 
 XK_AUDIO_316_MC_AB API
@@ -99,6 +119,9 @@ XK_AUDIO_316_MC_AB API
 .. doxygengroup:: xk_audio_316_mc_ab
    :content-only:
 
+|newpage|
+
+
 XK_AUDIO_216_MC_AB API
 ======================
 
@@ -108,6 +131,7 @@ XK_AUDIO_216_MC_AB API
 .. doxygengroup:: xk_audio_216_mc_ab
    :content-only:
 
+|newpage|
 
 XK_EVK_XU316 API
 ================
@@ -118,6 +142,23 @@ XK_EVK_XU316 API
 .. doxygengroup:: xk_evk_xu316
    :content-only:
 
+|newpage|
+
+XK_EVK_XU216 API
+================
+
+.. doxygengroup:: xk_evk_xu216
+   :content-only:
+
+|newpage|
+
+XK_ETH_XU316_DUAL_100M API
+==========================
+
+.. doxygengroup:: xk_eth_xu316_dual_100m
+   :content-only:
+
+|newpage|
 
 ********************
 Example Applications
@@ -166,4 +207,6 @@ For example::
     xmake -C build
     xrun --io bin/app_xk_audio_316_mc_simple_xc.xe
 
+
+|newpage|
 
