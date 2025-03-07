@@ -151,6 +151,13 @@ XK_EVK_XU216 API
 
 |newpage|
 
+XK_ETH_XU316_DUAL_100M API
+================
+
+
+.. doxygengroup:: xk_eth_xu316_dual_100m
+   :content-only:
+
 
 ********************
 Example Applications
