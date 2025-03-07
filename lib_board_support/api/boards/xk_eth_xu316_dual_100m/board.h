@@ -50,9 +50,10 @@ void reset_eth_phys(void);
 /** Returns a timing struct tuned to the xk_eth_xu316_dual_100m hardware.
  * This struct should be passed to the call to rmii_ethernet_rt_mac() and will
  * ensure setup and hold times are maximised at the pin level of the PHY connection.
+ * rmii_port_timing_t is defined in lib_ethernet.
  * 
- *  \param phy_idx      The index of the PHY to get timing data about (0 or 1)
- *  \returns            The timing struct to be passed to the PHY
+ *  \param phy_idx      The index of the PHY to get timing data about (0 or 1).
+ *  \returns            The timing struct to be passed to the PHY.
  */
 rmii_port_timing_t get_port_timings(int phy_idx);
 
