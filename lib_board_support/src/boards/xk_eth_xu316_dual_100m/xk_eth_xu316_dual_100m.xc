@@ -19,6 +19,7 @@ on tile[1]: out port p_leds = LED_GRN_RED;
 #define ETH_PHY_1_ADDR 0x07
 const int phy_addresses[2] = {ETH_PHY_0_ADDR, ETH_PHY_1_ADDR};
 
+// These drive low for on so set all other bits to high (we use drive_low mode)
 #define LED_OFF 0xffffffff
 #define LED_RED 0xfffffffd
 #define LED_GRN 0xfffffffe
@@ -97,8 +98,9 @@ void dual_dp83826e_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
         fail("Must specify at least one ethernet_cfg_if configuration interface");
     }
 
-    p_leds <: LED_RED; // Indicate link(s) down
-    p_pwrdn_int :> int _; // Make Hi Z. This pin is pulled up by the PHY
+    set_port_drive_low(p_leds); // So we don't interfere with out lines (eg. xscope)
+    p_leds <: LED_RED;          // Indicate link(s) down
+    p_pwrdn_int :> int _;       // Make Hi Z. This pin is pulled up by the PHY
 
     reset_eth_phys();
 
