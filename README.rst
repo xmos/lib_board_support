@@ -5,7 +5,7 @@ lib_board_support: XMOS board support
 #####################################
 
 :vendor: XMOS
-:version: 1.2.0
+:version: 1.2.1
 :scope: General Use
 :description: Support library for XMOS development kits
 :category: General Purpose
