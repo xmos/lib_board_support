@@ -52,7 +52,7 @@ rmii_port_timing_t get_port_timings(int phy_idx){
         port_timing.clk_delay_rx_rising = 0;
         port_timing.clk_delay_tx_rising = 0;
         port_timing.pad_delay_rx = 1;
-    } else if(phy_idx == 2) {
+    } else if(phy_idx == 1) {
         port_timing.clk_delay_tx_rising = 0;
         port_timing.clk_delay_tx_falling = 0;
         port_timing.clk_delay_rx_rising = 0;

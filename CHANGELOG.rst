@@ -1,6 +1,11 @@
 lib_board_support change log
 ============================
 
+1.2.1
+-----
+
+  * FIXED: Second PHY index for get_timings() in xk_eth_xu316_dual_100m
+
 1.2.0
 -----
 
