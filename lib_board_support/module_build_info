@@ -1,4 +1,4 @@
-VERSION = 1.2.0
+VERSION = 1.2.1
 
 DEPENDENT_MODULES = lib_i2c(>=6.4.0)
                     lib_sw_pll(>=2.3.1)
