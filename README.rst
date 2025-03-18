@@ -5,7 +5,7 @@ lib_board_support: XMOS board support
 #####################################
 
 :vendor: XMOS
-:version: 1.2.1
+:version: 1.2.2
 :scope: General Use
 :description: Support library for XMOS development kits
 :category: General Purpose
@@ -36,7 +36,7 @@ Known issues
 ************
 
  * XK_EVK_XU216 support is currently only for the GigE PHY. The required dependency lib_ethernet to support
-   SMI has not been added to this repo to avoid unneeded dependencies in non-Ethernet applications and will 
+   SMI has not been added to this repo to avoid unneeded dependencies in non-Ethernet applications and will
    be required by any Ethernet application for this board anyway.
 
  * XK_ETH_XU316_DUAL_100M is currently an unreleased board and hence has no documentation.

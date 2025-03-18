@@ -1,6 +1,12 @@
 lib_board_support change log
 ============================
 
+1.2.2
+-----
+
+  * ADDED: Note in documentation about XK_ETH_XU316_DUAL_100M being currently
+    unreleased
+
 1.2.1
 -----
 

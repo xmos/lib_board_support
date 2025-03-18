@@ -31,6 +31,8 @@ The following boards are supported in this repo with interfaces provided in the 
 |XK_ETH_XU316_DUAL_100M |       XC            |
 +-----------------------+---------------------+
 
+.. note::
+    The XK_ETH_XU316_DUAL_100M board is currently unreleased and does not have official documentation. Please contact `XMOS Support <https://www.xmos.com/support/>`_ for futher information.
 
 The following sections provide specific details of the features for each of the boards supported by this library.
 
