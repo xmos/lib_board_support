@@ -7,6 +7,19 @@
 #include <xs1.h>
 #include <platform.h>
 
+#include <debug_print.h>
+
+#define PHY_CHIP_x_ID2_REV_MASK 0x000FU
+// v1.3
+#define PHY_CHIP_0_PHY_ADDR     0x00
+#define PHY_CHIP_0_ID1          0x0022U
+#define PHY_CHIP_0_ID2          (0x1622U & ~PHY_CHIP_x_ID2_REV_MASK)
+
+// v1.2
+#define PHY_CHIP_4_PHY_ADDR     0x04
+#define PHY_CHIP_4_ID1          0x004DU
+#define PHY_CHIP_4_ID2          (0xD072U & ~PHY_CHIP_x_ID2_REV_MASK)
+
 // Pin connected to PHY reset
 port p_eth_reset  = on tile[1]: XS1_PORT_1N;
 
@@ -17,16 +30,35 @@ void ar8035_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
     ethernet_link_state_t link_state = ETHERNET_LINK_DOWN;
     ethernet_speed_t link_speed = LINK_1000_MBPS_FULL_DUPLEX;
     const int phy_reset_delay_ms = 1;
+    const int phy_post_reset_delay_ms = 1;
     const int link_poll_period_ms = 1000;
-    const int phy_address = 0x4;
+    int phy_address = PHY_CHIP_4_PHY_ADDR;
     timer tmr;
     int t;
     tmr :> t;
     p_eth_reset <: 0;
     delay_milliseconds(phy_reset_delay_ms);
     p_eth_reset <: 1;
+    delay_milliseconds(phy_post_reset_delay_ms);
 
-    while (smi_phy_is_powered_down(i_smi, phy_address));
+    uint16_t id1 = i_smi.read_reg(phy_address, PHY_ID1_REG);
+    uint16_t id2 = i_smi.read_reg(phy_address, PHY_ID2_REG);
+
+    if ((id1 == PHY_CHIP_4_ID1) && ((id2 & ~PHY_CHIP_x_ID2_REV_MASK) == PHY_CHIP_4_ID2)) {
+        while (smi_phy_is_powered_down(i_smi, phy_address));
+    } else {
+        phy_address = PHY_CHIP_0_PHY_ADDR;
+
+        id1 = i_smi.read_reg(phy_address, PHY_ID1_REG);
+        id2 = i_smi.read_reg(phy_address, PHY_ID2_REG);
+        
+        if ((id1 == PHY_CHIP_0_ID1) && ((id2 & ~PHY_CHIP_x_ID2_REV_MASK) == PHY_CHIP_0_ID2)) {
+            while (smi_phy_is_powered_down(i_smi, phy_address));
+        } else {
+            debug_printf("Chip not identified\n");
+        }
+    }
+
     smi_configure(i_smi, phy_address, LINK_1000_MBPS_FULL_DUPLEX, SMI_ENABLE_AUTONEG);
 
     while (1) {
