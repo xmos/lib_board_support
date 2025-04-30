@@ -30,6 +30,7 @@ void ar8035_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
     ethernet_link_state_t link_state = ETHERNET_LINK_DOWN;
     ethernet_speed_t link_speed = LINK_1000_MBPS_FULL_DUPLEX;
     const int phy_reset_delay_ms = 1;
+    const int phy_post_reset_delay_ms = 1;
     const int link_poll_period_ms = 1000;
     int phy_address = PHY_CHIP_4_PHY_ADDR;
     timer tmr;
@@ -38,20 +39,15 @@ void ar8035_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
     p_eth_reset <: 0;
     delay_milliseconds(phy_reset_delay_ms);
     p_eth_reset <: 1;
+    delay_milliseconds(phy_post_reset_delay_ms);
 
-    // Dummy read, might be FFFF
     uint16_t id1 = i_smi.read_reg(phy_address, PHY_ID1_REG);
-
-    id1 = i_smi.read_reg(phy_address, PHY_ID1_REG);
     uint16_t id2 = i_smi.read_reg(phy_address, PHY_ID2_REG);
 
     if ((id1 == PHY_CHIP_4_ID1) && ((id2 & ~PHY_CHIP_x_ID2_REV_MASK) == PHY_CHIP_4_ID2)) {
         while (smi_phy_is_powered_down(i_smi, phy_address));
     } else {
         phy_address = PHY_CHIP_0_PHY_ADDR;
-
-        // Dummy read, might be FFFF
-        id1 = i_smi.read_reg(phy_address, PHY_ID1_REG);
 
         id1 = i_smi.read_reg(phy_address, PHY_ID1_REG);
         id2 = i_smi.read_reg(phy_address, PHY_ID2_REG);
