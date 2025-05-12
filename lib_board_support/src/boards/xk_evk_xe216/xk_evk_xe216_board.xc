@@ -9,13 +9,15 @@
 
 #include <debug_print.h>
 
+// The following supports PHY chips on different versions of XK-EVK-XE216
+// See Design Advisory in technical documents section of https://www.xmos.com/xk-evk-xe216
 #define PHY_CHIP_x_ID2_REV_MASK 0x000FU
-// v1.3
+// XK-EVK-XE216 v1.3
 #define PHY_CHIP_0_PHY_ADDR     0x00
 #define PHY_CHIP_0_ID1          0x0022U
 #define PHY_CHIP_0_ID2          (0x1622U & ~PHY_CHIP_x_ID2_REV_MASK)
 
-// v1.2
+// XK-EVK-XE216 v1.2
 #define PHY_CHIP_4_PHY_ADDR     0x04
 #define PHY_CHIP_4_ID1          0x004DU
 #define PHY_CHIP_4_ID2          (0xD072U & ~PHY_CHIP_x_ID2_REV_MASK)
