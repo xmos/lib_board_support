@@ -1,6 +1,11 @@
 lib_board_support change log
 ============================
 
+UNRELEASED
+----------
+
+  * ADDED: Support for PHY address being either 0x1 or 0x4 for XK-EVK-XE216
+
 1.2.2
 -----
 
