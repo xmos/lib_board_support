@@ -5,6 +5,7 @@ UNRELEASED
 ----------
 
   * ADDED: Support for PHY address being either 0x1 or 0x4 for XK-EVK-XE216
+  * ADDED: Power-down support for xk-audio-316-mc
 
 1.2.2
 -----

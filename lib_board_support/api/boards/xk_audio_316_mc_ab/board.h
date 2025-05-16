@@ -101,6 +101,11 @@ void xk_audio_316_mc_ab_board_setup(const REFERENCE_PARAM(xk_audio_316_mc_ab_con
  */
 void xk_audio_316_mc_ab_AudioHwInit(CLIENT_INTERFACE(i2c_master_if, i2c), const REFERENCE_PARAM(xk_audio_316_mc_ab_config_t, config));
 
+/** 
+ * @brief Powers down the audio hardware. xk_audio_316_mc_ab_board_setup() and xk_audio_316_mc_ab_AudioHwInit must be called once 
+ * *after* this before attempting to configure the hardware with xk_audio_316_mc_ab_AudioHwConfig() again.
+ */
+void xk_audio_316_mc_ab_AudioHwShutdown(void);
 
 /** 
  * @brief Configures the audio hardware following initialisation. This is typically called each time a sample rate or stream format change occurs.

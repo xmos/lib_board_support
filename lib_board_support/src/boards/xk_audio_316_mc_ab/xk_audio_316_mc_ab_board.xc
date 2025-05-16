@@ -58,6 +58,12 @@ void xk_audio_316_mc_ab_board_setup(const xk_audio_316_mc_ab_config_t &config)
     delay_milliseconds(10);
 }
 
+void xk_audio_316_mc_ab_AudioHwShutdown(void)
+{
+    // TODO - fully turn everything off
+    p_ctrl <: 0; // Turn off 3v3A
+}
+
 void xk_audio_316_mc_ab_i2c_master(server interface i2c_master_if i2c[1])
 {
     i2c_master(i2c, 1, p_scl, p_sda, 100);
