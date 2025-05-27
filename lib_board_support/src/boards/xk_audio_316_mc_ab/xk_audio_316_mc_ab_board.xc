@@ -15,26 +15,24 @@ extern "C" {
     #include "sw_pll.h"
 }
 
-
 #ifndef I2S_LOOPBACK
 #define I2S_LOOPBACK             (0)
 #endif
 
-
 // reduce verbosity
 typedef client interface i2c_master_if i2c_cli;
 
+/* All on tile[0] */
 port p_scl = PORT_I2C_SCL;
 port p_sda = PORT_I2C_SDA;
 out port p_ctrl = PORT_CTRL;                /* p_ctrl:
-                                             * [0:3] - Unused
-                                             * [4]   - EN_3v3_N    (1v0 hardware only)
-                                             * [5]   - EN_3v3A
+                                             * [0:4] - Unused
+                                             * [5]   - SUSPEND_N
                                              * [6]   - EXT_PLL_SEL (CS2100:0, SI: 1)
                                              * [7]   - MCLK_DIR    (Out:0, In: 1)
                                              */
 
-on tile[0]: in port p_margin = XS1_PORT_1G;  /* CORE_POWER_MARGIN:   Driven 0:   0.925v
+on tile[0]: port p_margin = XS1_PORT_1G;     /* CORE_POWER_MARGIN:   Driven 0:   0.925v
                                               *                      Pull down:  0.922v
                                               *                      High-z:     0.9v
                                               *                      Pull-up:    0.854v
@@ -46,7 +44,7 @@ void xk_audio_316_mc_ab_board_setup(const xk_audio_316_mc_ab_config_t &config)
     /* "Drive high mode" - drive high for 1, non-driving for 0 */
     set_port_drive_high(p_ctrl);
 
-    /* Ensure high-z for 0.9v */
+    /* High-z to set core power to 0.9v */
     p_margin :> void;
 
     /* Drive control port to turn on 3V3 and mclk direction appropriately.
@@ -60,8 +58,12 @@ void xk_audio_316_mc_ab_board_setup(const xk_audio_316_mc_ab_config_t &config)
 
 void xk_audio_316_mc_ab_AudioHwShutdown(void)
 {
-    // TODO - fully turn everything off
-    p_ctrl <: 0; // Turn off 3v3A
+    /* Turn off 3v3 and 5v power supplies using board SUSPEND_N signal */
+    /* Note, xcore 3v3 (3v3X) remains on */
+    p_ctrl <: 0;
+
+    /* Reduce core power to 0.85v */
+    p_margin <: 1;
 }
 
 void xk_audio_316_mc_ab_i2c_master(server interface i2c_master_if i2c[1])
@@ -69,7 +71,8 @@ void xk_audio_316_mc_ab_i2c_master(server interface i2c_master_if i2c[1])
     i2c_master(i2c, 1, p_scl, p_sda, 100);
 }
 
-void xk_audio_316_mc_ab_i2c_master_exit(i2c_cli i2c){
+void xk_audio_316_mc_ab_i2c_master_exit(i2c_cli i2c)
+{
     i2c.shutdown();
 }
 
