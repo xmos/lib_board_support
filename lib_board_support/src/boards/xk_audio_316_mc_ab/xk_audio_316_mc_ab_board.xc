@@ -38,14 +38,26 @@ on tile[0]: port p_margin = XS1_PORT_1G;     /* CORE_POWER_MARGIN:   Driven 0:  
                                               *                      Pull-up:    0.854v
                                               *                      Driven 1:   0.85v
                                               */
+
+void xk_audio_316_mc_ab_core_voltage_reduce(const int reduce_voltage)
+{
+    if(reduce_voltage){
+        /* Reduce core power to 0.85v */
+        p_margin <: 1;
+    } else {
+        /* High-z to set core power to 0.9v */
+        p_margin :> void;
+    }
+}
+
 void xk_audio_316_mc_ab_board_setup(const xk_audio_316_mc_ab_config_t &config)
 {
 
     /* "Drive high mode" - drive high for 1, non-driving for 0 */
     set_port_drive_high(p_ctrl);
 
-    /* High-z to set core power to 0.9v */
-    p_margin :> void;
+    /* Ensure we are running at nominal 0.9v initially */
+    xk_audio_316_mc_ab_core_voltage_reduce(0);
 
     /* Drive control port to turn on 3V3 and mclk direction appropriately.
      * Bits set to low will be high-z, pulled down */
@@ -61,9 +73,6 @@ void xk_audio_316_mc_ab_AudioHwShutdown(void)
     /* Turn off 3v3 and 5v power supplies using board SUSPEND_N signal */
     /* Note, xcore 3v3 (3v3X) remains on */
     p_ctrl <: 0;
-
-    /* Reduce core power to 0.85v */
-    p_margin <: 1;
 }
 
 void xk_audio_316_mc_ab_i2c_master(server interface i2c_master_if i2c[1])

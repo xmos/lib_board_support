@@ -94,6 +94,15 @@ void xk_audio_316_mc_ab_i2c_master(SERVER_INTERFACE(i2c_master_if, i2c[1]));
 void xk_audio_316_mc_ab_board_setup(const REFERENCE_PARAM(xk_audio_316_mc_ab_config_t, config));
 
 /** 
+ * @brief Allows control of the xcore.ai core voltage independantly. Warning - use with caution. This is only supported when the 
+ * xcore is significantly clocked down. Please consult the datasheet for Operating Conditions / DC Characteristics.
+ * Must be called from tile[0].
+ *
+ *  \param   reduce_voltage     Set to 0 to run at nominal 0.9v or 1 to reduce the core voltage to 0.85v
+ */
+void xk_audio_316_mc_ab_core_voltage_reduce(const int reduce_voltage);
+
+/** 
  * @brief Initialises the audio hardware ready for a configuration. Must be called once *after* xk_audio_316_mc_ab_board_setup().
  *
  *  \param   i2c        Client side of I2C master interface connection.
