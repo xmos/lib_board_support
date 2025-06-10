@@ -38,14 +38,53 @@ on tile[0]: port p_margin = XS1_PORT_1G;     /* CORE_POWER_MARGIN:   Driven 0:  
                                               *                      Pull-up:    0.854v
                                               *                      Driven 1:   0.85v
                                               */
+
+/* Macro to enable the drive mode (open drain/source or complementary) */
+#define set_pad_drive_mode(port, mode)  {__asm__ __volatile__ ("setc res[%0], %1": : "r" (port) , "r" ((mode << _MODE_SHIFT) | PAD_DRIVE_MODE));}
+/* Pad control defines */
+#define PAD_DRIVE_MODE  0x0003
+#define DRIVE_BOTH      0x0
+#define DRIVE_HIGH      0x1
+#define DRIVE_LOW       0x2
+#define _MODE_SHIFT     0
+
+
+void xk_audio_316_mc_ab_core_voltage_set(const xk_audio_316_mc_ab_xcore_voltage_t voltage_setting)
+{
+    switch(voltage_setting){
+        case AUD_316_XCORE_VOLTAGE_0_925V:
+            set_pad_drive_mode(p_margin, DRIVE_BOTH);
+            p_margin <: 0; /* hard low */
+            break;
+        case AUD_316_XCORE_VOLTAGE_0_922V:
+            set_pad_drive_mode(p_margin, DRIVE_HIGH);
+            p_margin <: 0; /* pulled low */
+            break;
+        case AUD_316_XCORE_VOLTAGE_0_9V:
+            set_pad_drive_mode(p_margin, DRIVE_BOTH);
+            p_margin :> void; /* Hi-Z */
+            break;
+        case AUD_316_XCORE_VOLTAGE_0_854V:
+            set_pad_drive_mode(p_margin, DRIVE_LOW);
+            p_margin <: 1; /* pulled high */
+            break;
+        case AUD_316_XCORE_VOLTAGE_0_85V:
+            set_pad_drive_mode(p_margin, DRIVE_BOTH);
+            p_margin <: 1; /* hard high */
+            break;
+        default:
+            break;
+    }
+}
+
 void xk_audio_316_mc_ab_board_setup(const xk_audio_316_mc_ab_config_t &config)
 {
 
     /* "Drive high mode" - drive high for 1, non-driving for 0 */
     set_port_drive_high(p_ctrl);
 
-    /* High-z to set core power to 0.9v */
-    p_margin :> void;
+    /* Ensure we are running at nominal 0.9v */
+    xk_audio_316_mc_ab_core_voltage_set(AUD_316_XCORE_VOLTAGE_0_9V);
 
     /* Drive control port to turn on 3V3 and mclk direction appropriately.
      * Bits set to low will be high-z, pulled down */
@@ -61,9 +100,6 @@ void xk_audio_316_mc_ab_AudioHwShutdown(void)
     /* Turn off 3v3 and 5v power supplies using board SUSPEND_N signal */
     /* Note, xcore 3v3 (3v3X) remains on */
     p_ctrl <: 0;
-
-    /* Reduce core power to 0.85v */
-    p_margin <: 1;
 }
 
 void xk_audio_316_mc_ab_i2c_master(server interface i2c_master_if i2c[1])

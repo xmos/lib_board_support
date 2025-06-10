@@ -37,6 +37,16 @@ typedef enum {
     AUD_316_PCM_FORMAT_TDM
 } xk_audio_316_mc_ab_pcm_format_t;
 
+/** 
+ * @brief Voltage settings supported for the xcore core supply. Set by xk_audio_316_mc_ab_core_voltage_set().
+ */
+typedef enum {
+    AUD_316_XCORE_VOLTAGE_0_925V,
+    AUD_316_XCORE_VOLTAGE_0_922V,
+    AUD_316_XCORE_VOLTAGE_0_9V,
+    AUD_316_XCORE_VOLTAGE_0_854V,
+    AUD_316_XCORE_VOLTAGE_0_85V
+} xk_audio_316_mc_ab_xcore_voltage_t;
 
 /** @}*/ // END: addtogroup xk_audio_316_mc_ab
 
@@ -92,6 +102,15 @@ void xk_audio_316_mc_ab_i2c_master(SERVER_INTERFACE(i2c_master_if, i2c[1]));
  *  \param   config     Reference to the xk_audio_316_mc_ab_config_t configuration struct.
  */
 void xk_audio_316_mc_ab_board_setup(const REFERENCE_PARAM(xk_audio_316_mc_ab_config_t, config));
+
+/** 
+ * @brief Allows control of the xcore.ai core voltage independantly. Warning - use with caution. This is only supported when the 
+ * xcore is significantly clocked down. Please consult the datasheet for Operating Conditions / DC Characteristics.
+ * Must be called from tile[0].
+ *
+ *  \param   voltage_setting     See xk_audio_316_mc_ab_xcore_voltage_t for options
+ */
+void xk_audio_316_mc_ab_core_voltage_set(const xk_audio_316_mc_ab_xcore_voltage_t voltage_setting);
 
 /** 
  * @brief Initialises the audio hardware ready for a configuration. Must be called once *after* xk_audio_316_mc_ab_board_setup().
