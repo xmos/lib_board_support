@@ -23,6 +23,17 @@
  * @{
  */
 
+ /** Index value used with get_port_timings() to refer to board configuration.
+  * 
+  * The timings change according to which PHYs mounted and the hardware configuration
+  * of the dual PHY dev-kit.
+  */
+typedef enum {
+    DUAL_PHY_MOUNTED_PHY0,
+    DUAL_PHY_MOUNTED_PHY1,
+    SINGLE_PHY_MOUNTED,
+} port_timing_index_t;
+
 /** Task that connects to the SMI master and MAC to configure the
  * DP83826E PHYs and monitor the link status. Note this task is combinable
  * (typically with SMI) and therefore does not need to take a whole thread.
@@ -55,7 +66,7 @@ void reset_eth_phys(void);
  *  \param phy_idx      The index of the PHY to get timing data about (0 or 1).
  *  \returns            The timing struct to be passed to the PHY.
  */
-rmii_port_timing_t get_port_timings(int phy_idx);
+rmii_port_timing_t get_port_timings(port_timing_index_t phy_idx);
 
 
 /**@}*/ // END: addtogroup xk_eth_xu316_dual_100m
