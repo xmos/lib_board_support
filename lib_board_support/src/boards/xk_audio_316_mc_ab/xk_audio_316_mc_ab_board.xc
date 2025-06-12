@@ -95,12 +95,6 @@ void xk_audio_316_mc_ab_board_setup(const xk_audio_316_mc_ab_config_t &config)
     delay_milliseconds(10);
 }
 
-void xk_audio_316_mc_ab_AudioHwShutdown(void)
-{
-    /* Turn off 3v3 and 5v power supplies using board SUSPEND_N signal */
-    /* Note, xcore 3v3 (3v3X) remains on */
-    p_ctrl <: 0;
-}
 
 void xk_audio_316_mc_ab_i2c_master(server interface i2c_master_if i2c[1])
 {
@@ -613,5 +607,24 @@ void xk_audio_316_mc_ab_AudioHwConfig(i2c_cli i2c, const xk_audio_316_mc_ab_conf
     delay_milliseconds(1);
     WriteAllDacRegs(i2c, PCM5122_MUTE,           0x00); // Un-mute all channels
 }
+
+
+void xk_audio_316_mc_ab_AudioHwShutdown(i2c_cli i2c)
+{
+    /* Set external I2C mux to DACs/ADCs */
+    SetI2CMux(i2c, PCA9540B_CTRL_CHAN_0);
+    WriteAllAdcRegs(i2c, PCM1865_PWR_STATE,      0x77); // Sets ADCs into powerdown.
+    WriteAllDacRegs(i2c, PCM5122_MUTE,           0x11); // Soft Mute both DACs
+    delay_milliseconds(3);  // Wait for mute to take effect. This takes 104 samples, this is 2.4ms @ 44.1kHz. So lets say 3ms to cover everything.
+    WriteAllDacRegs(i2c, PCM5122_STANDBY_PWDN,   0x10); // Request standby mode for DAC
+}
+
+void xk_audio_316_mc_ab_AudioHwPowerdown(void)
+{
+    /* Turn off 3v3 and 5v power supplies using board SUSPEND_N signal */
+    /* Note, xcore 3v3 (3v3X) remains on */
+    p_ctrl <: 0;
+}
+
 
 #endif

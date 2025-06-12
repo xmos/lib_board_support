@@ -5,7 +5,7 @@ UNRELEASED
 ----------
 
   * ADDED: Support for PHY address being either 0x1 or 0x4 for XK-EVK-XE216
-  * ADDED: Power-down support for xk-audio-316-mc
+  * ADDED: Power-down support for xk-audio-316-mc audio hardware
   * ADDED: xcore core voltage control API for xk-audio-316-mc
 
 1.2.2
@@ -13,6 +13,10 @@ UNRELEASED
 
   * ADDED: Note in documentation about XK_ETH_XU316_DUAL_100M being currently
     unreleased
+
+  * Changes to dependencies:
+
+    - lib_sw_pll: 2.3.1 -> 2.4.0
 
 1.2.1
 -----
