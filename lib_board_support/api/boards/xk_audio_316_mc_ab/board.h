@@ -121,10 +121,18 @@ void xk_audio_316_mc_ab_core_voltage_set(const xk_audio_316_mc_ab_xcore_voltage_
 void xk_audio_316_mc_ab_AudioHwInit(CLIENT_INTERFACE(i2c_master_if, i2c), const REFERENCE_PARAM(xk_audio_316_mc_ab_config_t, config));
 
 /** 
- * @brief Powers down the audio hardware. xk_audio_316_mc_ab_board_setup() and xk_audio_316_mc_ab_AudioHwInit must be called once 
- * *after* this before attempting to configure the hardware with xk_audio_316_mc_ab_AudioHwConfig() again.
+ * @brief Shuts down the audio hardware via I2C commands but keeps power rail on.
+ * Use xk_audio_316_mc_ab_AudioHwShutdown() to remove power afterwards for minimum power.
  */
-void xk_audio_316_mc_ab_AudioHwShutdown(void);
+void xk_audio_316_mc_ab_AudioHwShutdown(CLIENT_INTERFACE(i2c_master_if, i2c));
+
+/** 
+ * @brief Powers down the audio hardware. Call xk_audio_316_mc_ab_AudioHwShutdown() first to avoid clicks/pops
+ * xk_audio_316_mc_ab_board_setup() and xk_audio_316_mc_ab_AudioHwInit must be called once 
+ * *after* this before attempting to configure the hardware with xk_audio_316_mc_ab_AudioHwConfig() again.
+ * Must be called from tile[0]
+ */
+void xk_audio_316_mc_ab_AudioHwPowerdown(void);
 
 /** 
  * @brief Configures the audio hardware following initialisation. This is typically called each time a sample rate or stream format change occurs.

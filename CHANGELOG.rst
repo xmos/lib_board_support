@@ -5,7 +5,7 @@ UNRELEASED
 ----------
 
   * ADDED: Support for PHY address being either 0x1 or 0x4 for XK-EVK-XE216
-  * ADDED: Power-down support for xk-audio-316-mc
+  * ADDED: Power-down support for xk-audio-316-mc audio hardware
   * ADDED: xcore core voltage control API for xk-audio-316-mc
 
 1.2.2
