@@ -9,11 +9,13 @@
 #include <xccompat.h>
 #include "smi.h"
 
+#ifndef NULLABLE_CLIENT_INTERFACE
 #ifdef __XC__
 #define NULLABLE_CLIENT_INTERFACE(tag, name) client interface tag ?name
 #else
 #define NULLABLE_CLIENT_INTERFACE(type, name) unsigned name
 #endif
+#endif // NULLABLE_CLIENT_INTERFACE
 
 
 /**
