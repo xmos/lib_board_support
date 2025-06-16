@@ -31,7 +31,7 @@
 typedef enum {
     DUAL_PHY_MOUNTED_PHY0,
     DUAL_PHY_MOUNTED_PHY1,
-    SINGLE_PHY_MOUNTED,
+    SINGLE_PHY_MOUNTED_PHY0,
 } port_timing_index_t;
 
 /** Task that connects to the SMI master and MAC to configure the
@@ -63,7 +63,7 @@ void reset_eth_phys(void);
  * ensure setup and hold times are maximised at the pin level of the PHY connection.
  * rmii_port_timing_t is defined in lib_ethernet.
  * 
- *  \param phy_idx      The index of the PHY to get timing data about (0 or 1).
+ *  \param phy_idx      The index of the PHY to get timing data about.
  *  \returns            The timing struct to be passed to the PHY.
  */
 rmii_port_timing_t get_port_timings(port_timing_index_t phy_idx);

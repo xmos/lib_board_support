@@ -7,6 +7,7 @@ UNRELEASED
   * ADDED: Support for PHY address being either 0x1 or 0x4 for XK-EVK-XE216
   * ADDED: Power-down support for xk-audio-316-mc
   * ADDED: xcore core voltage control API for xk-audio-316-mc
+  * CHANGED: replaced phy_idx paramter in get_port_timings() with enum, port_timing_index_t
 
 1.2.2
 -----
