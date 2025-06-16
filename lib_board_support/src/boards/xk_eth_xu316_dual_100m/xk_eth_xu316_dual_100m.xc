@@ -44,15 +44,15 @@ void reset_eth_phys()
     delay_milliseconds(2);
 }
 
-rmii_port_timing_t get_port_timings(int phy_idx){
+rmii_port_timing_t get_port_timings(port_timing_index_t phy_idx){
     rmii_port_timing_t port_timing = {0};
-    if(phy_idx == 0){
+    if(phy_idx == DUAL_PHY_MOUNTED_PHY0){
         port_timing.clk_delay_tx_rising = 1;
         port_timing.clk_delay_tx_falling = 1;
         port_timing.clk_delay_rx_rising = 0;
         port_timing.clk_delay_tx_rising = 0;
         port_timing.pad_delay_rx = 1;
-    } else if(phy_idx == 1) {
+    } else if((phy_idx == DUAL_PHY_MOUNTED_PHY1) || (phy_idx == SINGLE_PHY_MOUNTED_PHY0)) {
         port_timing.clk_delay_tx_rising = 0;
         port_timing.clk_delay_tx_falling = 0;
         port_timing.clk_delay_rx_rising = 0;
