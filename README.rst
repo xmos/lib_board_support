@@ -56,11 +56,7 @@ Development repo
 Required tools
 **************
 
-<<<<<<< HEAD
  * XMOS XTC Tools: 15.3.1
-=======
-* XMOS XTC Tools: 15.3.0
->>>>>>> develop
 
 *********************************
 Required libraries (dependencies)
