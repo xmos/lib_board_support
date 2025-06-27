@@ -5,11 +5,11 @@ lib_board_support: XMOS board support
 #####################################
 
 :vendor: XMOS
-:version: 1.2.2
+:version: 1.3.0
 :scope: General Use
 :description: Support library for XMOS development kits
 :category: General Purpose
-:keywords: I2C
+:keywords: I2C, Ethernet, Audio
 :devices: xcore.ai, xcore-200
 
 *******
@@ -56,7 +56,7 @@ Development repo
 Required tools
 **************
 
-* XMOS XTC Tools: 15.3.0
+ * XMOS XTC Tools: 15.3.1
 
 *********************************
 Required libraries (dependencies)

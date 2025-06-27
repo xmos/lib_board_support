@@ -1,6 +1,6 @@
 // This file relates to internal XMOS infrastructure and should be ignored by external users
 
-@Library('xmos_jenkins_shared_library@v0.38.0') _
+@Library('xmos_jenkins_shared_library@v0.39.0') _
 
 def archiveLib(String repoName) {
     sh "git -C ${repoName} clean -xdf"
@@ -30,12 +30,12 @@ pipeline {
     parameters {
         string(
             name: 'TOOLS_VERSION',
-            defaultValue: '15.3.0',
+            defaultValue: '15.3.1',
             description: 'The XTC tools version'
         )
         string(
             name: 'XMOSDOC_VERSION',
-            defaultValue: 'v6.3.1',
+            defaultValue: 'v7.2.0',
             description: 'The xmosdoc version'
         )
         string(
