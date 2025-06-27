@@ -2,21 +2,6 @@
 
 @Library('xmos_jenkins_shared_library@v0.39.0') _
 
-def archiveLib(String repoName) {
-    sh "git -C ${repoName} clean -xdf"
-    sh "zip ${repoName}_sw.zip -r ${repoName}"
-    archiveArtifacts artifacts: "${repoName}_sw.zip", allowEmptyArchive: false
-}
-
-def checkout_shallow()
-{
-  checkout scm: [
-    $class: 'GitSCM',
-    branches: scm.branches,
-    userRemoteConfigs: scm.userRemoteConfigs,
-    extensions: [[$class: 'CloneOption', depth: 1, shallow: true, noTags: false]]
-  ]
-}
 getApproval()
 pipeline {
     agent none
@@ -40,7 +25,7 @@ pipeline {
         )
         string(
             name: 'INFR_APPS_VERSION',
-            defaultValue: 'v2.0.1',
+            defaultValue: 'v2.1.0',
             description: 'The infr_apps version'
         )
     }
@@ -59,7 +44,7 @@ pipeline {
                     steps {
                         println "Stage running on: ${env.NODE_NAME}"
                         dir("${REPO}") {
-                            checkout_shallow()
+                            checkoutScmShallow()
                             createVenv()
                             withTools(params.TOOLS_VERSION) {
                                 dir("examples") {
@@ -113,7 +98,7 @@ pipeline {
                 } // stage('Documentation')
                 stage("Archive Lib") {
                     steps {
-                        archiveLib(REPO)
+                        archiveSandbox(REPO)
                     }
                 } //stage("Archive Lib")
             }
