@@ -2,24 +2,12 @@
 
 @Library('xmos_jenkins_shared_library@v0.39.0') _
 
-def archiveLib(String repoName) {
-    sh "git -C ${repoName} clean -xdf"
-    sh "zip ${repoName}_sw.zip -r ${repoName}"
-    archiveArtifacts artifacts: "${repoName}_sw.zip", allowEmptyArchive: false
-}
-
-def checkout_shallow()
-{
-  checkout scm: [
-    $class: 'GitSCM',
-    branches: scm.branches,
-    userRemoteConfigs: scm.userRemoteConfigs,
-    extensions: [[$class: 'CloneOption', depth: 1, shallow: true, noTags: false]]
-  ]
-}
 getApproval()
 pipeline {
-    agent none
+
+    agent {
+        label 'x86_64 && linux && documentation'
+    }
 
     options {
         buildDiscarder(xmosDiscardBuildSettings())
@@ -40,94 +28,74 @@ pipeline {
         )
         string(
             name: 'INFR_APPS_VERSION',
-            defaultValue: 'v2.0.1',
+            defaultValue: 'v2.1.0',
             description: 'The infr_apps version'
         )
     }
     environment {
-        REPO = 'lib_board_support'
-        PYTHON_VERSION = "3.12.1"
+        REPO_NAME = 'lib_board_support' // Needed for xcoreBuild()
+                                        // (https://github.com/xmos/xmos_jenkins_shared_library/issues/370)
+        PYTHON_VERSION = '3.12.1'
     }
 
-    stages {
-        stage('Build and tests') {
-            agent {
-                label 'documentation && linux && x86_64'
-            }
-            stages{
-                stage('Checkout'){
-                    steps {
-                        println "Stage running on: ${env.NODE_NAME}"
-                        dir("${REPO}") {
-                            checkout_shallow()
-                            createVenv()
-                            withTools(params.TOOLS_VERSION) {
-                                dir("examples") {
-                                    sh 'cmake -G "Unix Makefiles" -B build -DDEPS_CLONE_SHALLOW=TRUE'
-                                }
-                            }
-                        } // dir
-                    } // steps
-                } // stage('Checkout')
-                stage('Library checks') {
-                    steps {
-                        warnError("lib checks") {
-                            runLibraryChecks("${WORKSPACE}/${REPO}", "${params.INFR_APPS_VERSION}")
-                        }
-                    } // steps
-                }  // stage('Library checks')
-                stage('Build examples'){
-                    steps {
-                        dir("${REPO}/examples") {
-                            withVenv {
-                                withTools(params.TOOLS_VERSION) {
-                                    sh 'cmake -G "Unix Makefiles" -B build -DDEPS_CLONE_SHALLOW=TRUE'
-                                    archiveArtifacts artifacts: "build/manifest.txt", allowEmptyArchive: false
-                                    sh "xmake -C build -j 16"
-                                    archiveArtifacts artifacts: "**/*.xe", allowEmptyArchive: false
-                                    stash name: "xe_files", includes: "**/*.xe"
-                                }
-                            }
+    stages{
+        stage('Checkout & build'){
+            steps {
+                println "Stage running on: ${env.NODE_NAME}"
+                dir("${REPO_NAME}") {
+                    checkoutScmShallow()
+                    withTools(params.TOOLS_VERSION) {
+                        dir("examples") {
+                            // Note, archives xe files
+                            xcoreBuild()
                         }
                     }
-                } // stage('Build examples')
-                stage('Test'){
-                    steps {
-                        dir("${REPO}") {
-                            withVenv {
-                                withTools(params.TOOLS_VERSION) {
-                                    // Stage currently empty as no specific tests yet
-                                }
-                            }
+                } // dir
+            } // steps
+        } // stage('Checkout & build')
+        stage('Library checks') {
+            steps {
+                warnError("lib checks") {
+                    runLibraryChecks("${WORKSPACE}/${REPO_NAME}", "${params.INFR_APPS_VERSION}")
+                }
+            } // steps
+        }  // stage('Library checks')
+        stage('Test'){
+            steps {
+                dir("${REPO_NAME}") {
+                    createVenv()
+                    withVenv {
+                        withTools(params.TOOLS_VERSION) {
+                            // Stage currently empty as no specific tests yet
                         }
-                    }
-                } // stage('Test')
-                stage('Documentation') {
-                    steps {
-                        dir("${REPO}") {
-                            warnError("Docs") {
-                                buildDocs()
-                            } // warnError("Docs")
-                        } // dir
-                    } // steps
-                } // stage('Documentation')
-                stage("Archive Lib") {
-                    steps {
-                        archiveLib(REPO)
-                    }
-                } //stage("Archive Lib")
-            }
-            post {
-                always{
-                    dir("${REPO}/tests") {
-                        // No test yet so this is a placeholder
-                        // junit 'results.xml'
                     }
                 }
-                cleanup {
-                    xcoreCleanSandbox()
-                }
             }
+        } // stage('Test')
+        stage('Documentation') {
+            steps {
+                dir("${REPO_NAME}") {
+                    warnError("Docs") {
+                        buildDocs()
+                    } // warnError("Docs")
+                } // dir
+            } // steps
+        } // stage('Documentation')
+        stage("Archive") {
+            steps {
+                archiveSandbox(REPO_NAME)
+            }
+        } //stage("Archive")
+    }
+    post {
+        always{
+            dir("${REPO_NAME}/tests") {
+                // No test yet so this is a placeholder
+                // junit 'results.xml'
+            }
+        }
+        cleanup {
+            xcoreCleanSandbox()
         }
     }
 }
