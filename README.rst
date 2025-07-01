@@ -23,13 +23,15 @@ evaluation and development kits.
 Features
 ********
 
-* Support for the following boards:
-   * ``XK_EVK_XU316``
-   * ``XK_AUDIO_316_MC``
-   * ``XK_AUDIO_216_MC``
-   * ``XK_EVK_XU216``
-   * ``XK_ETH_XU316_DUAL_100M``
-* Simple examples to demonstrating usage from both `XC` and `C`.
+* Support for the following `XMOS` boards:
+
+  * ``XK_EVK_XU316``
+  * ``XK_AUDIO_316_MC``
+  * ``XK_AUDIO_216_MC``
+  * ``XK_EVK_XU216``
+  * ``XK_ETH_XU316_DUAL_100M``
+
+* Simple examples demonstrating usage from both `XC` and `C`.
 
 ************
 Known issues
@@ -42,8 +44,8 @@ Known issues
 * XK_ETH_XU316_DUAL_100M is currently an unreleased board and hence has no documentation.
 
 * XK_ETH_XU316_DUAL_100M uses the TI DP83826 PHY. During testing we noticed that very occasionally (1% of the time) the first
-  packet sent after initialisation may be dropped for certain link partners. Subsequent packets are always OK. 
-  This is consistent with a similar bug seen on the `TI forum <https://e2e.ti.com/support/interface-  group/interface/f/interface-forum/956808/dp83822i-after-link-up-first-packet-is-not-being-transmitted>`_. 
+  packet sent after initialisation may be dropped for certain link partners. Subsequent packets are always OK.
+  This is consistent with a similar bug seen on the `TI forum <https://e2e.ti.com/support/interface-  group/interface/f/interface-forum/956808/dp83822i-after-link-up-first-packet-is-not-being-transmitted>`_.
   For most applications this is not an issue however for test cases it may be worth noting. Sending an initial dummy Tx packet works around this issue.
 
 ****************
