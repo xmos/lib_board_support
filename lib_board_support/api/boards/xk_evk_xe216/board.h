@@ -27,8 +27,8 @@
  *  \param i_eth        Client MAC configuration interface
  */
 [[combinable]]
-void ar8035_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
-                       CLIENT_INTERFACE(ethernet_cfg_if, i_eth));
+void xk_eth_xe216_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
+                             CLIENT_INTERFACE(ethernet_cfg_if, i_eth));
 
 
 

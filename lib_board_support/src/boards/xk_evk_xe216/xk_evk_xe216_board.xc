@@ -10,6 +10,7 @@
 #include <debug_print.h>
 
 // The following supports PHY chips on different versions of XK-EVK-XE216
+// The PHY chip is an AR8035 up to v1.2 of the board and KSZ9031RNX from v1.3 onwards.
 // See Design Advisory in technical documents section of https://www.xmos.com/xk-evk-xe216
 #define PHY_CHIP_x_ID2_REV_MASK 0x000FU
 // XK-EVK-XE216 v1.3
@@ -26,8 +27,8 @@
 port p_eth_reset  = on tile[1]: XS1_PORT_1N;
 
 [[combinable]]
-void ar8035_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
-                       CLIENT_INTERFACE(ethernet_cfg_if, i_eth)) {
+void xk_eth_xe216_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
+                             CLIENT_INTERFACE(ethernet_cfg_if, i_eth)) {
 
     ethernet_link_state_t link_state = ETHERNET_LINK_DOWN;
     ethernet_speed_t link_speed = LINK_1000_MBPS_FULL_DUPLEX;
@@ -67,11 +68,10 @@ void ar8035_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
         select {
             case tmr when timerafter(t) :> t:
                 ethernet_link_state_t new_state = smi_get_link_state(i_smi, phy_address);
-                // Read AR8035 status register bits 15:14 to get the current link speed
-                if (new_state == ETHERNET_LINK_UP) {
-                    link_speed = (ethernet_speed_t)(i_smi.read_reg(phy_address, 0x11) >> 14) & 3;
-                }
                 if (new_state != link_state) {
+                    if (new_state == ETHERNET_LINK_UP) {
+                        link_speed = smi_get_link_speed(i_smi, phy_address);
+                    }
                     link_state = new_state;
                     i_eth.set_link_state(0, new_state, link_speed);
                 }
