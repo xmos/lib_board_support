@@ -1,25 +1,17 @@
 // This file relates to internal XMOS infrastructure and should be ignored by external users
 
-@Library('xmos_jenkins_shared_library@v0.39.0') _
+@Library('xmos_jenkins_shared_library@v0.41.1') _
 
 getApproval()
 pipeline {
 
-    agent {
-        label 'x86_64 && linux && documentation'
-    }
-
-    options {
-        buildDiscarder(xmosDiscardBuildSettings())
-        skipDefaultCheckout()
-        timestamps()
-    }
+    agent none
 
     parameters {
         string(
             name: 'TOOLS_VERSION',
             defaultValue: '15.3.1',
-            description: 'The XTC tools version'
+            description: 'XTC tools version'
         )
         string(
             name: 'XMOSDOC_VERSION',
@@ -28,74 +20,83 @@ pipeline {
         )
         string(
             name: 'INFR_APPS_VERSION',
-            defaultValue: 'v2.2.0',
+            defaultValue: 'v3.1.1',
             description: 'The infr_apps version'
         )
     }
-    environment {
-        REPO_NAME = 'lib_board_support' // Needed for xcoreBuild()
-                                        // (https://github.com/xmos/xmos_jenkins_shared_library/issues/370)
-        PYTHON_VERSION = '3.12.1'
+
+    options {
+        skipDefaultCheckout()
+        timestamps()
+        buildDiscarder(xmosDiscardBuildSettings(onlyArtifacts = false))
     }
 
-    stages{
-        stage('Checkout & build'){
-            steps {
-                println "Stage running on: ${env.NODE_NAME}"
-                dir("${REPO_NAME}") {
-                    checkoutScmShallow()
-                    withTools(params.TOOLS_VERSION) {
-                        dir("examples") {
-                            // Note, archives xe files
+    stages {
+        stage('🏗️ Build and test') {
+            agent {
+                label 'x86_64 && linux && documentation'
+            }
+
+            stages {
+                stage('Checkout') {
+                    steps {
+
+                        println "Stage running on ${env.NODE_NAME}"
+
+                        script {
+                            def (server, user, repo) = extractFromScmUrl()
+                            env.REPO_NAME = repo
+                        }
+
+                        dir(REPO_NAME){
+                            checkoutScmShallow()
+                        }
+                    }
+                }
+
+                stage('Examples build') {
+                    steps {
+                        dir("${REPO_NAME}/examples") {
                             xcoreBuild()
                         }
                     }
-                } // dir
-            } // steps
-        } // stage('Checkout & build')
-        stage('Library checks') {
-            steps {
-                warnError("lib checks") {
-                    runLibraryChecks("${WORKSPACE}/${REPO_NAME}", "${params.INFR_APPS_VERSION}")
                 }
-            } // steps
-        }  // stage('Library checks')
-        stage('Test'){
-            steps {
-                dir("${REPO_NAME}") {
-                    createVenv()
-                    withVenv {
-                        withTools(params.TOOLS_VERSION) {
-                            // Stage currently empty as no specific tests yet
+
+                stage('Repo checks') {
+                    steps {
+                        warnError("Repo checks failed")
+                        {
+                            runRepoChecks("${WORKSPACE}/${REPO_NAME}")
                         }
                     }
                 }
+
+                stage('Doc build') {
+                    steps {
+                        dir(REPO_NAME) {
+                            buildDocs()
+                        }
+                    }
+                }
+
+                stage("Archive sandbox") {
+                    steps {
+                        archiveSandbox(REPO_NAME)
+                    }
+                }
+            } // stages
+            post {
+                cleanup {
+                    xcoreCleanSandbox()
+                }
             }
-        } // stage('Test')
-        stage('Documentation') {
+        } // stage 'Build and test'
+
+        stage('🚀 Release') {
             steps {
-                dir("${REPO_NAME}") {
-                    warnError("Docs") {
-                        buildDocs()
-                    } // warnError("Docs")
-                } // dir
-            } // steps
-        } // stage('Documentation')
-        stage("Archive") {
-            steps {
-                archiveSandbox(REPO_NAME)
-            }
-        } //stage("Archive")
-    }
-    post {
-        always{
-            dir("${REPO_NAME}/tests") {
-                // No test yet so this is a placeholder
-                // junit 'results.xml'
+                triggerRelease()
             }
         }
-        cleanup {
-            xcoreCleanSandbox()
-        }
-    }
-}
+    } // stages
+} // pipeline
+
