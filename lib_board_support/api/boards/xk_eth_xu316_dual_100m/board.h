@@ -4,7 +4,7 @@
 #ifndef __XK_ETH_XU316_DUAL_100M_BOARD_H__
 #define __XK_ETH_XU316_DUAL_100M_BOARD_H__
 
-#include <boards_utils.h>
+#include "boards_utils.h"
 #if (BOARD_SUPPORT_BOARD == XK_ETH_XU316_DUAL_100M) || defined(__DOXYGEN__)
 #include <xccompat.h>
 #include "smi.h"
@@ -26,7 +26,7 @@
  */
 
  /** Index value used with get_port_timings() to refer to board configuration.
-  * 
+  *
   * The timings change according to which PHYs mounted and the hardware configuration
   * of the dual PHY dev-kit.
   */
@@ -39,7 +39,7 @@ typedef enum {
 /** Task that connects to the SMI master and MAC to configure the
  * DP83826E PHYs and monitor the link status. Note this task is combinable
  * (typically with SMI) and therefore does not need to take a whole thread.
- * 
+ *
  * Note it may be necessary to modify R3 and R23 according to which
  * PHY is used. Populate R23 and remove R3 for PHY_0 only populated otherwise
  * populate R3 and remove R23 for all other settings.
@@ -56,7 +56,7 @@ void dual_dp83826e_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
 /** Sends hard reset to both PHYs. Both PHYs will be ready for SMI
  * communication once this function has returned.
  * This function must be called from Tile[1].
- * 
+ *
  */
 void reset_eth_phys(void);
 
@@ -64,7 +64,7 @@ void reset_eth_phys(void);
  * This struct should be passed to the call to rmii_ethernet_rt_mac() and will
  * ensure setup and hold times are maximised at the pin level of the PHY connection.
  * rmii_port_timing_t is defined in lib_ethernet.
- * 
+ *
  *  \param phy_idx      The index of the PHY to get timing data about.
  *  \returns            The timing struct to be passed to the PHY.
  */

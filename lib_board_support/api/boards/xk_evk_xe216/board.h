@@ -4,12 +4,10 @@
 #ifndef __XK_EVK_XE216_BOARD_H__
 #define __XK_EVK_XE216_BOARD_H__
 
-#include <boards_utils.h>
+#include "boards_utils.h"
 #if (BOARD_SUPPORT_BOARD == XK_EVK_XE216) || defined(__DOXYGEN__)
 #include <xccompat.h>
 #include "smi.h"
-
-
 
 /**
  * \addtogroup xk_evk_xu216
@@ -35,6 +33,5 @@ void xk_eth_xe216_phy_driver(CLIENT_INTERFACE(smi_if, i_smi),
 /**@}*/ // END: addtogroup xk_evk_xu216
 
 #endif // (BOARD_SUPPORT_BOARD == XK_EVK_XE216) || defined(__DOXYGEN__)
-
 
 #endif // __XK_EVK_XU216_BOARD_H__

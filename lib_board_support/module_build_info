@@ -7,7 +7,7 @@ DEPENDENT_MODULES = lib_i2c(>=6.4.0)
 MODULE_XCC_FLAGS = $(XCC_FLAGS) \
                    -Os -g
 
-OPTIONAL_HEADERS +=
+OPTIONAL_HEADERS += board_support_conf.h
 
 EXPORT_INCLUDE_DIRS = api/boards api/drivers
 
