@@ -58,7 +58,7 @@ Development repo
 Required tools
 **************
 
- * XMOS XTC Tools: 15.3.1
+* XMOS XTC Tools: 15.3.1
 
 *********************************
 Required libraries (dependencies)
@@ -82,5 +82,3 @@ Support
 *******
 
 This package is supported by XMOS Ltd. Issues can be raised against the software at: http://www.xmos.com/support
-
-
