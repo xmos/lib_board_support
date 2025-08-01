@@ -10,6 +10,6 @@ set(LIB_OPTIONAL_HEADERS   board_support_conf.h)
 
 set(LIB_DEPENDENT_MODULES  "lib_i2c(6.4.0)"
                            "lib_sw_pll(2.4.0)"
-                           "lib_xassert(4.3.1)")
+                           "lib_xassert(4.3.2)")
 
 XMOS_REGISTER_MODULE()
