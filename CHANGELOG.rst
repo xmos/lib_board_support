@@ -1,6 +1,11 @@
 lib_board_support change log
 ============================
 
+UNRELEASED
+----------
+
+  * FIXED: Correct link-speed reported for XK-EVK-XE216 v1.3
+
 1.3.0
 -----
 
