@@ -2,6 +2,8 @@
 // This Software is subject to the terms of the XMOS Public Licence: Version 1.
 #pragma once
 
+#include "boards_utils.h"
+#if (BOARD_SUPPORT_BOARD == XK_AUDIO_216_MC_AB) || defined(__DOXYGEN__)
 #include <xccompat.h>
 
 /**
@@ -11,7 +13,7 @@
  * @{
  */
 
-/** 
+/**
  * @brief Type of clock to be instantiated. This may be a fixed clock using an external generator or
  *  an adjustable clock using an external PLL (CS2100) in either digital Rx clock recovery or
  *  USB clock recovery using synchronous mode.
@@ -22,7 +24,7 @@ typedef enum {
     AUD_216_CLK_EXTERNAL_PLL_USB,
 } xk_audio_216_mc_ab_clk_mode_t;
 
-/** 
+/**
  * @brief Formats supported by the DAC and ADC. Either I2S using multiple data lines or TDM
  *  supporting multi-channel using a single data line.
  */
@@ -31,7 +33,7 @@ typedef enum {
     AUD_216_PCM_FORMAT_TDM
 } xk_audio_216_mc_ab_pcm_format_t;
 
-/** 
+/**
  * @brief Selects which USB port to use - either type A or type B
  */
 typedef enum {
@@ -42,7 +44,7 @@ typedef enum {
 /** @} */ // END: addtogroup xk_audio_216_mc_ab
 
 
-/** 
+/**
  * @brief Configuration struct type for setting the hardware profile.
  */
 typedef struct{
@@ -65,14 +67,14 @@ typedef struct{
  * @{
  */
 
-/** 
+/**
  * @brief Initialises the audio hardware ready for a configuration. Must be called once *after* xk_audio_316_mc_ab_board_setup().
  *
  *  \param   config     Reference to the xk_audio_216_mc_ab_config_t hardware configuration struct.
  */
 void xk_audio_216_mc_ab_AudioHwInit(const REFERENCE_PARAM(xk_audio_216_mc_ab_config_t, config));
 
-/** 
+/**
  * @brief Configures the audio hardware following initialisation. This is typically called each time a sample rate or stream format change occurs.
  *
  *  \param   config         Reference to the xk_audio_216_mc_ab_config_t hardware configuration struct.
@@ -90,3 +92,5 @@ void xk_audio_216_mc_ab_AudioHwConfig(const REFERENCE_PARAM(xk_audio_216_mc_ab_c
                                       unsigned sampRes_ADC);
 
 /** @} */ // END: addtogroup xk_audio_216_mc_ab
+
+#endif

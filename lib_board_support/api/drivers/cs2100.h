@@ -1,6 +1,7 @@
 // Copyright 2024-2025 XMOS LIMITED.
 // This Software is subject to the terms of the XMOS Public Licence: Version 1.
 #pragma once
+
 #ifndef CS2100_I2C_DEVICE_ADDR
 #define CS2100_I2C_DEVICE_ADDR      (0x9c>>1)
 #endif

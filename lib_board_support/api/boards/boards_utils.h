@@ -4,6 +4,10 @@
 
 #include <xs1.h>
 
+#ifdef __board_support_conf_h_exists__
+    #include "board_support_conf.h"
+#endif
+
 /**
  * \addtogroup bs_common
  *
