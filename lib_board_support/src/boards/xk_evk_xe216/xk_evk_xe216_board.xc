@@ -7,6 +7,7 @@
 #include <xs1.h>
 #include <platform.h>
 
+#define DEBUG_UNIT xk_evk_xe216
 #include <debug_print.h>
 
 // The following supports PHY chips on different versions of XK-EVK-XE216

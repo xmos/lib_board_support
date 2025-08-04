@@ -28,12 +28,8 @@ The following boards are supported in this repo with interfaces provided in the 
 +-----------------------+---------------------+
 |XK_EVK_XE216           |       XC            |
 +-----------------------+---------------------+
-|XK_ETH_XU316_DUAL_100M |       XC            |
+|XK_ETH_316_DUAL        |       XC            |
 +-----------------------+---------------------+
-
-.. note::
-    The XK_ETH_XU316_DUAL_100M board is not currently generally available and does not have official
-    documentation. Contact `XMOS` for further information.
 
 The following sections provide specific details of the features for each of the boards supported by this library.
 
@@ -155,10 +151,10 @@ XK_EVK_XU216 API
 
 |newpage|
 
-XK_ETH_XU316_DUAL_100M API
+XK_ETH_316_DUAL API
 ==========================
 
-.. doxygengroup:: xk_eth_xu316_dual_100m
+.. doxygengroup:: xk_eth_316_dual
    :content-only:
 
 |newpage|
