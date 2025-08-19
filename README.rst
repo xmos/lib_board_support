@@ -25,11 +25,11 @@ Features
 
 * Support for the following `XMOS` boards:
 
-  * ``XK_EVK_XU316``
-  * ``XK_AUDIO_316_MC``
-  * ``XK_AUDIO_216_MC``
-  * ``XK_EVK_XU216``
-  * ``XK_ETH_316_DUAL``
+  * ``XK-EVK-XU316``
+  * ``XK-AUDIO-316-MC``
+  * ``XK-AUDIO-216-MC``
+  * ``XK-EVK-XU216``
+  * ``XK-ETH-316-DUAL``
 
 * Simple examples demonstrating usage from both `XC` and `C`.
 

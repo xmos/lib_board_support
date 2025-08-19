@@ -11,6 +11,7 @@ lib_board_support change log
   * ADDED:     Debug units for `XK-ETH-316-DUAL`. `XK-ETH-XU316-DUAL-100M` and
     `XK-EVK-XE216`.
   * FIXED:     Incorrect link-speed reported for XK-EVK-XE216 v1.3
+  * REMOVED:   Support for dual PHY test board XK_ETH_XU316_DUAL_100M.
 
   * Changes to dependencies:
 
