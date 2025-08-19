@@ -24,6 +24,9 @@
 #define PHY_RST_DURATION_US       100
 #define POST_RST_PHY_DELAY_MS     55
 
+// Time pending macro, difference must be less than (UINT32_MAX / 2) or ~20 seconds.
+#define TIME_PENDING(target, now) ((int32_t)((uint32_t)(target) - (uint32_t)(now)) > 0)
+
 // Bit 3 of this port is connected to the PHY resets. Other bits not pinned out.
 on tile[1] : out port p_phy_rst = PERIPH_RST;
 
@@ -47,7 +50,8 @@ void reset_eth_phys() {
 }
 
 static int check_phy_responds(client interface smi_if i_smi, unsigned phy_address, uint32_t timeout_s) {
-  int result = 0;
+
+  assert((timeout_s <= 20) && msg("Timeout value too large, should be less than or equal to 20s"));
 
   timer tmr;
   uint32_t timeout;
@@ -58,8 +62,8 @@ static int check_phy_responds(client interface smi_if i_smi, unsigned phy_addres
   fail_time = now + (timeout_s * XS1_TIMER_HZ);
   timeout = now + XS1_TIMER_HZ / 2;
 
-  result = smi_phy_is_powered_down(i_smi, phy_address);
-  while ((result == 1) && (fail_time > now))
+  int result = smi_phy_is_powered_down(i_smi, phy_address);
+  while ((result == 1) && TIME_PENDING(fail_time, now))
   {
     select {
       case tmr when timerafter(timeout) :> unsigned current:
