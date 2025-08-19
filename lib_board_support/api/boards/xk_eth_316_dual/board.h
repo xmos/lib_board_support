@@ -38,8 +38,9 @@ typedef enum {
 /** Task that connects to the SMI master and MAC to configure the
  * DP83825I PHYs and monitor the link status. Note this task is combinable
  * (typically with SMI) and therefore does not need to take a whole thread.
- * 
- * \note It is not necessary to use both PHYs. If only one PHY is used, TBC. TODO fix this.
+ *
+ * \note It is not necessary to use both PHYs. If only one PHY is needed, the other should be set to `null`.
+ * PHY0 is the clock master so will be configured regardless of which PHY is in use.
  *
  *  \param i_smi        Client register read/write interface
  *  \param i_eth_phy_0  Client MAC configuration interface for PHY_0. Set to NULL if unused.
