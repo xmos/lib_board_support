@@ -133,6 +133,7 @@ void dual_ethernet_phy_driver(client interface smi_if i_smi,
 
   reset_eth_phys();
 
+  const ethernet_speed_t TARGET_LINK_SPEED = LINK_100_MBPS_FULL_DUPLEX;
   ethernet_link_state_t link_state[2] = {ETHERNET_LINK_DOWN, ETHERNET_LINK_DOWN};
   ethernet_speed_t link_speed[2] = {LINK_100_MBPS_FULL_DUPLEX, LINK_100_MBPS_FULL_DUPLEX};
   const int link_poll_period_ms = 1000;
@@ -149,7 +150,7 @@ void dual_ethernet_phy_driver(client interface smi_if i_smi,
 
     debug_printf("Starting PHY %d\n", phy_idx);
 
-    smi_configure(i_smi, phy_address, link_speed[phy_idx], SMI_ENABLE_AUTONEG);
+    smi_configure(i_smi, phy_address, TARGET_LINK_SPEED, SMI_ENABLE_AUTONEG);
 
     // Ensure RXDV is set.
     // Also set pins to higher drive strength "impedance control".
