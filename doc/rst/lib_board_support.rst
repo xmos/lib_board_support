@@ -72,20 +72,18 @@ example given for the `XK-AUDIO-316-MC`:
 
 .. code-block:: cmake
 
-    set(APP_HW_TARGET `xk-audio-316-mc.xn`)
+    set(APP_HW_TARGET "xk-audio-316-mc.xn")
 
 When using `XK-EVK-XU316` and `XK-EVK-XE216` boards, instead of an ``xn`` file, the `target` should be specified as the board name as shown below.
-Alternatively, there are also aliases that can be used, `XCORE_AI_EXPLORER` or `XCORE_200_EXPLORER` respectively.
+As for general purpose evaluation boards the ``xn`` file provided with the XTC tools.
 
 .. code-block:: cmake
 
     set(APP_HW_TARGET XK-EVK-XU316)
 
-The application must use the APIs for the specific board that it is using.
-To ensure that only the correct sources for the board in use get compiled in, it is necessary to
-set the preprocessor value ``BOARD_SUPPORT_BOARD`` in the project to one of the available boards
-listed in `api/boards/boards_utils.h`. This can be done in the app with the following snippet of
-cmake:
+The application must use the APIs for its target board. To ensure only the correct sources are compiled, set the preprocessor symbol
+`BOARD_SUPPORT_BOARD` to one of the boards listed in `api/boards/boards_utils.h`.
+This can be done in the application with the following `CMake` of configuration:
 
 .. code-block:: cmake
 
@@ -102,7 +100,7 @@ From then onwards the code may call the relevant API functions to setup and conf
 hardware. Examples are provided in the `examples` directory of this repo.
 
 Note that in some cases, the `xcore` tile that calls the configuration function (usually from I²S
-initialisation) is different from the tile where I²C master is placed. Since I²C master is
+initialisation) is different from the tile where I²C controller is placed. Since I²C controller is
 required by most audio CODECs for configuration and `xcore` tiles can only communicate with each
 other via channels, a remote server is needed to provide the I²C setup. This usually takes the
 form of a task which is run on a thread placed on the I²C tile and is controlled via a channel
@@ -125,7 +123,7 @@ application where the hardware setup is called from C.
 
 These applications run on the `XK-EVK-XU316` and `XK-AUDIO-316-MC` boards respectively.
 
-They show how to use the cross-tile communications in conjunction with the I²C master server.
+They show how to use the cross-tile communications in conjunction with the I²C controller (master) server.
 The applications only setup the hardware and then exit the I²C server.
 
 XC Usage Example
@@ -151,11 +149,12 @@ build system, which is provided with the XTC tools and is based on `CMake <https
 The ``lib_board_support`` software ZIP package should be downloaded and extracted to a chosen working
 directory.
 
-To configure the build, the following commands should be run from an XTC command prompt:
+To configure the build, the following commands should be run from an XTC command prompt.
+In the following command-line snippets `<app-name>` is used to refer to the `examples` application sub-folder selected to be built:
 
 .. code-block:: shell
 
-    cd examples/<app_name>
+    cd examples/<app-name>
     cmake -G "Unix Makefiles" -B build
 
 If any dependencies are missing they will be retrieved automatically during this step.
@@ -167,7 +166,7 @@ The application binaries can be built using ``xmake``:
     xmake -j -C build
 
 Binary artifacts (.xe files) will be generated under the appropriate subdirectories of the
-``examples/<app_name>/bin`` directory — one for each supported build configuration.
+``examples/<app-name>/bin`` directory — one for each supported build configuration.
 
 For subsequent builds, the ``cmake`` step may be omitted.
 If ``CMakeLists.txt`` or other build files are modified, ``cmake`` will be re-run automatically
@@ -176,19 +175,19 @@ by ``xmake`` as needed.
 Running the example
 ===================
 
-From an XTC command prompt, the following command should be run from the ``examples/<app_name>`` directory:
+From an XTC command prompt, the following command should be run from the ``examples/<app-name>`` directory:
 
 .. code-block:: shell
 
-    xrun --io bin/<app_name>.xe
+    xrun --io bin/<app-name>.xe
 
 Alternatively, the application can be programmed into flash memory for standalone execution:
 
 .. code-block:: shell
 
-    xflash bin/<app_name>.xe
+    xflash bin/<app-name>.xe
 
-Full example to build and run an example:
+Full command-line process to build and run the `app_xk_audio_316_mc_simple_xc` example:
 
 .. code-block:: shell
 
@@ -205,7 +204,7 @@ Application Programmer Interface
 
 This section contains the details of the API support by `lib_board_support`. The API is broken down into 2 sections:
 
-1. `Boards`: This includes subdirectories for each supported board which need to be included in your application.
+1. `Boards`: This includes subdirectories for each supported board which need to be included in the application.
 2. `Drivers`: This includes sources for configuring peripheral devices which may be on one or more of
    the supported boards.
 

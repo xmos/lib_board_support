@@ -40,7 +40,7 @@ typedef enum {
  * (typically with SMI) and therefore does not need to take a whole thread.
  *
  * \note It is not necessary to use both PHYs. If only one PHY is needed, the other should be set to `null`.
- * PHY0 is the clock master so will be configured regardless of which PHY is in use.
+ * PHY0 is the clock master so will always be configured regardless of which PHYs are in use.
  *
  *  \param i_smi        Client register read/write interface
  *  \param i_eth_phy_0  Client MAC configuration interface for PHY_0. Set to NULL if unused.

@@ -46,7 +46,7 @@ Analogue Audio Input & Output
 A stereo CODEC (TLV320AIC3204), connected to the xcore.ai device via an I²S interface, provides analogue input/output
 functionality at line level.
 
-The audio CODEC is are configured by the `xcore.ai` device via an I²C bus.
+The audio CODEC is configured by the `xcore.ai` device via an I²C bus.
 
 Audio Clocking
 --------------
