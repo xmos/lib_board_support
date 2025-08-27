@@ -19,6 +19,8 @@ lib_board_support change log
 
     - lib_logging: Added dependency 3.4.0
 
+    - lib_sw_pll: 2.4.0 -> 2.4.1
+
     - lib_xassert: 4.3.1 -> 4.3.2
 
 1.3.0

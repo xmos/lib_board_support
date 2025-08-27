@@ -63,7 +63,7 @@ The Ethernet IO signals are available on connector J8, and audio Codec IO signal
 Power
 -----
 
-The XK-ETH-316-DUAL requires a 5V power source that is normally provided through the USB-C cable J3.
+The `XK-ETH-316-DUAL` requires a 5V power source that is normally provided through the USB-C cable J1.
 The voltage is converted by on-board regulators to the 0V9, 1V8 and 3V3 supplies used by the components.
 
 The board should therefore be configured to present itself as a bus powered device when connected to an
@@ -73,4 +73,4 @@ Debug
 -----
 
 For convenience the kit includes an xTAG4 for debugging via JTAG/xSCOPE. The debugger connects via ribbon connector J3 (marked XSYS2).
-The debugger is accessed via the USB (micro-B) receptacle.
+The debugger is accessed via the USB (micro-B) receptacle of the xTAG.
