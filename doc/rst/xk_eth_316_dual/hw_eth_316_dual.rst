@@ -27,7 +27,7 @@ connectors arranged around it, as shown in :numref:`hw_eth_316_dual_block_diagra
 
     `xcore.ai` Ethernet Development Kit block diagram
 
-External hardware features board include, a PDM microphone connector, audio codec with line-in and line-out jack,
+External hardware features board include, audio codec with line-in and line-out jack,
 QSPI flash memory and a USB-C connector for power and data.
 
 The kit also contains an XTAG debug adapter and is fully supported by the XTC Tools development environment.
@@ -39,6 +39,30 @@ For full details regarding the hardware please refer to `XK-ETH-316-DUAL xcore.a
 
     The `xcore.ai Ethernet Development Kit` is a general purpose evaluation platform and should be considered
     an "example" rather than a fully fledged reference design.
+
+Hardware Features
+-----------------
+
+The location of the various features of the `xcore.ai Ethernet Development Board` is shown in :numref:`hw_eth_316_dual_hw_features_image`.
+
+.. _hw_eth_316_dual_hw_features_image:
+.. figure:: ../../images/xk_eth_316_dual.png
+    :scale: 50%
+    :align: center
+
+    `xcore.ai` Ethernet Development Kit hardware features
+
+It includes the following features:
+
+* A: xcore.ai (XU316-1024-QF60B-C24) device
+* B: Dual 100 Base-T Ethernet ports
+* C: Audio codec with line-in and line-out jacks
+* D: USB-C jack
+* E: Quad-SPI flash memory
+* F: Audio signal breakout header 2.54mm (0.1")
+* G: Ethernet signal breakout header 2.54mm (0.1")
+* H: 25 MHz Crystal
+* I: XTAG4 debugger connector
 
 Analogue Audio Input & Output
 -----------------------------
