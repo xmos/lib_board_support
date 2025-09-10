@@ -1,6 +1,12 @@
 lib_board_support change log
 ============================
 
+UNRELEASED
+----------
+
+  * CHANGED: CODEC setup modified to reduce output crosstalk and increase
+    input sensitivity
+
 1.3.0
 -----
 
