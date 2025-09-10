@@ -173,8 +173,9 @@ void xk_evk_xu316_AudioHwInit(const xk_evk_xu316_config_t &config)
     CODEC_REGWRITE(AIC3204_PWR_CFG, 0x08);
     // Enable Master Analog Power Control
     CODEC_REGWRITE(AIC3204_LDO_CTRL, 0x01);
-    // Set Common Mode voltages: Full Chip CM to 0.9V and Output Common Mode for Headphone to 1.65V and HP powered from LDOin @ 3.3V.
-    CODEC_REGWRITE(AIC3204_CM_CTRL, 0x33);
+    // Set Common Mode voltages: Full Chip CM to 0.9V and Output Common Mode for Headphone to 0.9V.
+    // Keeping output common mode at 0.9V improves crosstalk significantly.
+    CODEC_REGWRITE(AIC3204_CM_CTRL, 0x00);
     // Set PowerTune Modes
     // Set the Left & Right DAC PowerTune mode to PTM_P3/4. Use Class-AB driver.
     CODEC_REGWRITE(AIC3204_PLAY_CFG1, 0x00);
@@ -193,15 +194,14 @@ void xk_evk_xu316_AudioHwInit(const xk_evk_xu316_config_t &config)
     CODEC_REGWRITE(AIC3204_HPL_ROUTE, 0x08);
     // Route Right DAC to HPR
     CODEC_REGWRITE(AIC3204_HPR_ROUTE, 0x08);
-    // We are using Line input with low gain for PGA so can use 40k input R but lets stick to 20k for now.
-    // Route IN2_L to LEFT_P with 20K input impedance
-    CODEC_REGWRITE(AIC3204_LPGA_P_ROUTE, 0x20);
-    // Route IN2_R to LEFT_M with 20K input impedance
-    CODEC_REGWRITE(AIC3204_LPGA_N_ROUTE, 0x20);
-    // Route IN1_R to RIGHT_P with 20K input impedance
-    CODEC_REGWRITE(AIC3204_RPGA_P_ROUTE, 0x80);
-    // Route IN1_L to RIGHT_M with 20K input impedance
-    CODEC_REGWRITE(AIC3204_RPGA_N_ROUTE, 0x20);
+    // Route IN2_L to LEFT_P with 10K input impedance
+    CODEC_REGWRITE(AIC3204_LPGA_P_ROUTE, 0x10);
+    // Route IN2_R to LEFT_M with 10K input impedance
+    CODEC_REGWRITE(AIC3204_LPGA_N_ROUTE, 0x10);
+    // Route IN1_R to RIGHT_P with 10K input impedance
+    CODEC_REGWRITE(AIC3204_RPGA_P_ROUTE, 0x40);
+    // Route IN1_L to RIGHT_M with 10K input impedance
+    CODEC_REGWRITE(AIC3204_RPGA_N_ROUTE, 0x10);
     // Unmute HPL and set gain to 0dB
     CODEC_REGWRITE(AIC3204_HPL_GAIN, 0x00);
     // Unmute HPR and set gain to 0dB
