@@ -6,9 +6,11 @@ lib_board_support change log
 
   * ADDED:     Support for optional configuration header file
     `board_support_conf.h`
-  * ADDED:     Support for xcore.ai Ethernet development kit `XK-ETH-316-DUAL`.
+  * ADDED:     Support for xcore.ai Ethernet development kit `XK-ETH-316-DUAL`
     Single PHY support only at this time (ETH0).
-  * ADDED:     Debug units for `XK-ETH-316-DUAL` and `XK-EVK-XE216`.
+  * ADDED:     Debug units for `XK-ETH-316-DUAL` and `XK-EVK-XE216`
+  * CHANGED:   CODEC setup modified to reduce output crosstalk and increase
+    input sensitivity
   * FIXED:     Incorrect link-speed reported for XK-EVK-XE216 v1.3
   * CHANGED:   Documentation updates
   * REMOVED:   Support for dual PHY test board XK_ETH_XU316_DUAL_100M.
