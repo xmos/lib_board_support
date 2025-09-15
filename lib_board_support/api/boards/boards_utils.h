@@ -4,6 +4,10 @@
 
 #include <xs1.h>
 
+#ifdef __board_support_conf_h_exists__
+    #include "board_support_conf.h"
+#endif
+
 /**
  * \addtogroup bs_common
  *
@@ -16,21 +20,21 @@
 /** Define representing Null board i.e. no board in use*/
 #define NULL_BOARD                  0
 
-/** Define representing XK-AUDIO-216-MC Board */
+/** Define representing XK-AUDIO-216-MC, xcore-200 Multi-channel AudioBoard */
 #define XK_AUDIO_216_MC_AB          1
 
-/** Define representing XK-AUDIO-316-MC Board */
+/** Define representing XK-AUDIO-316-MC, xcore.ai Multi-channel Audio Board */
 #define XK_AUDIO_316_MC_AB          2
 
-/** Define representing XK-EVK-XU316 board */
+/** Define representing XK-EVK-XU316, xcore.ai Explorer Evaluation Kit board */
 #define XK_EVK_XU316                3
 
-/** Define representing XK-EVK-XU216 board */
+/** Define representing XK-EVK-XU216, xcore-200 Explorer Evaluation Kit board */
 #define XK_EVK_XE216                4
 
-/** Define representing XK-ETH-XU316-DUAL-100M board */
-#define XK_ETH_XU316_DUAL_100M      5
-
+/** Define representing XK-ETH-316-DUAL, xcore.ai Ethernet Development Kit board */
+#define XK_ETH_316_DUAL             5
+  
 /** Total number of boards supported by the library */
 #define BOARD_SUPPORT_N_BOARDS      6  // max board + 1
 

@@ -5,7 +5,7 @@ lib_board_support: XMOS board support
 #####################################
 
 :vendor: XMOS
-:version: 1.3.0
+:version: 1.4.0
 :scope: General Use
 :description: Support library for XMOS development kits
 :category: General Purpose
@@ -23,28 +23,23 @@ evaluation and development kits.
 Features
 ********
 
-* Support for the following boards:
-   * ``XK_EVK_XU316``
-   * ``XK_AUDIO_316_MC``
-   * ``XK_AUDIO_216_MC``
-   * ``XK_EVK_XU216``
-   * ``XK_ETH_XU316_DUAL_100M``
-* Simple examples to demonstrating usage from both `XC` and `C`.
+* Support for the following `XMOS` boards:
+
+  * ``XK-EVK-XU316``
+  * ``XK-AUDIO-316-MC``
+  * ``XK-AUDIO-216-MC``
+  * ``XK-EVK-XU216``
+  * ``XK-ETH-316-DUAL``
+
+* Simple examples demonstrating usage from both `XC` and `C`.
 
 ************
 Known issues
 ************
 
-* XK_EVK_XU216 support is currently only for the GigE PHY. The required dependency lib_ethernet to support
-  SMI has not been added to this repo to avoid unneeded dependencies in non-Ethernet applications and will
-  be required by any Ethernet application for this board anyway.
-
-* XK_ETH_XU316_DUAL_100M is currently an unreleased board and hence has no documentation.
-
-* XK_ETH_XU316_DUAL_100M uses the TI DP83826 PHY. During testing we noticed that very occasionally (1% of the time) the first
-  packet sent after initialisation may be dropped for certain link partners. Subsequent packets are always OK. 
-  This is consistent with a similar bug seen on the `TI forum <https://e2e.ti.com/support/interface-  group/interface/f/interface-forum/956808/dp83822i-after-link-up-first-packet-is-not-being-transmitted>`_. 
-  For most applications this is not an issue however for test cases it may be worth noting. Sending an initial dummy Tx packet works around this issue.
+* Support for SMI (used in the Ethernet PHY drivers) requires the lib_ethernet dependency, which is not included in
+  this repository to avoid introducing dependencies into non-Ethernet applications. Any Ethernet application 
+  targeting either XK-EVK-XU216 or XK-ETH-316-DUAL boards must include lib_ethernet explicitly.
 
 ****************
 Development repo
@@ -56,7 +51,7 @@ Development repo
 Required tools
 **************
 
- * XMOS XTC Tools: 15.3.1
+* XMOS XTC Tools: 15.3.1
 
 *********************************
 Required libraries (dependencies)
@@ -80,5 +75,3 @@ Support
 *******
 
 This package is supported by XMOS Ltd. Issues can be raised against the software at: http://www.xmos.com/support
-
-

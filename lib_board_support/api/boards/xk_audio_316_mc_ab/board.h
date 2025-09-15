@@ -2,6 +2,9 @@
 // This Software is subject to the terms of the XMOS Public Licence: Version 1.
 #pragma once
 
+#include "boards_utils.h"
+
+#if (BOARD_SUPPORT_BOARD == XK_AUDIO_316_MC_AB) || defined(__DOXYGEN__)
 
 #include <xccompat.h>
 #include "i2c.h"
@@ -17,9 +20,9 @@
 extern port p_scl;
 extern port p_sda;
 
-/** 
+/**
  * @brief Type of clock to be instantiated. This may be a fixed clock using the application PLL,
- *  an adjustable clock using the CS2100 external PLL or an adjustable or fixed clock using 
+ *  an adjustable clock using the CS2100 external PLL or an adjustable or fixed clock using
  *  the on-chip application PLL.
  */
 typedef enum {
@@ -28,7 +31,7 @@ typedef enum {
     CLK_PLL
 } xk_audio_316_mc_ab_mclk_modes_t;
 
-/** 
+/**
  * @brief Formats supported by the DAC and ADC. Either I2S using multiple data lines or TDM
  *  supporting multi-channel using a single data line.
  */
@@ -37,7 +40,7 @@ typedef enum {
     AUD_316_PCM_FORMAT_TDM
 } xk_audio_316_mc_ab_pcm_format_t;
 
-/** 
+/**
  * @brief Voltage settings supported for the xcore core supply. Set by xk_audio_316_mc_ab_core_voltage_set().
  */
 typedef enum {
@@ -53,7 +56,7 @@ typedef enum {
 
 /** @struct xk_audio_316_mc_ab_config_t
  *  Configuration struct type for setting the hardware profile.
- * 
+ *
  *  @var xk_audio_316_mc_ab_config_t::clk_mode
  *      See xk_audio_316_mc_ab_mclk_modes_t for available clock mode options.
  *  @var xk_audio_316_mc_ab_config_t::dac_is_clock_master
@@ -88,14 +91,14 @@ typedef struct {
  */
 
 
-/** 
+/**
  * @brief Starts an I2C master task. Must be started from tile[0] *after* xk_audio_316_mc_ab_board_setup() and *before* and tile[1] HW calls.
  *
  *  \param   i2c        client side of I2C master interface connection.
  */
 void xk_audio_316_mc_ab_i2c_master(SERVER_INTERFACE(i2c_master_if, i2c[1]));
 
-/** 
+/**
  * @brief Performs the required port operations to enable and the audio hardware on the platform. Must be called from tile[0]
  *  and *before* xk_audio_316_mc_ab_AudioHwInit() is called.
  *
@@ -103,8 +106,8 @@ void xk_audio_316_mc_ab_i2c_master(SERVER_INTERFACE(i2c_master_if, i2c[1]));
  */
 void xk_audio_316_mc_ab_board_setup(const REFERENCE_PARAM(xk_audio_316_mc_ab_config_t, config));
 
-/** 
- * @brief Allows control of the xcore.ai core voltage independantly. Warning - use with caution. This is only supported when the 
+/**
+ * @brief Allows control of the xcore.ai core voltage independantly. Warning - use with caution. This is only supported when the
  * xcore is significantly clocked down. Please consult the datasheet for Operating Conditions / DC Characteristics.
  * Must be called from tile[0].
  *
@@ -112,7 +115,7 @@ void xk_audio_316_mc_ab_board_setup(const REFERENCE_PARAM(xk_audio_316_mc_ab_con
  */
 void xk_audio_316_mc_ab_core_voltage_set(const xk_audio_316_mc_ab_xcore_voltage_t voltage_setting);
 
-/** 
+/**
  * @brief Initialises the audio hardware ready for a configuration. Must be called once *after* xk_audio_316_mc_ab_board_setup().
  *
  *  \param   i2c        Client side of I2C master interface connection.
@@ -120,21 +123,21 @@ void xk_audio_316_mc_ab_core_voltage_set(const xk_audio_316_mc_ab_xcore_voltage_
  */
 void xk_audio_316_mc_ab_AudioHwInit(CLIENT_INTERFACE(i2c_master_if, i2c), const REFERENCE_PARAM(xk_audio_316_mc_ab_config_t, config));
 
-/** 
+/**
  * @brief Shuts down the audio hardware via I2C commands but keeps power rail on.
  * Use xk_audio_316_mc_ab_AudioHwShutdown() to remove power afterwards for minimum power.
  */
 void xk_audio_316_mc_ab_AudioHwShutdown(CLIENT_INTERFACE(i2c_master_if, i2c));
 
-/** 
+/**
  * @brief Powers down the audio hardware. Call xk_audio_316_mc_ab_AudioHwShutdown() first to avoid clicks/pops
- * xk_audio_316_mc_ab_board_setup() and xk_audio_316_mc_ab_AudioHwInit must be called once 
+ * xk_audio_316_mc_ab_board_setup() and xk_audio_316_mc_ab_AudioHwInit must be called once
  * *after* this before attempting to configure the hardware with xk_audio_316_mc_ab_AudioHwConfig() again.
  * Must be called from tile[0]
  */
 void xk_audio_316_mc_ab_AudioHwPowerdown(void);
 
-/** 
+/**
  * @brief Configures the audio hardware following initialisation. This is typically called each time a sample rate or stream format change occurs.
  *
  *  \param   i2c            Client side of I2C master interface connection.
@@ -153,7 +156,7 @@ void xk_audio_316_mc_ab_AudioHwConfig(  CLIENT_INTERFACE(i2c_master_if, i2c),
                                         unsigned sampRes_DAC,
                                         unsigned sampRes_ADC);
 
-/** 
+/**
  * @brief Causes the tile[0] to exit, freeing up a thread. Must be called from tile[1]. Once called,
  *  HW config calls from tile[1] will block forever. It is possible to re-start xk_audio_316_mc_ab_i2c_master()
  *  on tile[0] if needed to re-enable this service.
@@ -165,3 +168,4 @@ void xk_audio_316_mc_ab_i2c_master_exit(CLIENT_INTERFACE(i2c_master_if, i2c));
 
 /** @}*/ // END: addtogroup xk_audio_316_mc_ab
 
+#endif
