@@ -3,9 +3,6 @@
 xcore.ai Ethernet Development Kit
 =================================
 
-OVERVIEW
---------
-
 The `xcore.ai Ethernet Development Kit` (XK-ETH-316-DUAL) is an development board for the `xcore.ai` multi-core microcontroller
 from `XMOS`.
 

@@ -15,7 +15,7 @@ By keeping the board-specific code in a dedicated repository various application
 Supported Boards
 ****************
 
-The following boards are supported in this repo with interfaces provided in the languages shown in the table below.
+The following boards are supported by ``lib_board_support`` with interfaces provided in the languages shown in the table below.
 
 +-----------------------+---------------------+
 | Board                 | Supported Languages |
@@ -31,7 +31,7 @@ The following boards are supported in this repo with interfaces provided in the 
 |XK_ETH_316_DUAL        |       XC            |
 +-----------------------+---------------------+
 
-The following sections provide specific details of the features for each of the boards supported by this library.
+The following sections describe the features of each supported board.
 
 .. toctree::
 
@@ -113,7 +113,7 @@ XC main function. The included examples provide a reference for this using both 
 Example Applications
 ********************
 
-Some simple example applications are provided in order to show how to use `lib_board_support`.
+Some simple example applications are provided in order to show how to use ``lib_board_support``.
 
 Simple C Usage
 ==============
