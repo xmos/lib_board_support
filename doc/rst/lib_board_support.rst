@@ -30,6 +30,8 @@ The following boards are supported by ``lib_board_support`` with interfaces prov
 +-----------------------+---------------------+
 |XK_ETH_316_DUAL        |       XC            |
 +-----------------------+---------------------+
+|XK-VOICE-L71           |       XC / C        |
++-----------------------+---------------------+
 
 The following sections describe the features of each supported board.
 

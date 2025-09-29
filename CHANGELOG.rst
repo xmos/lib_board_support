@@ -1,6 +1,11 @@
 lib_board_support change log
 ============================
 
+1.5.0
+-----
+
+  * ADDED:     Support for xcore.ai Voice kit `XK-ETH-316-XK_VOICE_L71`
+
 1.4.0
 -----
 
