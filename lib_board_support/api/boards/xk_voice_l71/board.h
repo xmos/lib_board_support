@@ -23,9 +23,9 @@ typedef enum {
  */
 typedef enum {
     /** Use default DAC data pin (primary) */ 
-    DAC_DIN_PRI,
+    DAC_DIN_PRI = 1,
     /** Use secondary DAC data pin (secondary)*/
-    DAC_DIN_SEC
+    DAC_DIN_SEC = 2
 } xk_voice_l71_dac_pin_t;
 
 /** 

@@ -39,7 +39,7 @@ port p_scl = PORT_I2C_SCL;
 port p_sda = PORT_I2C_SDA;
 
 /* Connection to client */
-unsafe chanend gc_audiohw;
+static unsafe chanend gc_audiohw;
 typedef client interface i2c_master_if i2c_cli_t; /* reduce verbosity */
 
 // These are called on tile[0]

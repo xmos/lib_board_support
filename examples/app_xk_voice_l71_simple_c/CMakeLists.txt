@@ -30,6 +30,4 @@ endif()
 
 list(APPEND APP_DEPENDENT_MODULES "i2s")
 
-set(XMOS_SANDBOX_DIR                ${CMAKE_CURRENT_LIST_DIR}/../../..)
-
 XMOS_REGISTER_APP()

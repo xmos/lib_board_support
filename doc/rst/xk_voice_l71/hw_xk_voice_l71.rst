@@ -5,7 +5,7 @@ XK-VOICE-L71 Voice Reference Design Evaluation Kit
 
 OVERVIEW
 
-The voice reference design evaluation kit can be used as a Raspberry Pi HAT for integration with example AVS client or used standalone as a USB accessory to a host system. 
+The voice reference design board can be used as a Raspberry Pi HAT for integration with host based applications or used standalone as a USB accessory to a host system. 
 
 Features include:
 

@@ -81,8 +81,7 @@ static void i2s_send(void *app_data, size_t num_out, int32_t *i2s_sample_buf){
 
 I2S_CALLBACK_ATTR
 static void i2s_receive(void *app_data, size_t num_in, const int32_t *i2s_sample_buf){
-    i2s_callback_args_t *cb_args = app_data;
-    (void)cb_args;
+    // Do nothing
 }
 
 
