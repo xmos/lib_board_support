@@ -1,6 +1,6 @@
 set(LIB_NAME               lib_board_support)
 
-set(LIB_VERSION            1.4.0)
+set(LIB_VERSION            1.5.0)
 
 set(LIB_INCLUDES           api/boards api/drivers)
 

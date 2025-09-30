@@ -34,9 +34,12 @@
 
 /** Define representing XK-ETH-316-DUAL, xcore.ai Ethernet Development Kit board */
 #define XK_ETH_316_DUAL             5
+
+/** Define representing XK_VOICE_L71 , xcore.ai Two Mic Development board */
+#define XK_VOICE_L71                6
   
 /** Total number of boards supported by the library */
-#define BOARD_SUPPORT_N_BOARDS      6  // max board + 1
+#define BOARD_SUPPORT_N_BOARDS      7  // max board + 1
 
 /** Define that should be set to the current board type in use
   *

@@ -1,6 +1,11 @@
 lib_board_support change log
 ============================
 
+1.5.0
+-----
+
+  * ADDED:     Support for xcore.ai Voice kit `XK-VOICE-L71`
+
 1.4.0
 -----
 
