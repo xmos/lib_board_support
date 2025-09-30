@@ -5,6 +5,7 @@
 #define _DAC3101_H_
 
 #include <stdint.h>
+#include "i2c.h"
 
 // TLV320DAC3101 Device I2C Address
 #define DAC3101_I2C_DEVICE_ADDR 0x18
@@ -47,38 +48,5 @@
 #define DAC3101_SPKL_DRVR     0x2A // Register 42 - Left Class-D Speaker Driver
 #define DAC3101_SPKR_DRVR     0x2B // Register 43 - Right Class-D Speaker Driver
 
-/**
- * Initialize the DAC
- *
- * \param sample_rate  Sample rate in hz
- *
- * \returns   0 on success
- *            -1 otherwise
- */
-int dac3101_init(uint32_t sample_rate);
-
-/**
- * User defined function to perform the reg write
- *
- * \returns   0 on success
- *            -1 otherwise
- */
-int dac3101_reg_write(uint8_t reg, uint8_t val);
-
-/**
- * User defined function to perform the reset the device
- */
-void dac3101_codec_reset(void);
-
-/**
- * User defined function to perform a wait
- *
- * When called, this function must not return until
- * at least wait_ms milliseconds has passed
- */
-void dac3101_wait(uint32_t wait_ms);
-
-int dac3101_codec_reset_and_enable_rpi_io(void);
-int setup_dac3101(unsigned samFreq);
 
 #endif /* DAC3101_H_ */

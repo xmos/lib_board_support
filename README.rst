@@ -30,8 +30,9 @@ Features
   * ``XK-AUDIO-216-MC``
   * ``XK-EVK-XU216``
   * ``XK-ETH-316-DUAL``
+  * ``XK-VOICE-L71``
 
-* Simple examples demonstrating usage from both `XC` and `C`.
+* Simple examples demonstrating usage from both `XC` and `C` (where supported).
 
 ************
 Known issues

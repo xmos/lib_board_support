@@ -12,13 +12,12 @@
 #include <xclib.h>
 #include <xcore/assert.h>
 #include <platform.h>
-
-#include "sw_pll.h"
+#include <stdbool.h>
 #include "i2s.h"
 
 #define MCLK_FREQUENCY              24576000
 #define I2S_FREQUENCY               48000
-#define N_SINE                      16
+#define N_SINE                      64
 
 #define NUM_I2S_CHANNELS            2
 #define NUM_I2S_LINES               ((NUM_I2S_CHANNELS + 1) / 2)
@@ -27,8 +26,8 @@
 // Board configuration from lib_board_support
 static const xk_voice_l71_config_t hw_config = {
         CLK_FIXED,
-        MCLK_OE_PIN | SPI_OE_PIN | I2S_OE_PIN,
-        1, // DAC is clock master
+        ENABLE_MCLK | ENABLE_I2S,
+        DAC_DIN_SEC,
         MCLK_FREQUENCY,
 };
 
@@ -36,7 +35,8 @@ static const xk_voice_l71_config_t hw_config = {
 typedef struct i2s_callback_args_t {
     bool did_restart;                           // Set by init
     int sine_table[N_SINE];
-    unsigned counter;
+    unsigned sine_counter;
+    unsigned app_counter;
 } i2s_callback_args_t;
 
 
@@ -53,14 +53,15 @@ static void i2s_init(void *app_data, i2s_config_t *i2s_config){
     for(int i = 0; i < N_SINE; i++){
         cb_args->sine_table[i] = (1 << 30) * sin(6.2831853072 * i / N_SINE);
     }
-
-    cb_args->did_restart = true;
 }
 
 I2S_CALLBACK_ATTR
 static i2s_restart_t i2s_restart_check(void *app_data){
     i2s_callback_args_t *cb_args = app_data;
-    (void)cb_args;
+
+    if(++(cb_args->app_counter) == I2S_FREQUENCY * 3){
+        return I2S_SHUTDOWN;
+    }
 
     return I2S_NO_RESTART;
 }
@@ -71,11 +72,10 @@ static void i2s_send(void *app_data, size_t num_out, int32_t *i2s_sample_buf){
     i2s_callback_args_t *cb_args = app_data;
 
     for(int i = 0; i < num_out; i++){
-        i2s_sample_buf[i] = cb_args->sine_table[cb_args->counter];
-        // printf("%ld\n", clz(i2s_sample_buf[i]));
+        i2s_sample_buf[i] = cb_args->sine_table[cb_args->sine_counter];
     }
-    if(++(cb_args->counter) == N_SINE){
-        cb_args->counter = 0;
+    if(++(cb_args->sine_counter) == N_SINE){
+        cb_args->sine_counter = 0;
     }
 }
 
@@ -103,7 +103,8 @@ void i2s_tone_gen(void){
     i2s_callback_args_t app_data = {
         .did_restart = false,
         .sine_table = {0},
-        .counter = 0
+        .sine_counter = 0,
+        .app_counter = 0
     };
 
     // Initialise callback function pointers
@@ -136,10 +137,10 @@ void tile_0_main(chanend_t c){
 
 void tile_1_main(chanend_t c){
     printf("Hello from tile[1]\n");
-    xk_voice_l71_AudioHwInit(c);
+    xk_voice_l71_AudioHwChanInit(c);
     xk_voice_l71_AudioHwInit(&hw_config);
-    // xk_voice_l71_AudioHwConfig(&hw_config, I2S_FREQUENCY, MCLK_FREQUENCY);
-    i2s_tone_gen();
-    chan_out_word(c, AUDIOHW_CMD_EXIT); // Kill the remote config task
+    xk_voice_l71_AudioHwConfig(&hw_config, I2S_FREQUENCY, MCLK_FREQUENCY);
+    i2s_tone_gen(); // Plays a tone for 3 seconds
+    xk_voice_l71_AudioHwRemoteKill();
     printf("Bye from tile[1]\n");
 }

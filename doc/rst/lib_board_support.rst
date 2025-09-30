@@ -42,6 +42,7 @@ The following sections describe the features of each supported board.
    xk_evk_xu316/hw_evk_xu316
    xk_evk_xe216/hw_evk_xe216
    xk_eth_316_dual/hw_eth_316_dual
+   xk_voice_l71/hw_xk_voice_l71.rst
 
 |newpage|
 
@@ -268,6 +269,24 @@ XK_ETH_316_DUAL API
 ==========================
 
 .. doxygengroup:: xk_eth_316_dual
+   :content-only:
+
+|newpage|
+
+
+XK_VOICE_L71 API
+================
+
+.. doxygenstruct:: xk_voice_l71_config_t
+    :members:
+
+.. doxygenenum:: xk_voice_l71_mclk_modes_t
+
+.. doxygenenum:: xk_voice_l71_dac_pin_t
+
+.. doxygenenum:: xk_voice_l71_rpi_enable_t
+
+.. doxygengroup:: xk_voice_l71
    :content-only:
 
 |newpage|
