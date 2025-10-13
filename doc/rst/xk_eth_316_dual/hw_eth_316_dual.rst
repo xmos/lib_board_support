@@ -7,7 +7,7 @@ The `xcore.ai Ethernet Development Kit` (XK-ETH-316-DUAL) is an development boar
 from `XMOS`.
 
 .. _hw_eth_316_dual_image:
-.. figure:: ../../images/xk_eth_316_dual.jpg
+.. figure:: ../../images/xk_eth_316_dual.png
     :scale: 100%
     :align: center
 
@@ -43,7 +43,7 @@ Hardware Features
 The location of the various features of the `xcore.ai Ethernet Development Board` is shown in :numref:`hw_eth_316_dual_hw_features_image`.
 
 .. _hw_eth_316_dual_hw_features_image:
-.. figure:: ../../images/xk_eth_316_dual_features.jpg
+.. figure:: ../../images/xk_eth_316_dual_features.png
     :scale: 100%
     :align: center
 
