@@ -44,7 +44,6 @@ typedef enum {
 
 /**
  *  @brief Configuration struct type for setting the hardware profile.
- *  @var 
  */
 typedef struct {
     /** xk_voice_l71_config_t::clk_mode See xk_voice_l71_mclk_modes_t for available clock mode options. */
