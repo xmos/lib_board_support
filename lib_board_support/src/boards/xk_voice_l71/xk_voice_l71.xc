@@ -298,6 +298,11 @@ void AudioHwRemote(chanend c, client interface i2c_master_if i_i2c)
                     c :> config;
                     c :> sample_rate;
                     c :> mclk;
+                    if(config.clk_mode == CLK_EXTERNAL){
+                        // Since dac3101_configure() directly calls the App PLL setup from sw_pll, we need
+                        // to zero mclk to ensure PLL is switched off if specifying external clock
+                        mclk = 0;
+                    }
                     int error = dac3101_configure(i_i2c, sample_rate, mclk, config.dac_pin);
                     c <: error;
                 }
