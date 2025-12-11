@@ -236,20 +236,36 @@ void xk_evk_xu316_AudioHwInit(const xk_evk_xu316_config_t &config)
 
 
     // Set the fractional divider if used
-    sw_pll_fixed_clock(config.default_mclk);
+    if (config.default_mclk) {
+        sw_pll_fixed_clock(config.default_mclk);
+    }
 
     delay_milliseconds(1);
 }
 
-/* Configures the external audio hardware for the required sample frequency.
- * See gpio.h for I2C helper functions and gpio access
+
+/* Configures the external audio hardware for the required sample frequency and
+ * (optionally) generate a fixed mClk using the secondary PLL.
+ *
+ * Parameters:
+ *  - samFreq: Requested sample rate (Hz).
+ *  - mClk: If non-zero, this function will use the secondary PLL to generate a fixed MCLK of mClk Hz.
+ *          If zero, this function will not generate/modify MCLK; the application is responsible for
+ *          generating the mClk.
+ *  - dsdMode: DSD mode selector.
+ *  - sampRes_DAC: DAC sample resolution (bits).
+ *  - sampRes_ADC: ADC sample resolution (bits).
+ *
+ * See gpio.h for I2C helper functions and GPIO access.
  */
 void xk_evk_xu316_AudioHwConfig(unsigned samFreq, unsigned mClk, unsigned dsdMode,
     unsigned sampRes_DAC, unsigned sampRes_ADC)
 {
     assert(samFreq >= 22050);
 
-    sw_pll_fixed_clock(mClk);
+    if (mClk) {
+        sw_pll_fixed_clock(mClk);
+    }
 }
 
 #endif
