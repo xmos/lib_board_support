@@ -9,7 +9,7 @@ lib_board_support: XMOS board support
 :scope: General Use
 :description: Support library for XMOS development kits
 :category: General Purpose
-:keywords: I2C, Ethernet, Audio
+:keywords: Serial interface, Ethernet, ADC, DAC
 :devices: xcore.ai, xcore-200
 
 *******
@@ -39,7 +39,7 @@ Known issues
 ************
 
 * Support for SMI (used in the Ethernet PHY drivers) requires the lib_ethernet dependency, which is not included in
-  this repository to avoid introducing dependencies into non-Ethernet applications. Any Ethernet application 
+  this repository to avoid introducing dependencies into non-Ethernet applications. Any Ethernet application
   targeting either XK-EVK-XU216 or XK-ETH-316-DUAL boards must include lib_ethernet explicitly.
 
 ****************
