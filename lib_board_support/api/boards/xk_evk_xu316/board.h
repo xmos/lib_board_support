@@ -13,7 +13,9 @@
  *  @var
  */
 typedef struct {
-    /** xk_audio_316_mc_ab_config_t::clk_mode See xk_audio_316_mc_ab_mclk_modes_t for available clock mode options. */
+    /** Default MCLK frequency in Hz to generate using the secondary PLL at initialisation.
+     *  Set to 0 to not generate MCLK; the application is responsible for providing MCLK in that case.
+     */
     unsigned default_mclk;
 } xk_evk_xu316_config_t;
 

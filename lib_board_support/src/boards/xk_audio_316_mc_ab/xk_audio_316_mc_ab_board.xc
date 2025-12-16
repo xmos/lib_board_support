@@ -302,7 +302,7 @@ void xk_audio_316_mc_ab_AudioHwInit(i2c_cli i2c, const xk_audio_316_mc_ab_config
     {
         sw_pll_fixed_clock(config.default_mclk);
     } else {
-        // sw_pll sets up the clock.
+        // application sets up fixed or adjustable clock using secondary pll
     }
 
     /* Set external I2C mux to DACs/ADCs */

@@ -5,6 +5,8 @@ lib_board_support change log
 -----
 
   * ADDED:     Support for xcore.ai Voice kit `XK-VOICE-L71`
+  * ADDED:     Support for optionally not generating mclk in
+    `xk_audio_316_mc_ab` and `xk_evk_xu316` board support functions
 
 1.4.0
 -----
