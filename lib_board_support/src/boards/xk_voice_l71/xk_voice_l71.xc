@@ -1,4 +1,4 @@
-// Copyright 2025 XMOS LIMITED.
+// Copyright 2025-2026 XMOS LIMITED.
 // This Software is subject to the terms of the XMOS Public Licence: Version 1.
 #include "boards_utils.h"
 #if BOARD_SUPPORT_BOARD == XK_VOICE_L71
@@ -112,7 +112,7 @@ int set_enables_and_reset_dac(i2c_cli_t i_i2c, xk_voice_l71_rpi_enable_t enables
     direction_bitmask &= ~(1 << DAC_RST_N_PIN);
 
     error |= (I2C_REGOP_SUCCESS != i2c_reg_write(i_i2c, IOEXP_I2C_ADDR, PCAL6408A_CONF, direction_bitmask));
-    
+
     delay_milliseconds(10); // Reset delay for DAC
 
     /* Set DAC RST high to bring out of reset */
@@ -344,7 +344,7 @@ void xk_voice_l71_AudioHwInit(const xk_voice_l71_config_t &config)
 
 
 void xk_voice_l71_AudioHwConfig(
-    const REFERENCE_PARAM(xk_voice_l71_config_t, config), 
+    const REFERENCE_PARAM(xk_voice_l71_config_t, config),
     unsigned sample_rate, unsigned mclk)
 {
     unsafe{
@@ -353,7 +353,8 @@ void xk_voice_l71_AudioHwConfig(
         gc_audiohw <: sample_rate;
         gc_audiohw <: mclk;
         int error;
-        gc_audiohw :> error;    }
+        gc_audiohw :> error;
+    }
 }
 
 void xk_voice_l71_AudioHwRemoteKill(void){

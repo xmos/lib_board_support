@@ -6,7 +6,7 @@ DEPENDENT_MODULES = lib_i2c(>=6.4.1)
                     lib_xassert(>=4.3.2)
 
 MODULE_XCC_FLAGS = $(XCC_FLAGS) \
-                   -Os -g
+                   -Os -g -Wall
 
 OPTIONAL_HEADERS += board_support_conf.h
 

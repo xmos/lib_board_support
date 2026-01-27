@@ -1,4 +1,4 @@
-// Copyright 2024-2025 XMOS LIMITED.
+// Copyright 2024-2026 XMOS LIMITED.
 // This Software is subject to the terms of the XMOS Public Licence: Version 1.
 #include <xs1.h>
 
@@ -606,6 +606,11 @@ void xk_audio_316_mc_ab_AudioHwConfig(i2c_cli i2c, const xk_audio_316_mc_ab_conf
     WriteAllDacRegs(i2c, PCM5122_STANDBY_PWDN,   0x00); // Set DAC in run mode (no standby or powerdown)
     delay_milliseconds(1);
     WriteAllDacRegs(i2c, PCM5122_MUTE,           0x00); // Un-mute all channels
+
+    // Unused parameters in this implementation
+    (void)dsdMode;
+    (void)sampRes_DAC;
+    (void)sampRes_ADC;
 }
 
 

@@ -1,4 +1,4 @@
-// Copyright 2024-2025 XMOS LIMITED.
+// Copyright 2024-2026 XMOS LIMITED.
 // This Software is subject to the terms of the XMOS Public Licence: Version 1.
 #include <xs1.h>
 
@@ -266,6 +266,11 @@ void xk_evk_xu316_AudioHwConfig(unsigned samFreq, unsigned mClk, unsigned dsdMod
     if (mClk) {
         sw_pll_fixed_clock(mClk);
     }
+
+    // Unused parameters in this implementation
+    (void)dsdMode;
+    (void)sampRes_DAC;
+    (void)sampRes_ADC;
 }
 
 #endif
