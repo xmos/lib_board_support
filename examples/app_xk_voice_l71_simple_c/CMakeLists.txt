@@ -24,7 +24,7 @@ if(NOT EXISTS ${XMOS_SANDBOX_DIR}/fwk_io)
         GIT_TAG feature/xcommon_cmake
         SOURCE_DIR ${XMOS_SANDBOX_DIR}/fwk_io
     )
-    message(STATUS Fetching fwk_io)
+    message(STATUS "Fetching fwk_io")
     FetchContent_Populate(fwk_io)
 endif()
 
