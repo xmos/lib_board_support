@@ -38,6 +38,7 @@
 #define AIC3204_HPL_GAIN      0x10 // Register 16 - HPL Driver Gain
 #define AIC3204_HPR_GAIN      0x11 // Register 17 - HPR Driver Gain
 #define AIC3204_HP_START      0x14 // Register 20 - Headphone Driver Startup
+#define AIC3204_MICBIAS       0x33 // Register 51 - MICBIAS Configuration
 #define AIC3204_LPGA_P_ROUTE  0x34 // Register 52 - Left PGA Positive Input Route
 #define AIC3204_LPGA_N_ROUTE  0x36 // Register 54 - Left PGA Negative Input Route
 #define AIC3204_RPGA_P_ROUTE  0x37 // Register 55 - Right PGA Positive Input Route
@@ -47,5 +48,106 @@
 #define AIC3204_ADC_PTM       0x3D // Register 61 - ADC Power Tune Config
 #define AIC3204_AN_IN_CHRG    0x47 // Register 71 - Analog Input Quick Charging Config
 #define AIC3204_REF_STARTUP   0x7B // Register 123 - Reference Power Up Config
+
+/* Values for AIC3204_CODEC_IF (page 0, register 27) selecting I2S format, slave
+ * mode, with the given word length. */
+#define AIC3204_CODEC_IF_I2S_16 0x00
+#define AIC3204_CODEC_IF_I2S_20 0x10
+#define AIC3204_CODEC_IF_I2S_24 0x20
+#define AIC3204_CODEC_IF_I2S_32 0x30
+
+/* Value for AIC3204_MICBIAS (page 1, register 51): MICBIAS powered up and set to
+ * 2.5V (with the full chip common mode at 0.9V). */
+#define AIC3204_MICBIAS_ON_2V5  0x60
+
+/** Analogue input routing options.
+ *
+ *  All routes use a 10K input impedance. Note the device can only route ``IN3_L`` to
+ *  the left MICPGA, hence ::AIC3204_INPUT_IN3L_MONO being mono on the left channel.
+ */
+typedef enum
+{
+    /** Left MICPGA differential across ``IN2_L``/``IN2_R``, right MICPGA differential
+     *  across ``IN1_R``/``IN1_L``. */
+    AIC3204_INPUT_IN2_IN1_DIFF = 0,
+    /** Left MICPGA from ``IN1_L`` and right MICPGA from ``IN2_L``, each referenced to
+     *  the internal common mode ``CM1L``/``CM1R``. */
+    AIC3204_INPUT_IN1L_IN2L_PSEUDO_DIFF,
+    /** Left MICPGA from ``IN3_L`` referenced to the internal common mode, with MICBIAS
+     *  enabled. The right MICPGA is muted. */
+    AIC3204_INPUT_IN3L_MONO
+} tlv320aic3204_input_t;
+
+/** Configuration of the parts of the CODEC setup that differ between boards. */
+typedef struct
+{
+    /** Analogue input routing. See ::tlv320aic3204_input_t. */
+    tlv320aic3204_input_t input;
+    /** I2S word length in bits. One of 16, 20, 24 or 32. */
+    unsigned i2s_bits;
+    /** Raw value written to AIC3204_LPGA_VOL. 0x00 is unmuted, 0dB. */
+    unsigned micpga_gain_l;
+    /** Raw value written to AIC3204_RPGA_VOL. 0x00 is unmuted, 0dB. */
+    unsigned micpga_gain_r;
+    /** Raw value written to AIC3204_HPL_GAIN. 0x00 is unmuted, 0dB. */
+    unsigned hp_gain_l;
+    /** Raw value written to AIC3204_HPR_GAIN. 0x00 is unmuted, 0dB. */
+    unsigned hp_gain_r;
+} tlv320aic3204_config_t;
+
+/**
+ * \addtogroup tlv320aic3204
+ *
+ * Shared driver for the Texas Instruments TLV320AIC3204 stereo CODEC. Used by more
+ * than one board so that the (long) register configuration sequence is written once.
+ *
+ * The functions take the client end of an ``i2c_master_if`` connection to the CODEC.
+ * The connection may span tiles, so the caller does not need to be on the tile that
+ * owns the I2C master; `XC` carries the interface calls over a channel automatically.
+ * @{
+ */
+
+/** Error codes returned by tlv320aic3204_init(). */
+#define AIC3204_OK              (0)
+/** The CODEC did not respond as expected over I2C. */
+#define AIC3204_ERR_NO_DEVICE   (1)
+/** An I2C register access was not acknowledged or did not complete. */
+#define AIC3204_ERR_I2C         (2)
+
+#ifdef __XC__
+
+/** Resets and configures the CODEC over I2C.
+ *
+ *  The caller is responsible for having released the CODEC reset line and allowed
+ *  the device to come out of reset before calling this.
+ *
+ *  \param   i2c       Client end of an I2C master interface connected to the CODEC.
+ *  \param   config    Reference to the tlv320aic3204_config_t configuration struct.
+ *  \returns AIC3204_OK on success, AIC3204_ERR_NO_DEVICE if the CODEC did not respond
+ *           as expected, or AIC3204_ERR_I2C if an I2C access failed.
+ */
+int tlv320aic3204_init(client interface i2c_master_if i2c,
+                       const tlv320aic3204_config_t &config);
+
+/** Applies a sample rate / master clock change to the CODEC.
+ *
+ *  The clock dividers programmed by tlv320aic3204_init() (NDAC/MDAC/DOSR = 1/4/128
+ *  and NADC/MADC/AOSR = 1/4/128) are correct for a master clock of 512 * sample rate,
+ *  which is the ratio used by all boards currently supported. No register writes are
+ *  therefore required on a rate change and this function does nothing. It exists so
+ *  boards have a place to hook rate-dependent CODEC configuration should a different
+ *  master clock ratio ever be needed.
+ *
+ *  \param   i2c            Client end of an I2C master interface connected to the CODEC.
+ *  \param   sample_rate    The sample rate in Hertz.
+ *  \param   mclk           The master clock rate in Hertz.
+ */
+void tlv320aic3204_config(client interface i2c_master_if i2c,
+                          unsigned sample_rate,
+                          unsigned mclk);
+
+#endif // __XC__
+
+/**@}*/ // END: addtogroup tlv320aic3204
 
 #endif /* TLV320AIC3204_H_ */

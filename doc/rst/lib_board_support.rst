@@ -102,13 +102,31 @@ the relevant header file. For example:
 From then onwards the code may call the relevant API functions to setup and configure the board
 hardware. Examples are provided in the `examples` directory of this repo.
 
-Note that in some cases, the `xcore` tile that calls the configuration function (usually from I²S
-initialisation) is different from the tile where I²C controller is placed. Since I²C controller is
-required by most audio CODECs for configuration and `xcore` tiles can only communicate with each
-other via channels, a remote server is needed to provide the I²C setup. This usually takes the
-form of a task which is run on a thread placed on the I²C tile and is controlled via a channel
-from the other tile where I²S resides. The cross-tile channel must be declared at the top-level
-XC main function. The included examples provide a reference for this using both XC and C.
+Most audio CODECs are configured over I²C, so the audio boards expose an I²C master task alongside
+their configuration functions. The application declares an ``i2c_master_if`` connection at the
+top-level XC ``main`` function, runs the board's I²C master task on the tile carrying the I²C pins,
+and passes the client end of the connection to the configuration functions:
+
+.. code-block:: c
+
+    interface i2c_master_if i_i2c[1];
+
+    par {
+        on tile[0]: xk_audio_316_mc_ab_i2c_master(i_i2c);
+        on tile[1]: {
+            xk_audio_316_mc_ab_AudioHwInit(i_i2c[0], hw_config);
+            ...
+        }
+    }
+
+Note that in some cases the `XCORE` tile that calls the configuration function (usually from I²S
+initialisation) is different from the tile where the I²C controller is placed, as in the example
+above. This is supported: an interface connection may span tiles, and `XC` implements the calls
+over a channel automatically. The included examples provide a reference for this using both XC
+and C.
+
+Once configuration is complete the I²C master task may be shut down to free the logical core, using
+the board's ``i2c_master_exit`` function.
 
 |newpage|
 
@@ -253,6 +271,22 @@ XK_EVK_XU316 API
     :members:
 
 .. doxygengroup:: xk_evk_xu316
+   :content-only:
+
+|newpage|
+
+Shared Driver API
+=================
+
+Some peripherals appear on more than one supported board. The configuration code for those is
+shared between the boards rather than duplicated.
+
+.. doxygenstruct:: tlv320aic3204_config_t
+    :members:
+
+.. doxygenenum:: tlv320aic3204_input_t
+
+.. doxygengroup:: tlv320aic3204
    :content-only:
 
 |newpage|
