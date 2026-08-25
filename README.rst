@@ -59,6 +59,7 @@ Required libraries (dependencies)
 *********************************
 
 * `lib_i2c <https://www.xmos.com/file/lib_i2c>`_
+* `lib_locks <https://www.xmos.com/file/lib_locks>`_
 * `lib_sw_pll <https://www.xmos.com/file/lib_sw_pll>`_
 * `lib_xassert <https://www.xmos.com/file/lib_xassert>`_
 

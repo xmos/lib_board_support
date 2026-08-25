@@ -3,3 +3,6 @@
 **/*build*/*
 
 **/bin/*.xe
+
+# Built documentation
+doc/_build/
