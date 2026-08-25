@@ -4,6 +4,7 @@ lib_board_support change log
 UNRELEASED
 ----------
 
+  * ADDED:     Support for `XMS0028` xcore.ai audio development board
   * ADDED:     Shared TLV320AIC3204 CODEC driver
   * CHANGED:   `XK-EVK-XU316` audio hardware functions now take an `i2c_master_if`
     connection rather than a channel. Breaking API change.

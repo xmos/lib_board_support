@@ -31,6 +31,7 @@ Features
   * ``XK-EVK-XU216``
   * ``XK-ETH-316-DUAL``
   * ``XK-VOICE-L71``
+  * ``XMS0028``
 
 * Simple examples demonstrating usage from both `XC` and `C` (where supported).
 

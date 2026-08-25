@@ -32,6 +32,8 @@ The following boards are supported by ``lib_board_support`` with interfaces prov
 +-----------------------+---------------------+
 |XK-VOICE-L71           |       XC / C        |
 +-----------------------+---------------------+
+|XMS0028                |       XC / C        |
++-----------------------+---------------------+
 
 The following sections describe the features of each supported board.
 
@@ -43,6 +45,7 @@ The following sections describe the features of each supported board.
    xk_evk_xe216/hw_evk_xe216
    xk_eth_316_dual/hw_eth_316_dual
    xk_voice_l71/hw_xk_voice_l71.rst
+   xms0028/hw_xms0028
 
 |newpage|
 
@@ -149,6 +152,10 @@ These applications run on the `XK-EVK-XU316` and `XK-AUDIO-316-MC` boards respec
 
 They show how to use the cross-tile communications in conjunction with the I²C controller (master) server.
 The applications only setup the hardware and then exit the I²C server.
+
+The application `app_xms0028_simple_c` runs on the `XMS0028` board. All of the audio hardware on
+that board is on ``tile[0]``. In addition to setting up the CODEC it demonstrates the LED and
+button API.
 
 XC Usage Example
 ================
@@ -274,6 +281,22 @@ XK_EVK_XU316 API
     :members:
 
 .. doxygengroup:: xk_evk_xu316
+   :content-only:
+
+|newpage|
+
+XMS0028 API
+===========
+
+.. doxygenstruct:: xms0028_config_t
+    :members:
+
+.. doxygenenum:: xms0028_input_source_t
+
+.. doxygengroup:: xms0028
+   :content-only:
+
+.. doxygengroup:: xms0028_gpio
    :content-only:
 
 |newpage|
