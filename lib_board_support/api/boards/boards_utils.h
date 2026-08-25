@@ -37,9 +37,12 @@
 
 /** Define representing XK_VOICE_L71 , xcore.ai Two Mic Development board */
 #define XK_VOICE_L71                6
-  
+
+/** Define representing XMS0028, xcore.ai audio development board */
+#define XMS0028                     7
+
 /** Total number of boards supported by the library */
-#define BOARD_SUPPORT_N_BOARDS      7  // max board + 1
+#define BOARD_SUPPORT_N_BOARDS      8  // max board + 1
 
 /** Define that should be set to the current board type in use
   *

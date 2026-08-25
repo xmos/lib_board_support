@@ -5,7 +5,7 @@
 #include <boards_utils.h>
 
 /* Shared by every board carrying a TLV320AIC3204. Add new boards here. */
-#if (BOARD_SUPPORT_BOARD == XK_EVK_XU316)
+#if (BOARD_SUPPORT_BOARD == XK_EVK_XU316) || (BOARD_SUPPORT_BOARD == XMS0028)
 
 #include "i2c.h"
 #include "tlv320aic3204.h"
