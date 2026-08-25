@@ -1,6 +1,18 @@
 lib_board_support change log
 ============================
 
+UNRELEASED
+----------
+
+  * ADDED:     Shared TLV320AIC3204 CODEC driver
+  * CHANGED:   `XK-EVK-XU316` audio hardware functions now take an `i2c_master_if`
+    connection rather than a channel. Breaking API change.
+  * FIXED:     Undeclared `lib_locks` dependency
+
+  * Changes to dependencies:
+
+    - lib_locks: Added dependency 2.4.0
+
 1.5.0
 -----
 
