@@ -8,6 +8,9 @@ UNRELEASED
   * CHANGED:   `XK-EVK-XU316` audio hardware functions now take an `i2c_master_if`
     connection rather than a channel. Breaking API change.
   * FIXED:     Undeclared `lib_locks` dependency
+  * FIXED:     `cs2100.h` no longer uses a generic `UNSAFE` macro, which could
+    pick up another library's definition and change the `PllInit()`/`PllMult()`
+    parameter types
 
   * Changes to dependencies:
 

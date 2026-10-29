@@ -168,9 +168,7 @@ static uint8_t i2c_reg_read(i2c_cli i2c, uint8_t device_addr, uint8_t reg, i2c_r
 #define CS2100_REGWRITE(i2c, reg, val)                   {result = i2c_reg_write(i2c, CS2100_I2C_DEVICE_ADDR, reg, val);}
 #define CS2100_REGREAD_ASSERT(i2c, reg, data, expected)  {data[0] = i2c_reg_read(i2c, CS2100_I2C_DEVICE_ADDR, reg, result); assert(data[0] == expected);}
 #define CS2100_I2C_DEVICE_ADDRESS                   (0x4E)
-// #define UNSAFE unsafe
 #include "cs2100.h"
-#undef UNSAFE
 
 // PCA9540B (2-channel I2C-bus mux) I2C Slave Address
 #define PCA9540B_I2C_DEVICE_ADDR    (0x70)
@@ -292,11 +290,8 @@ void xk_audio_316_mc_ab_AudioHwInit(i2c_cli i2c, const xk_audio_316_mc_ab_config
         /* Set external I2C mux to CS2100 */
         SetI2CMux(i2c, PCA9540B_CTRL_CHAN_1);
 
-        unsafe
-        {
-            /* Use external CS2100 to generate master clock */
-            PllInit(i2c);
-        }
+        /* Use external CS2100 to generate master clock */
+        PllInit(i2c);
     }
     else if(CLK_FIXED == config.clk_mode)
     {
