@@ -29,16 +29,9 @@
 #define CS2100_REGWRITE(i2c, reg, val) {result = i2c.write_reg(CS2100_I2C_DEVICE_ADDR, reg, val);}
 #endif
 
-#ifndef UNSAFE
-#define UNSAFE
-#endif
-
-
 /* Init of CS2100 */
-static inline void PllInit(UNSAFE client interface i2c_master_if i2c)
+static inline void PllInit(client interface i2c_master_if i2c)
 {
-    UNSAFE
-    {
     unsigned char data[1] = {0};
     i2c_regop_res_t result;
 
@@ -53,17 +46,11 @@ static inline void PllInit(UNSAFE client interface i2c_master_if i2c)
     CS2100_REGREAD_ASSERT(i2c, CS2100_GLOBAL_CONFIG, data, 0x01);
     CS2100_REGREAD_ASSERT(i2c, CS2100_FUNC_CONFIG_1, data, 0x08);
     CS2100_REGREAD_ASSERT(i2c, CS2100_FUNC_CONFIG_2, data, 0x00);
-
-    //i2c.shutdown();
-    }
 }
 
 /* Setup PLL multiplier */
-static inline void PllMult(unsigned output, unsigned ref, UNSAFE client interface i2c_master_if i2c)
+static inline void PllMult(unsigned output, unsigned ref, client interface i2c_master_if i2c)
 {
-    UNSAFE
-
-    {
     unsigned char data[1] = {0};
     i2c_regop_res_t result;
 
@@ -76,11 +63,9 @@ static inline void PllMult(unsigned output, unsigned ref, UNSAFE client interfac
     CS2100_REGWRITE(i2c, CS2100_RATIO_3, (mult >> 8) & 0xFF);
     CS2100_REGWRITE(i2c, CS2100_RATIO_4, (mult & 0xFF));
 
-	/* Read back and check */
+    /* Read back and check */
     CS2100_REGREAD_ASSERT(i2c, CS2100_RATIO_1, data, ((mult >> 24) & 0xFF));
     CS2100_REGREAD_ASSERT(i2c, CS2100_RATIO_2, data, ((mult >> 16) & 0xFF));
     CS2100_REGREAD_ASSERT(i2c, CS2100_RATIO_3, data, ((mult >> 8) & 0xFF));
     CS2100_REGREAD_ASSERT(i2c, CS2100_RATIO_4, data, (mult & 0xFF));
-    }
 }
-
